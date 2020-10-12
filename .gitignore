@@ -1,0 +1,7 @@
+.umi
+.umi-production
+node_modules
+.idea
+dist
+course-demo-bigfish
+
