@@ -1,0 +1,59 @@
+[
+	{
+		"img": [
+			{
+				"option_name": "裙身",
+				"images": [
+					{
+						"img_path": "",
+						"proportion": "15"
+					},
+					{
+						"img_path": "",
+						"proportion": "25"
+					},
+					{
+						"img_path": "",
+						"proportion": "45"
+					},
+					{
+						"img_path": "",
+						"proportion": "75"
+					},
+					{
+						"img_path": "",
+						"proportion": "100"
+					}
+				]
+			},
+			{
+				"option_name": "腰头",
+				"images": [
+					{
+						"img_path": "",
+						"proportion": "15"
+					},
+					{
+						"img_path": "",
+						"proportion": "25"
+					},
+					{
+						"img_path": "",
+						"proportion": "45"
+					},
+					{
+						"img_path": "",
+						"proportion": "75"
+					},
+					{
+						"img_path": "",
+						"proportion": "100"
+					}
+				]
+			}
+		],
+		"primary_classifiy": "上装",
+		"secondary_classifiy": "大衣",
+		"silhouette": "A型"
+	}
+]

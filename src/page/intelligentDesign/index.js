@@ -11,7 +11,7 @@ class IntelligentDesign extends PureComponent {
         paddingRight: 0,
         paddingLeft: 5,
       }}>
-
+        IntelligentDesign
       </Card>
     );
   }
