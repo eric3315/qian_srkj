@@ -1,21 +1,31 @@
-import { Component } from 'react';
-import logo from '../assets/ifash.ico';
-import './reset.min.css';
-import './index.less'
+import React, { PureComponent } from 'react';
+import index from './index.less';
 
-class BasicLayout extends Component {
+class BasicLayout extends PureComponent {
+  state={
+
+  };
+  componentDidMount () {
+
+  }
+
 
   initTitle=()=>{
+    document.title = 'Galaxy';
     let link = document.createElement('link');
     link.setAttribute('type','image/x-icon');
     link.setAttribute('rel','icon');
-    link.setAttribute('href',logo);
+    // link.setAttribute('href',logoIco);
     document.head.appendChild(link);
   };
   render() {
-    const { children} = this.props;
+    const { children } = this.props;
     this.initTitle();
-    return children;
+    return (
+      <div className={index.container}>
+        <div style={{marginLeft:" 10px", width: '100%',height:'100vh', overflow: 'auto'}} className={index.right}> { children }</div>
+      </div>
+    );
   }
 }
 

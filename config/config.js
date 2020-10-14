@@ -20,16 +20,23 @@ export default {
       routes: [
         {
           path: '/',
-          redirect: '/home',
+          component: './intelligentDesign'
         },
-        { path: './home', component: './Home'},
-        { path: './about', component: './AboutUs'},
-        { path: './business', component: './Business'},
-        { path: './investor', component: './Investor'},
-        { path: './corporate', component: './Corporate'},
-        { path: './article', component: './Article'},
-        { path: './braftEditor', component: './BEditor'},
-
+        {
+          path: './design',
+          component: './intelligentDesign'
+        },
+        {
+          path: './make',
+          component: './intelligentPatternMaking'
+        },
+        {
+          path: './trend',
+          component: './trendAnalysis'
+        },
+        {
+          component: '403'
+        }
       ]
     }
   ],
