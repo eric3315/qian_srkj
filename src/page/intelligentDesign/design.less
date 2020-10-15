@@ -1,0 +1,94 @@
+.designWrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  .leftWrapper {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    flex: 0 0 auto;
+    height: calc(100% - 50px);
+    will-change: width;
+    -webkit-transition: width .1s ease .1s;
+    transition: width .1s ease .1s;
+    .leftMain{
+      position: fixed;
+      height: calc(100% - 50px);
+      top: 50px;
+      left: 0;
+      background-color: black;
+      color: white;
+      overflow-y: auto;
+      will-change: width;
+      -webkit-transition: width .1s ease .1s;
+      transition: width .1s ease .1s;
+    }
+    .selecshow,.showUnfold{
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 94%;
+      z-index: 999;
+      font-size: 24px;
+      color: #a1faeb;
+      opacity: 0.6;
+      will-change: top,opacity;
+      -webkit-transition: top .2s ease,opacity .2s ease;
+      transition: top .2s ease,opacity .2s ease;
+    }
+    .showUnfold{
+      top: 50%;
+      left: 50%;
+    }
+    .selecshow:hover,.showUnfold:hover{
+      opacity: 1;
+    }
+    .leftMain::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .leftWrapper:hover .showUnfold{
+    display: block;
+  }
+  .leftWrapper:hover .selecshow{
+    display: block;
+  }
+  //中间内容
+  .mainWrapper {
+    //background-color: lightskyblue;
+  }
+
+  .rightWrapper {
+    position: relative;
+    .rightMain{
+      position: fixed;
+      top:50px;
+      right:0;
+      flex: 0 0 auto;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      background-color: black;
+      color: white;
+      will-change: width;
+      -webkit-transition: width .1s ease .1s;
+      transition: width .1s ease .1s;
+
+    }
+    .selecRightshow{
+      position: absolute;
+      width: 15px;
+      height: 30px;
+      top: 0;
+      left: -15px;
+      z-index: 999;
+      border-radius: 30px 0 0 30px ;
+      background-color: #a1faeb;
+      color: white;
+      opacity: 0.3;
+    }
+    .selecRightshow:hover{
+      opacity: 1;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    }
+  }
+}

@@ -1,4 +1,4 @@
-[
+export const MODEL_STEP = [
   {
     "model_name": "2021_春夏_印花革命_主题研发",
     "steps": [
@@ -25,6 +25,7 @@
                 "children_options": [
                   {
                     "option_name": "大衣",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "o型",
@@ -33,6 +34,7 @@
                   },
                   {
                     "option_name": "夹克",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "X型"
@@ -45,6 +47,7 @@
                 "children_options": [
                   {
                     "option_name": "裤装",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "o型",
@@ -53,6 +56,7 @@
                   },
                   {
                     "option_name": "半身裙",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "X型"
@@ -65,6 +69,7 @@
                 "children_options": [
                   {
                     "option_name": "连体衣",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "o型",
@@ -73,6 +78,7 @@
                   },
                   {
                     "option_name": "连衣裙",
+                    "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
                       "X型"
