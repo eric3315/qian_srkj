@@ -14,6 +14,7 @@ class IntelligentDesign extends PureComponent {
     visible: false,
     placement: 'left',
     leftWidth:"260px",
+    rightWidth:"260px",
     checkStep:'',
     steps:[],
     parameters:[],
@@ -22,7 +23,6 @@ class IntelligentDesign extends PureComponent {
 
   showDrawer = () => {
     this.setState({
-      // visible: true,
       leftWidth:"30px",
     });
   };
@@ -39,7 +39,6 @@ class IntelligentDesign extends PureComponent {
   showUnfold = () => {
     this.setState({
       leftWidth:"260px",
-      rightWidth:'260px'
     });
   };
 
@@ -251,12 +250,6 @@ class IntelligentDesign extends PureComponent {
     const sizeWidth=parseInt(leftWidth)+parseInt(rightWidth);
     let mainWidth = `calc(100% - ${sizeWidth}px)`;
     return (
-      <Card  bordered={false} bodyStyle={{
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingRight: 0,
-        paddingLeft: 5,
-      }}>
       <div className={style.designWrapper}>
         <div className={style.leftWrapper} style={{width: leftWidth}}>
           {
@@ -270,7 +263,7 @@ class IntelligentDesign extends PureComponent {
           <div className={style.leftMain} style={{width: leftWidth}}>
             <Select
               showSearch
-              style={{width: '100%'}}
+              style={{width: '100%',marginTop:"10px"}}
               onChange={this.handleModelStep}
             >
               {modelStepOptions}
@@ -287,7 +280,6 @@ class IntelligentDesign extends PureComponent {
           <p>Some contents...</p>
           <p>Some contents...</p>
         </div>
-
         <div className={style.rightWrapper} style={{width: rightWidth}}>
           {
             rightWidth==='260px'&&
@@ -297,11 +289,7 @@ class IntelligentDesign extends PureComponent {
             rightWidth===0 &&
             <div className={style.selecRightshow} onClick={this.showRightUnfold} />
           }
-
           <div className={style.rightMain} style={{width: rightWidth}}>
-            {/*<p>Some contents...</p>*/}
-            {/*<p>Some contents...</p>*/}
-            {/*<p>Some contents...</p>*/}
             {
               this.state.parameters.length>0 &&
               this.renderParameters()
@@ -309,7 +297,6 @@ class IntelligentDesign extends PureComponent {
           </div>
         </div>
       </div>
-      </Card>
     );
   }
 }

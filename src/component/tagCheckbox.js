@@ -10,7 +10,7 @@ class TagCheckbox extends PureComponent {
       if(typeof data[0] ==='string'){
         let vDOM = [];
         data.forEach((cur)=>{
-          vDOM.push(<Checkbox key={Math.random()} value={cur}>{cur}</Checkbox>)
+          vDOM.push(<Checkbox key={Math.random()} value={cur}  style={{color:"#ffffff"}}>{cur}</Checkbox>)
         });
         return <Checkbox.Group style={{width:'100%'}} onChange={this.handleCheckGroup}>{vDOM}</Checkbox.Group>;
       } else {
@@ -24,12 +24,12 @@ class TagCheckbox extends PureComponent {
               let radioDOM=[];
               if(silhouettes.length>0){
                 silhouettes.forEach((item)=>{
-                  radioDOM.push(<Radio key={Math.random()} value={item}>{item}</Radio>)
+                  radioDOM.push(<Radio key={Math.random()} value={item} style={{color:"#ffffff"}}>{item}</Radio>)
                 })
               }
               checkDOM.push(<div key={Math.random()}>
                     <div>
-                      <Checkbox checked={silhouette_flag} onChange={(e)=>{this.handleTagCheckboxChange(e,option_name,children_title,this.props.option_title,this.props.step_name,this.props.model_name)}}>{option_name}</Checkbox>
+                      <Checkbox checked={silhouette_flag} onChange={(e)=>{this.handleTagCheckboxChange(e,option_name,children_title,this.props.option_title,this.props.step_name,this.props.model_name)}}  style={{color:"#ffffff"}}>{option_name}</Checkbox>
                     </div>
                     <div style={silhouette_flag ? {display:"block"}:{display:"none"}}>
                       <RadioGroup onChange={(e)=>{this.handleRadioGroup(e,option_name,children_title)}}>
