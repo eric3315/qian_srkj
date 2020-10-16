@@ -1,11 +1,8 @@
 import React, {PureComponent} from 'react';
 import { MODEL_STEP } from '../../util/model_step';
 import TagCheckbox from '../../component/tagCheckbox';
-import {Card,Select,Menu,Badge} from 'antd';
-import {
-  LeftCircleOutlined,
-  RightCircleOutlined
-} from '@ant-design/icons';
+import {Select,Menu,Badge} from 'antd';
+import {LeftCircleOutlined, RightCircleOutlined} from '@ant-design/icons';
 import style from './design.less';
 
 const { Option } = Select;
@@ -20,7 +17,6 @@ class IntelligentDesign extends PureComponent {
     parameters:[],
     submitData:[]
   };
-
   showDrawer = () => {
     this.setState({
       leftWidth:"30px",
@@ -41,7 +37,6 @@ class IntelligentDesign extends PureComponent {
       leftWidth:"260px",
     });
   };
-
   handleModelStep=(value)=>{
     let stepArr =[];
     for(let i=0;i<MODEL_STEP.length;i++){
@@ -83,21 +78,23 @@ class IntelligentDesign extends PureComponent {
     })
   };
   handleChangeOption=(isChecked,optionName,childrenTitle,optionTitle,stepName,modelName)=>{
-    let {parameters} = this.state;
+    let {parameters,submitData} = this.state;
     let newParameters = JSON.parse(JSON.stringify(parameters));
+    let newSubmitData = JSON.parse(JSON.stringify(submitData));
     newParameters.forEach(item=>{
       let {model_name,step_name,parameters} = item;
       if(model_name === modelName && step_name === stepName){
         parameters.forEach(item=>{
           let {option_title,options} = item;
           if(option_title === optionTitle){
-            if(typeof options[0] ==='object'){
+            if(options.length>0 && typeof options[0] ==='object'){
               for(let i=0;i<options.length;i++){
                 let {children_title,children_options} =options[i];
                 if(children_title === childrenTitle){
                   for(let j=0;j<children_options.length;j++){
                     let {option_name} = children_options[j];
                     if(option_name === optionName){
+                      children_options[j].option_flag = isChecked;
                       children_options[j].silhouette_flag = isChecked;
                     }
                   }
@@ -108,33 +105,112 @@ class IntelligentDesign extends PureComponent {
         });
       }
     });
+    if(newSubmitData.length<=0){
+      newSubmitData.push({
+        modelName,stepName,
+        parameters:[
+          { optionTitle,
+            childrenTitle,
+            optionName
+          }
+        ]
+      });
+    } else {
+      for(let i=0;i<newSubmitData.length;i++){
+        if(modelName === newSubmitData[i].modelName && stepName === newSubmitData[i].stepName){
+          let {parameters} = newSubmitData[i];
+          if(parameters.length>0){
+            let flag =parameters.some(item=>{return item.optionTitle === optionTitle && item.childrenTitle === childrenTitle && item.optionName === optionName});
+            if(flag && !isChecked){
+              for(let i=0;i<parameters.length;i++){
+                if(parameters[i].optionTitle === optionTitle && parameters[i].childrenTitle === childrenTitle && parameters[i].optionName === optionName){
+                  parameters[i] = parameters[parameters.length-1];
+                  parameters.length--;
+                  i--;
+                }
+              }
+            } else {
+              newSubmitData[i].parameters.push({
+                optionTitle,
+                childrenTitle,
+                optionName
+              })
+            }
+          } else {
+            newSubmitData[i].parameters.push({
+              optionTitle,
+              childrenTitle,
+              optionName
+            })
+          }
+        }
+      }
+    }
     this.setState({
-      parameters: newParameters
+      parameters: newParameters,
+      submitData: newSubmitData
     },()=>{
       console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+      console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
     })
   };
   handleGatherCondition=(values,optionName,childrenTitle,optionTitle,stepName,modelName)=>{
-    let {submitData} = this.state;
+    let {parameters,submitData} = this.state;
     let newSubmitData = JSON.parse(JSON.stringify(submitData));
+    let newParameters = JSON.parse(JSON.stringify(parameters));
+    if(values instanceof Array){
+      for(let i=0;i<newParameters.length;i++){
+        let {model_name,step_name,parameters} = newParameters[i];
+        if(model_name === modelName && step_name === stepName){
+          for(let i=0;i<parameters.length;i++){
+            let {option_title} = parameters[i];
+            if(option_title === optionTitle){
+              parameters[i].checkedValues=values;
+            }
+          }
+        }
+      }
+    } else {
+      for(let i=0;i<newParameters.length;i++){
+        let {model_name,step_name,parameters} = newParameters[i];
+        if(model_name === modelName && step_name === stepName){
+          for(let i=0;i<parameters.length;i++){
+            let {option_title,options} = parameters[i];
+            if(option_title === optionTitle){
+              for(let i=0;i<options.length;i++){
+                let {children_title,children_options} = options[i];
+                if(children_title === childrenTitle){
+                  for(let i=0;i<children_options.length;i++){
+                    let {option_name} = children_options[i];
+                    if(option_name === optionName){
+                      children_options[i].silhouette_value=values;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     if(newSubmitData.length<=0){
-      let parameters=[];
       if(typeof values ==='string'){
-        parameters.push({
-          optionTitle,
-          childrenTitle,
-          optionName,
-          values
+        newSubmitData.push({
+          modelName,stepName,parameters:[{
+            optionTitle,
+            childrenTitle,
+            optionName,
+            values
+          }]
         });
       } else {
-        parameters.push({
-          optionTitle,
-          values
+        newSubmitData.push({
+          modelName,stepName,parameters:[{
+            optionTitle,
+            values
+          }]
         });
       }
-      newSubmitData.push({
-        modelName,stepName,parameters
-      });
     } else {
       for(let i=0;i<newSubmitData.length;i++){
         if(modelName === newSubmitData[i].modelName && stepName === newSubmitData[i].stepName){
@@ -158,8 +234,10 @@ class IntelligentDesign extends PureComponent {
       }
     }
     this.setState({
-      submitData: newSubmitData
+      submitData: newSubmitData,
+      parameters: newParameters
     },()=>{
+      console.info(`parameters:${JSON.stringify(this.state.parameters)}`);
       console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
     })
   };
@@ -203,7 +281,7 @@ class IntelligentDesign extends PureComponent {
         let {option_title,option_desc,option_type,options} = item;
         if(option_type ==='多选'){
           if(typeof options[0] ==='string'){
-            let {checkedArr} = item;
+            let {checkedValues} = item;
             vDOM.push(
               <div key={Math.random()}>
                 <div>{option_title}</div>
@@ -213,7 +291,7 @@ class IntelligentDesign extends PureComponent {
                   model_name={model_name}
                   step_name={step_name}
                   data={options}
-                  checkedArr={checkedArr}
+                  checkedValues={checkedValues}
                   handleChangeOption={this.handleChangeOption}
                   handleGatherCondition={this.handleGatherCondition}
                 />
@@ -240,8 +318,6 @@ class IntelligentDesign extends PureComponent {
     });
     return vDOM;
   };
-
-
   render() {
     const modelStepOptions = MODEL_STEP.map((province) => {
       return <Option key={province.model_name}>{province.model_name}</Option>;
@@ -300,5 +376,4 @@ class IntelligentDesign extends PureComponent {
     );
   }
 }
-
 export default IntelligentDesign;

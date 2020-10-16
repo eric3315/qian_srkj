@@ -1,59 +1,134 @@
 [
-	{
-		"img": [
-			{
-				"option_name": "裙身",
-				"images": [
-					{
-						"img_path": "",
-						"proportion": "15"
-					},
-					{
-						"img_path": "",
-						"proportion": "25"
-					},
-					{
-						"img_path": "",
-						"proportion": "45"
-					},
-					{
-						"img_path": "",
-						"proportion": "75"
-					},
-					{
-						"img_path": "",
-						"proportion": "100"
-					}
-				]
-			},
-			{
-				"option_name": "腰头",
-				"images": [
-					{
-						"img_path": "",
-						"proportion": "15"
-					},
-					{
-						"img_path": "",
-						"proportion": "25"
-					},
-					{
-						"img_path": "",
-						"proportion": "45"
-					},
-					{
-						"img_path": "",
-						"proportion": "75"
-					},
-					{
-						"img_path": "",
-						"proportion": "100"
-					}
-				]
-			}
-		],
-		"primary_classifiy": "上装",
-		"secondary_classifiy": "大衣",
-		"silhouette": "A型"
-	}
+  {
+    "img": [
+      {
+        "option_name": "裙身",
+        "images": [
+          {
+            "img_path": "",
+            "proportion": "15"
+          },
+          {
+            "img_path": "",
+            "proportion": "25"
+          },
+          {
+            "img_path": "",
+            "proportion": "45"
+          },
+          {
+            "img_path": "",
+            "proportion": "75"
+          },
+          {
+            "img_path": "",
+            "proportion": "100"
+          }
+        ]
+      },
+      {
+        "option_name": "腰头",
+        "images": [
+          {
+            "img_path": "",
+            "proportion": "15"
+          },
+          {
+            "img_path": "",
+            "proportion": "25"
+          },
+          {
+            "img_path": "",
+            "proportion": "45"
+          },
+          {
+            "img_path": "",
+            "proportion": "75"
+          },
+          {
+            "img_path": "",
+            "proportion": "100"
+          }
+        ]
+      },
+      {
+        "option_name": "开襟",
+        "options": [
+          {
+            "option_name": "无开襟",
+            "img_path": ""
+          },
+          {
+            "option_name": "半开襟",
+            "img_path": ""
+          },
+          {
+            "option_name": "全开襟",
+            "img_path": ""
+          }
+        ]
+      },
+      {
+        "option_name": "口袋",
+        "options": [
+          {
+            "option_name": "明贴袋",
+            "images": [
+              {
+                "img_path": "",
+                "proportion": "15"
+              },
+              {
+                "img_path": "",
+                "proportion": "25"
+              },
+              {
+                "img_path": "",
+                "proportion": "45"
+              },
+              {
+                "img_path": "",
+                "proportion": "75"
+              },
+              {
+                "img_path": "",
+                "proportion": "100"
+              }
+            ]
+          },
+          {
+            "option_name": "暗口袋",
+            "images": [
+              {
+                "img_path": "",
+                "proportion": "15"
+              },
+              {
+                "img_path": "",
+                "proportion": "25"
+              },
+              {
+                "img_path": "",
+                "proportion": "45"
+              },
+              {
+                "img_path": "",
+                "proportion": "75"
+              },
+              {
+                "img_path": "",
+                "proportion": "100"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "primary_classifiy": "上装",
+    "secondary_classifiy": "大衣",
+    "silhouette": "A型",
+    "style": [
+      "优雅"
+    ]
+  }
 ]

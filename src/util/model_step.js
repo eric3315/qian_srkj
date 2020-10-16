@@ -10,6 +10,7 @@ export const MODEL_STEP = [
             "option_title": "风格",
             "option_desc": "局部松紧尺度与廓形相关，将限制调整的尺寸",
             "option_type": "多选",
+            "checkedValues":[],
             "options": [
               "梦幻",
               "可爱"
@@ -25,6 +26,8 @@ export const MODEL_STEP = [
                 "children_options": [
                   {
                     "option_name": "大衣",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
@@ -34,6 +37,8 @@ export const MODEL_STEP = [
                   },
                   {
                     "option_name": "夹克",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
@@ -47,6 +52,8 @@ export const MODEL_STEP = [
                 "children_options": [
                   {
                     "option_name": "裤装",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
@@ -56,6 +63,8 @@ export const MODEL_STEP = [
                   },
                   {
                     "option_name": "半身裙",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
@@ -69,6 +78,8 @@ export const MODEL_STEP = [
                 "children_options": [
                   {
                     "option_name": "连体衣",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
@@ -78,6 +89,8 @@ export const MODEL_STEP = [
                   },
                   {
                     "option_name": "连衣裙",
+                    "option_flag":false,
+                    "silhouette_value":'',
                     "silhouette_flag": false,
                     "silhouettes": [
                       "A型",
