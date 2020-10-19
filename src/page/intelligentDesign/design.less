@@ -1,3 +1,10 @@
+:global{
+  .ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+    color: rgba(255, 255, 255, 0.65);
+    background: #414141;
+    margin: 10px;
+  }
+}
 .designWrapper {
   display: flex;
   flex: 1;
@@ -26,7 +33,7 @@
     .selecshow,.showUnfold{
       display: none;
       position: absolute;
-      top: 50%;
+      top: 10%;
       left: 94%;
       z-index: 999;
       font-size: 24px;
@@ -37,14 +44,14 @@
       transition: left .2s ease .2s;
     }
     .showUnfold{
-      top: 50%;
+      top: 10%;
       left: 50%;
     }
     .selecshow:hover,.showUnfold:hover{
       opacity: 1;
     }
     .leftMain::-webkit-scrollbar {
-      display: none;
+      display: block;
     }
   }
   .leftWrapper:hover .showUnfold{

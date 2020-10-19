@@ -1,4 +1,4 @@
-export const MODEL_STEP = [
+export const MODEL_STEP =[
   {
     "model_name": "2021_春夏_印花革命_主题研发",
     "steps": [
@@ -7,27 +7,42 @@ export const MODEL_STEP = [
         "step_name": "主题调研",
         "parameters": [
           {
-            "option_title": "风格",
+            "option_title": "主题",
+            "option_desc": "",
             "option_type": "多选",
-            "checkedValues": [],
-            "children_options": [
+            "options": [
               {
-                "option_desc": "本季风格热门关键词",
-                "options": [
-                  "优雅",
-                  "可爱"
+                "children_title": "梦幻主题",
+                "children_flag": false,
+                "checkedValues": [],
+                "subset_flag": false,
+                "children_type": "多选",
+                "children_option": [
+                  "梦幻",
+                  "可爱",
+                  "优雅"
                 ]
               },
               {
-                "option_desc": "风格关键词",
-                "options": [
+                "children_title": "优雅主题",
+                "children_flag": false,
+                "checkedValues": [],
+                "subset_flag": false,
+                "children_type": "多选",
+                "children_option": [
                   "梦幻",
                   "可爱",
                   "优雅"
                 ]
               }
             ]
-          },
+          }
+        ]
+      },
+      {
+        "step_key": 2,
+        "step_name": "主题研发",
+        "parameters": [
           {
             "option_title": "款式",
             "option_desc": "",
@@ -116,7 +131,7 @@ export const MODEL_STEP = [
         ]
       },
       {
-        "step_key": 2,
+        "step_key": 3,
         "step_name": "服装轮廓",
         "parameters": [
           {
@@ -140,22 +155,22 @@ export const MODEL_STEP = [
         ]
       },
       {
-        "step_key": 3,
+        "step_key": 4,
         "step_name": "结构线分区",
         "parameters": []
       },
       {
-        "step_key": 4,
+        "step_key": 5,
         "step_name": "设计细节",
         "parameters": []
       },
       {
-        "step_key": 5,
+        "step_key": 6,
         "step_name": "面料填充",
         "parameters": []
       },
       {
-        "step_key": 6,
+        "step_key": 7,
         "step_name": "主题系列展示",
         "parameters": []
       }

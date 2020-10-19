@@ -23,11 +23,15 @@ export default {
       routes: [
         {
           path: '/',
-          component: './intelligentDesign'
+          component: './intelligentDesign/researchList'
         },
         {
           path: './design',
-          component: './intelligentDesign'
+          component: './intelligentDesign/researchList'
+        },
+        {
+          path: './follow',
+          component: './intelligentDesign/researchFollow'
         },
         {
           path: './make',
