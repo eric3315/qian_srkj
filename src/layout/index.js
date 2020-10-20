@@ -9,8 +9,6 @@ class BasicLayout extends PureComponent {
   componentDidMount() {
 
   }
-
-
   initTitle = () => {
     document.title = 'Galaxy';
     let link = document.createElement('link');

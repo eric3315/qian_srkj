@@ -1,11 +1,25 @@
 import React, {PureComponent} from 'react';
 import {Menu} from 'antd';
+import logo from '../assets/logo.png';
 import './header.less';
+import image_1 from "../assets/image_1.png";
 
 class IntelligentDesign extends PureComponent {
   state = {
-    current: 'mail',
+    current: '',
   };
+  componentDidMount() {
+    let current='';
+    if(window.location.pathname ==="/design" || window.location.pathname ==="/follow"){
+      current="design";
+    } else if(window.location.pathname ==="/trend"){
+      current="trend";
+    } else if(window.location.pathname ==="/make"){
+      current="make";
+    }
+    this.setState({current})
+  }
+
   handleClick=(e)=>{
     console.log('click ', e);
     this.setState({ current: e.key });
@@ -15,12 +29,12 @@ class IntelligentDesign extends PureComponent {
     return (
       <div className="wrapper">
         <div className="logo">
-          LOGO
+          <img src={logo} alt="图片有误" style={{width: '100%'}}/>
         </div>
 
         <div className="nav">
           <Menu onClick={this.handleClick} style={{background: 'black', color: 'white'}} selectedKeys={[current]} mode="horizontal" >
-            <Menu.Item key="mail">
+            <Menu.Item key="trend">
               趋势分析
             </Menu.Item>
             <Menu.Item key="design">
