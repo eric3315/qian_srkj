@@ -1,7 +1,5 @@
 import React, { PureComponent } from "react";
-import {Checkbox,Row,Col,Divider,Collapse} from 'antd';
-const { Panel } = Collapse;
-
+import {Checkbox,Row,Col,Divider} from 'antd';
 
 class OptionsComponentFirst extends PureComponent {
   renderDOM(){
@@ -47,7 +45,7 @@ class OptionsComponentFirst extends PureComponent {
   handleCheckGroup=(checkedValues,childrenTitle)=>{
     let {option_title,step_name,model_name} = this.props;
     console.info(`checkedValues: ${JSON.stringify(checkedValues)}`);
-    this.props.handleOptionsFirst(checkedValues,childrenTitle,option_title,step_name,model_name);
+    this.props.handleOptions(checkedValues,childrenTitle,option_title,step_name,model_name);
   };
   handleTagCheckboxChange=(e,childrenTitle)=>{
     let {option_title,step_name,model_name} = this.props;

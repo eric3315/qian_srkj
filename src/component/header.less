@@ -1,31 +1,57 @@
 .wrapper {
   display: flex;
   padding: 0 30px;
+
   .logo {
     width: 140px;
-    height: 50px;
+    height: 65px;
     //background: lightcoral;
     text-align: center;
-    line-height: 50px;
-    margin-top: 5px;
+    line-height: 65px;
   }
 
   .nav {
     display: flex;
     flex: 1;
     justify-content: flex-end;
+
     .ant-menu-horizontal {
-      line-height: 46px;
+      line-height: 65px;
       white-space: nowrap;
       border: 0;
-      border-bottom: 1px solid black;
+      //border-bottom: 1px solid black;
       box-shadow: none;
     }
-  }
 
-  .per li {
-    display: inline-block;
-    flex-direction: column;
-    width: 80px;
+    .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
+      color: white;
+      font-weight: bolder;
+      border-bottom: 0;
+      background: #3c3c3c;
+    }
+
+    .ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu {
+      position: relative;
+      top: 0;
+      display: inline-block;
+      border-bottom: 0;
+    }
+
+    .myAccount {
+      height: 65px;
+      line-height: 84px;
+      .iconmy{
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        background: url("../assets/my.svg") no-repeat;
+        background-size: cover;
+      }
+      .iconmy:hover{
+        background: url("../assets/myIconBlue.svg")  no-repeat;
+        background-size: cover;
+        cursor: pointer;
+      }
+    }
   }
 }

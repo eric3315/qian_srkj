@@ -106,7 +106,7 @@ class ResearchFollow extends PureComponent {
       modelName
     });
   };
-  handleOptionsFirst=(values, childrenTitle, optionTitle, stepName, modelName)=>{
+  handleOptions=(values, childrenTitle, optionTitle, stepName, modelName)=>{
     let {parameters, submitData,operateRecord} = this.state;
     let newSubmitData = JSON.parse(JSON.stringify(submitData));
     let newParameters = JSON.parse(JSON.stringify(parameters));
@@ -119,7 +119,7 @@ class ResearchFollow extends PureComponent {
       newOperateRecord.sort((a,b)=>{return b.id - a.id});
       let id =newOperateRecord[0].id;
       newOperateRecord.push({
-        id:id+1, values, childrenTitle, optionTitle, stepName, modelName
+        id:id+1, values, childrenTitle, optionTitle, stepName, modelName,
       });
     }
     for (let i = 0; i < newParameters.length; i++) {
@@ -194,7 +194,8 @@ class ResearchFollow extends PureComponent {
     this.setState({
       submitData: newSubmitData,
       parameters: newParameters,
-      operateRecord:newOperateRecord
+      operateRecord:newOperateRecord,
+      operateRecordPre:newOperateRecord
     }, () => {
       console.info(`operateRecord:${JSON.stringify(this.state.operateRecord)}`);
       console.info(`parameters:${JSON.stringify(this.state.parameters)}`);
@@ -237,6 +238,7 @@ class ResearchFollow extends PureComponent {
                 if (children_title === childrenTitle) {
                   options[i].children_flag = isChecked;
                   options[i].subset_flag = isChecked;
+                  options[i].checkedValues =[];
                 }
               }
             }
@@ -314,13 +316,187 @@ class ResearchFollow extends PureComponent {
       parameters: newParameters,
       submitData: newSubmitData,
       themeName,
-      operateRecord:newOperateRecord
+      operateRecord:newOperateRecord,
+      operateRecordPre:newOperateRecord
     }, () => {
       console.info(`operateRecord:${JSON.stringify(this.state.operateRecord)}`);
       console.info(`主题:${JSON.stringify(this.state.themeName)}`);
       console.info(`更新:${JSON.stringify(this.state.parameters)}`);
       console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
     })
+  };
+  handleDataIntegration =(operateRecordArr,newSubmitData,newParameters,themeName)=>{
+    if(operateRecordArr.length>0){
+      operateRecordArr.forEach(item=>{
+        if(typeof item.values!=='undefined'){
+          let {values, childrenTitle, optionTitle, stepName, modelName} = item;
+          for (let i = 0; i < newParameters.length; i++) {
+            let {model_name, step_name, parameters} = newParameters[i];
+            if (model_name === modelName && step_name === stepName) {
+              for (let i = 0; i < parameters.length; i++) {
+                let {option_title,options} = parameters[i];
+                if (option_title === optionTitle && options.length>0 && typeof options[0] ==='string') {
+                  parameters[i].checkedValues = values;
+                } else {
+                  for(let i=0;i<options.length;i++){
+                    let {children_title} =options[i];
+                    if(children_title === childrenTitle){
+                      options[i].checkedValues = values;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (newSubmitData.length <= 0) {
+            newSubmitData.push({
+              modelName, stepName, parameters: [{
+                optionTitle, childrenTitle, values
+              }]
+            });
+          } else {
+            for (let i = 0; i < newSubmitData.length; i++) {
+              if (modelName === newSubmitData[i].modelName && stepName === newSubmitData[i].stepName) {
+                let {parameters} = newSubmitData[i];
+                if(childrenTitle!==''){
+                  let flag=parameters.some(item=>{return item.optionTitle === optionTitle && item.childrenTitle === childrenTitle});
+                  if(flag){
+                    for (let j = 0; j < parameters.length; j++) {
+                      if(parameters[j].optionTitle === optionTitle && parameters[j].childrenTitle === childrenTitle){
+                        parameters[j].values = values;
+                      }
+                    }
+                  } else {
+                    if(values.length>0){
+                      newSubmitData[i].parameters.push({
+                        optionTitle, childrenTitle, values
+                      })
+                    }
+                  }
+                } else {
+                  let flag=parameters.some(item=>{return item.optionTitle === optionTitle});
+                  if(flag){
+                    for (let j = 0; j < parameters.length; j++) {
+                      if(parameters[j].optionTitle === optionTitle){
+                        parameters[j].values = values;
+                      }
+                    }
+                  } else {
+                    if(values.length>0){
+                      newSubmitData[i].parameters.push({
+                        optionTitle, childrenTitle, values
+                      })
+                    }
+                  }
+                }
+              } else {
+                newSubmitData.push({
+                  modelName, stepName, parameters: [{
+                    optionTitle, childrenTitle, values
+                  }]
+                });
+              }
+            }
+          }
+        } else if(typeof item.isChecked!=='undefined'){
+          let {isChecked, childrenTitle, optionTitle, stepName, modelName} = item;
+          console.info(`调试：${JSON.stringify(item)}`);
+          if(isChecked && optionTitle ==='主题设定'){
+            themeName=childrenTitle;
+          }
+          newParameters.forEach(item => {
+            let {model_name, step_name, parameters} = item;
+            if (model_name === modelName && step_name === stepName) {
+              parameters.forEach(item => {
+                let {option_title,option_type, options} = item;
+                if (option_title === optionTitle && option_type ==='单选') {
+                  if (options.length > 0 && typeof options[0] === 'object') {
+                    for (let i = 0; i < options.length; i++) {
+                      options[i].children_flag = false;
+                      options[i].subset_flag = false;
+                    }
+                    for (let i = 0; i < options.length; i++) {
+                      let {children_title} = options[i];
+                      if (children_title === childrenTitle) {
+                        options[i].children_flag = isChecked;
+                        options[i].subset_flag = isChecked;
+                        options[i].checkedValues =[];
+                      }
+                    }
+                  }
+                } else if(option_title === optionTitle && option_type ==='多选'){
+                  if (options.length > 0 && typeof options[0] === 'object') {
+                    for (let i = 0; i < options.length; i++) {
+                      let {children_title} = options[i];
+                      if (children_title === childrenTitle) {
+                        options[i].children_flag = isChecked;
+                        options[i].subset_flag = isChecked;
+                      }
+                    }
+                  }
+                }
+              });
+            }
+          });
+
+          if (newSubmitData.length <= 0) {
+            newSubmitData.push({
+              modelName, stepName,
+              parameters: [
+                {
+                  optionTitle,
+                  childrenTitle
+                }
+              ]
+            });
+          } else {
+            for (let i = 0; i < newSubmitData.length; i++) {
+              if (modelName === newSubmitData[i].modelName && stepName === newSubmitData[i].stepName) {
+                let {parameters} = newSubmitData[i];
+                if (parameters.length > 0) {
+                  if(optionTitle ==="主题设定"){
+                    for (let i = 0; i < parameters.length; i++) {
+                      if (parameters[i].optionTitle === optionTitle && optionTitle ==="主题设定") {
+                        parameters[i] = parameters[parameters.length - 1];
+                        parameters.length--;
+                        i--;
+                      }
+                    }
+                    newSubmitData[i].parameters.push({
+                      optionTitle,
+                      childrenTitle
+                    })
+                  } else {
+                    let flag = parameters.some(item => {
+                      return item.optionTitle === optionTitle && item.childrenTitle === childrenTitle
+                    });
+                    if (flag && !isChecked) {
+                      for (let i = 0; i < parameters.length; i++) {
+                        if (parameters[i].optionTitle === optionTitle && parameters[i].childrenTitle === childrenTitle) {
+                          parameters[i] = parameters[parameters.length - 1];
+                          parameters.length--;
+                          i--;
+                        }
+                      }
+                    } else {
+                      newSubmitData[i].parameters.push({
+                        optionTitle,
+                        childrenTitle
+                      })
+                    }
+                  }
+                } else {
+                  newSubmitData[i].parameters.push({
+                    optionTitle,
+                    childrenTitle
+                  })
+                }
+              }
+            }
+          }
+        }
+      });
+    }
   };
   renderStep() {
     let vDOM = [], {steps} = this.state;
@@ -378,7 +554,7 @@ class ResearchFollow extends PureComponent {
                   step_name={step_name}
                   model_name={model_name}
                   data={options}
-                  handleOptionsFirst={this.handleOptionsFirst}
+                  handleOptions={this.handleOptions}
                   handleChangeOption={this.handleChangeOption}
                 />
               </Card>
@@ -403,7 +579,7 @@ class ResearchFollow extends PureComponent {
                 model_name={model_name}
                 step_name={step_name}
                 data={options}
-                handleOptionsFirst={this.handleOptionsFirst}
+                handleOptions={this.handleOptions}
                 handleChangeOption={this.handleChangeOption}
               />
             </Card>
@@ -413,29 +589,149 @@ class ResearchFollow extends PureComponent {
     });
     return <div style={{marginTop: "20px"}}>{vDOM}</div>;
   };
+  handleUndo=async ()=>{
+    let {operateRecord} = this.state;
+    if(operateRecord.length>0){
+      let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
+      newOperateRecord.sort((a,b)=>{return b.id - a.id});
+      let id =newOperateRecord[0].id;
+      for (let i = 0; i < newOperateRecord.length; i++) {
+        console.info(newOperateRecord[i].childrenTitle);
+        if (newOperateRecord[i].id === id) {
+          let {parameters} = this.state;
+          let newParameters = JSON.parse(JSON.stringify(parameters));
+          newParameters.forEach(item => {
+            let {model_name, step_name, parameters} = item;
+            if (model_name === newOperateRecord[i].modelName && step_name === newOperateRecord[i].stepName) {
+              parameters.forEach(item => {
+                let {option_title,option_type, options} = item;
+                if (option_title === newOperateRecord[i].optionTitle && option_type ==='单选') {
+                  if (options.length > 0 && typeof options[0] === 'object') {
+                    for (let i = 0; i < options.length; i++) {
+                      options[i].children_flag = false;
+                      options[i].subset_flag = false;
+                    }
+                    for (let k = 0; k < options.length; k++) {
+                      let {children_title} = options[k];
+                      if (children_title === newOperateRecord[i].childrenTitle) {
+                        if(typeof newOperateRecord[i].isChecked!=='undefined'){
+                          options[k].children_flag = false;
+                          options[k].subset_flag = false;
+                          options[k].checkedValues =[];
+                        } else if(typeof newOperateRecord[i].values!=='undefined' && newOperateRecord[i].values.length>0){
+                          options[k].children_flag = true;
+                          options[k].subset_flag = true;
+                        }
+                      }
+                    }
+                  }
+                } else if(option_title === newOperateRecord[i].optionTitle && option_type ==='多选'){
+                  if (options.length > 0 && typeof options[0] === 'object') {
+                    for (let k = 0; k < options.length; k++) {
+                      let {children_title} = options[k];
+                      if (children_title === newOperateRecord[i].childrenTitle) {
+                        options[k].children_flag = newOperateRecord[i].isChecked;
+                        options[k].subset_flag = newOperateRecord[i].isChecked;
+                      }
+                    }
+                  }
+                }
+              });
+            }
+          });
+          newOperateRecord[i] = newOperateRecord[newOperateRecord.length - 1];
+          newOperateRecord.length--;
+          i--;
+          newOperateRecord.sort((a,b)=>{return a.id - b.id});
+          this.setState({
+            parameters: newParameters,
+            operateRecord: newOperateRecord
+          },async ()=>{
+            console.info(JSON.stringify(this.state.parameters));
+            console.info(JSON.stringify(this.state.operateRecord));
+            let {parameters, submitData} = this.state;
+            let newSubmitData = JSON.parse(JSON.stringify(submitData));
+            let newParameters = JSON.parse(JSON.stringify(parameters));
+            let themeName="";
+            await this.handleDataIntegration(newOperateRecord,newSubmitData,newParameters,themeName);
+            if(newOperateRecord.length<=0 || themeName!==''){
+              this.setState({
+                parameters: newParameters,
+                submitData: newSubmitData,
+                themeName
+              }, () => {
+                console.info(`主题:${JSON.stringify(this.state.themeName)}`);
+                console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+                console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+              })
+            } else {
+              this.setState({
+                parameters: newParameters,
+                submitData: newSubmitData
+              }, () => {
+                console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+                console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+              })
+            }
+          });
+        }
+      }
+    }
+  };
+  handleRedo=()=>{
+    let {operateRecord,operateRecordPre} = this.state;
+    if(operateRecord.length>0){
+      let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
+      newOperateRecord.sort((a,b)=>{return b.id - a.id});
+      let id =newOperateRecord[0].id;
+      let arr=operateRecordPre.filter(item=>{
+        return item.id === (id+1);
+      });
+      newOperateRecord = newOperateRecord.concat(arr);
+      console.info(JSON.stringify(arr));
+      console.info(JSON.stringify(newOperateRecord));
+      newOperateRecord.sort((a,b)=>{return a.id - b.id});
+      this.setState({
+        operateRecord: newOperateRecord
+      },async ()=>{
+        console.info(JSON.stringify(this.state.operateRecord));
+        let {parameters, submitData} = this.state;
+        let newSubmitData = JSON.parse(JSON.stringify(submitData));
+        let newParameters = JSON.parse(JSON.stringify(parameters));
+        let themeName="";
+        await this.handleDataIntegration(newOperateRecord,newSubmitData,newParameters,themeName);
+        if(newOperateRecord.length<=0 || themeName!==''){
+          this.setState({
+            parameters: newParameters,
+            submitData: newSubmitData,
+            themeName
+          }, () => {
+            console.info(`主题:${JSON.stringify(this.state.themeName)}`);
+            console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+            console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+          })
+        } else {
+          this.setState({
+            parameters: newParameters,
+            submitData: newSubmitData
+          }, () => {
+            console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+            console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+          })
+        }
+      });
+    }
+  };
+  handleSaveStep=()=>{
+
+  };
+  handleExecute=()=>{
+
+  };
+
   renderMainContent(){
     let vDOM=[];
-    vDOM.push(<div style={{padding:"24px"}} key={Math.random()}>
-      <ul className={sty.editWrapper}>
-        <li>
-          <UndoOutlined className={sty.iconComm}/>
-          <p>撤销</p>
-        </li>
-        <li>
-          <RedoOutlined className={sty.iconComm}/>
-          <p>重做</p>
-        </li>
-        <li>
-          <SaveOutlined className={sty.iconComm}/>
-          <p>保存</p>
-        </li>
-        <li>
-          <ArrowRightOutlined className={sty.iconComm}/>
-          <p>执行</p>
-        </li>
-
-      </ul>
-      <div className={sty.themeWrapper}>
+    vDOM.push(<div className={sty.themeWrapper} key={Math.random()}>
         <h3 style={{textAlign: 'center',  color: 'white', padding: '20px', fontWeight: "bold", fontSize: "20px"}}>主题:{this.state.themeName}</h3>
         <div>
           <div className={sty.pic}>
@@ -501,12 +797,11 @@ class ResearchFollow extends PureComponent {
             </Col>
           </Row>
         </div>
-      </div>
-    </div>);
+      </div>);
     return vDOM;
   }
   render() {
-    const {leftWidth, rightWidth, step_key} = this.state;
+    const {leftWidth, rightWidth} = this.state;
     const sizeWidth = parseInt(leftWidth) + parseInt(rightWidth);
     let mainWidth = `calc(100% - ${sizeWidth}px)`;
     return (
@@ -528,6 +823,48 @@ class ResearchFollow extends PureComponent {
           </div>
         </div>
         <div className={style.mainWrapper} style={{width: mainWidth, marginLeft: leftWidth}}>
+          <div style={{padding:"24px"}}>
+            {
+              this.state.operateRecordPre.length>0 ?
+                (<ul className={sty.editWrapper}>
+                  <li onClick={this.handleUndo}>
+                    <UndoOutlined className={sty.iconComm}/>
+                    <p>撤销</p>
+                  </li>
+                  <li onClick={this.handleRedo}>
+                    <RedoOutlined className={sty.iconComm}/>
+                    <p>重做</p>
+                  </li>
+                  <li onClick={this.handleSaveStep}>
+                    <SaveOutlined className={sty.iconComm}/>
+                    <p>保存</p>
+                  </li>
+                  <li onClick={this.handleExecute}>
+                    <ArrowRightOutlined className={sty.iconComm}/>
+                    <p>执行</p>
+                  </li>
+                </ul>)
+                :
+                (<ul className={sty.editWrapper}>
+                  <li>
+                    <UndoOutlined className={sty.iconComm}/>
+                    <p>撤销</p>
+                  </li>
+                  <li>
+                    <RedoOutlined className={sty.iconComm}/>
+                    <p>重做</p>
+                  </li>
+                  <li>
+                    <SaveOutlined className={sty.iconComm}/>
+                    <p>保存</p>
+                  </li>
+                  <li>
+                    <ArrowRightOutlined className={sty.iconComm}/>
+                    <p>执行</p>
+                  </li>
+                </ul>)
+            }
+          </div>
           {this.state.themeName && this.renderMainContent()}
         </div>
         {
