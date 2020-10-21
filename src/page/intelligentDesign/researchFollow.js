@@ -325,7 +325,7 @@ class ResearchFollow extends PureComponent {
       console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
     })
   };
-  handleDataIntegration =(operateRecordArr,newSubmitData,newParameters,themeName)=>{
+  handleDataIntegration =(operateRecordArr,newSubmitData,newParameters)=>{
     if(operateRecordArr.length>0){
       operateRecordArr.forEach(item=>{
         if(typeof item.values!=='undefined'){
@@ -400,10 +400,6 @@ class ResearchFollow extends PureComponent {
           }
         } else if(typeof item.isChecked!=='undefined'){
           let {isChecked, childrenTitle, optionTitle, stepName, modelName} = item;
-          console.info(`调试：${JSON.stringify(item)}`);
-          if(isChecked && optionTitle ==='主题设定'){
-            themeName=childrenTitle;
-          }
           newParameters.forEach(item => {
             let {model_name, step_name, parameters} = item;
             if (model_name === modelName && step_name === stepName) {
@@ -595,106 +591,12 @@ class ResearchFollow extends PureComponent {
       let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
       newOperateRecord.sort((a,b)=>{return b.id - a.id});
       let id =newOperateRecord[0].id;
-      for (let i = 0; i < newOperateRecord.length; i++) {
-        console.info(newOperateRecord[i].childrenTitle);
-        if (newOperateRecord[i].id === id) {
-          let {parameters} = this.state;
-          let newParameters = JSON.parse(JSON.stringify(parameters));
-          newParameters.forEach(item => {
-            let {model_name, step_name, parameters} = item;
-            if (model_name === newOperateRecord[i].modelName && step_name === newOperateRecord[i].stepName) {
-              parameters.forEach(item => {
-                let {option_title,option_type, options} = item;
-                if (option_title === newOperateRecord[i].optionTitle && option_type ==='单选') {
-                  if (options.length > 0 && typeof options[0] === 'object') {
-                    for (let i = 0; i < options.length; i++) {
-                      options[i].children_flag = false;
-                      options[i].subset_flag = false;
-                    }
-                    for (let k = 0; k < options.length; k++) {
-                      let {children_title} = options[k];
-                      if (children_title === newOperateRecord[i].childrenTitle) {
-                        if(typeof newOperateRecord[i].isChecked!=='undefined'){
-                          options[k].children_flag = false;
-                          options[k].subset_flag = false;
-                          options[k].checkedValues =[];
-                        } else if(typeof newOperateRecord[i].values!=='undefined' && newOperateRecord[i].values.length>0){
-                          options[k].children_flag = true;
-                          options[k].subset_flag = true;
-                        }
-                      }
-                    }
-                  }
-                } else if(option_title === newOperateRecord[i].optionTitle && option_type ==='多选'){
-                  if (options.length > 0 && typeof options[0] === 'object') {
-                    for (let k = 0; k < options.length; k++) {
-                      let {children_title} = options[k];
-                      if (children_title === newOperateRecord[i].childrenTitle) {
-                        options[k].children_flag = newOperateRecord[i].isChecked;
-                        options[k].subset_flag = newOperateRecord[i].isChecked;
-                      }
-                    }
-                  }
-                }
-              });
-            }
-          });
-          newOperateRecord[i] = newOperateRecord[newOperateRecord.length - 1];
-          newOperateRecord.length--;
-          i--;
-          newOperateRecord.sort((a,b)=>{return a.id - b.id});
-          this.setState({
-            parameters: newParameters,
-            operateRecord: newOperateRecord
-          },async ()=>{
-            console.info(JSON.stringify(this.state.parameters));
-            console.info(JSON.stringify(this.state.operateRecord));
-            let {parameters, submitData} = this.state;
-            let newSubmitData = JSON.parse(JSON.stringify(submitData));
-            let newParameters = JSON.parse(JSON.stringify(parameters));
-            let themeName="";
-            await this.handleDataIntegration(newOperateRecord,newSubmitData,newParameters,themeName);
-            if(newOperateRecord.length<=0 || themeName!==''){
-              this.setState({
-                parameters: newParameters,
-                submitData: newSubmitData,
-                themeName
-              }, () => {
-                console.info(`主题:${JSON.stringify(this.state.themeName)}`);
-                console.info(`更新:${JSON.stringify(this.state.parameters)}`);
-                console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
-              })
-            } else {
-              this.setState({
-                parameters: newParameters,
-                submitData: newSubmitData
-              }, () => {
-                console.info(`更新:${JSON.stringify(this.state.parameters)}`);
-                console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
-              })
-            }
-          });
+      if(id ===1){
+        if(typeof newOperateRecord[0].values!=='undefined'){
+          newOperateRecord[0].values=[];
+        } else if(typeof newOperateRecord[0].isChecked!=='undefined'){
+          newOperateRecord[0].isChecked=false;
         }
-      }
-    }
-  };
-  handleRedo=()=>{
-    let {operateRecord,operateRecordPre} = this.state;
-    if(operateRecord.length>0){
-      let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
-      newOperateRecord.sort((a,b)=>{return b.id - a.id});
-      let id =newOperateRecord[0].id;
-      let arr=operateRecordPre.filter(item=>{
-        return item.id === (id+1);
-      });
-      newOperateRecord = newOperateRecord.concat(arr);
-      console.info(JSON.stringify(arr));
-      console.info(JSON.stringify(newOperateRecord));
-      newOperateRecord.sort((a,b)=>{return a.id - b.id});
-      this.setState({
-        operateRecord: newOperateRecord
-      },async ()=>{
-        console.info(JSON.stringify(this.state.operateRecord));
         let {parameters, submitData} = this.state;
         let newSubmitData = JSON.parse(JSON.stringify(submitData));
         let newParameters = JSON.parse(JSON.stringify(parameters));
@@ -719,8 +621,143 @@ class ResearchFollow extends PureComponent {
             console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
           })
         }
-      });
+      } else {
+        for (let i = 0; i < newOperateRecord.length; i++) {
+          if (newOperateRecord[i].id === id) {
+            let {parameters} = this.state;
+            let newParameters = JSON.parse(JSON.stringify(parameters));
+            newParameters.forEach(item => {
+              let {model_name, step_name, parameters} = item;
+              if (model_name === newOperateRecord[i].modelName && step_name === newOperateRecord[i].stepName) {
+                parameters.forEach(item => {
+                  let {option_title,option_type, options} = item;
+                  if (option_title === newOperateRecord[i].optionTitle && option_type ==='单选') {
+                    if (options.length > 0 && typeof options[0] === 'object') {
+                      for (let i = 0; i < options.length; i++) {
+                        options[i].children_flag = false;
+                        options[i].subset_flag = false;
+                      }
+                      for (let k = 0; k < options.length; k++) {
+                        let {children_title} = options[k];
+                        if (children_title === newOperateRecord[i].childrenTitle) {
+                          if(typeof newOperateRecord[i].isChecked!=='undefined'){
+                            options[k].children_flag = false;
+                            options[k].subset_flag = false;
+                            options[k].checkedValues =[];
+                          } else if(typeof newOperateRecord[i].values!=='undefined' && newOperateRecord[i].values.length>0){
+                            options[k].children_flag = true;
+                            options[k].subset_flag = true;
+                          }
+                        }
+                      }
+                    }
+                  } else if(option_title === newOperateRecord[i].optionTitle && option_type ==='多选'){
+                    if (options.length > 0 && typeof options[0] === 'object') {
+                      for (let k = 0; k < options.length; k++) {
+                        let {children_title} = options[k];
+                        if (children_title === newOperateRecord[i].childrenTitle) {
+                          options[k].children_flag = newOperateRecord[i].isChecked;
+                          options[k].subset_flag = newOperateRecord[i].isChecked;
+                        }
+                      }
+                    }
+                  }
+                });
+              }
+            });
+            newOperateRecord[i] = newOperateRecord[newOperateRecord.length - 1];
+            newOperateRecord.length--;
+            i--;
+            newOperateRecord.sort((a,b)=>{return a.id - b.id});
+            this.setState({
+              parameters: newParameters,
+              operateRecord: newOperateRecord
+            },async ()=>{
+              console.info(JSON.stringify(this.state.parameters));
+              console.info(JSON.stringify(this.state.operateRecord));
+              let {parameters, submitData} = this.state;
+              let newSubmitData = JSON.parse(JSON.stringify(submitData));
+              let newParameters = JSON.parse(JSON.stringify(parameters));
+              let themeName="";
+              await this.handleDataIntegration(newOperateRecord,newSubmitData,newParameters);
+              for(let i=0;i<newParameters.length;i++){
+                let {parameters} = newParameters[i];
+                for(let j=0;j<parameters.length;j++){
+                  let {option_title, options} = parameters[j];
+                  if(option_title ==='主题设定'){
+                    for(let k=0;k<options.length;k++){
+                      let {children_flag,children_title} = options[k];
+                      if(children_flag){
+                        themeName =children_title;
+                      }
+                    }
+                  }
+                }
+              }
+              this.setState({
+                parameters: newParameters,
+                submitData: newSubmitData,
+                themeName
+              }, () => {
+                console.info(`主题:${JSON.stringify(this.state.themeName)}`);
+                console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+                console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+              })
+            });
+          }
+        }
+      }
     }
+  };
+  handleRedo=()=>{
+    let {operateRecord,operateRecordPre} = this.state;
+    let newOperateRecord=[],themeName="";
+    if(operateRecord.length>0){
+      newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
+      newOperateRecord.sort((a,b)=>{return b.id - a.id});
+      let id =newOperateRecord[0].id;
+      let arr=operateRecordPre.filter(item=>{
+        return item.id === (id+1);
+      });
+      newOperateRecord = newOperateRecord.concat(arr);
+    } else {
+      operateRecordPre.sort((a,b)=>{return a.id - b.id});
+      newOperateRecord.concat(operateRecordPre[0]);
+    }
+    console.info(JSON.stringify(newOperateRecord));
+    newOperateRecord.sort((a,b)=>{return a.id - b.id});
+    this.setState({
+      operateRecord: newOperateRecord
+    },async ()=>{
+      console.info(JSON.stringify(this.state.operateRecord));
+      let {parameters, submitData} = this.state;
+      let newSubmitData = JSON.parse(JSON.stringify(submitData));
+      let newParameters = JSON.parse(JSON.stringify(parameters));
+      await this.handleDataIntegration(newOperateRecord,newSubmitData,newParameters);
+      for(let i=0;i<newParameters.length;i++){
+        let {parameters} = newParameters[i];
+        for(let j=0;j<parameters.length;j++){
+          let {option_title, options} = parameters[j];
+          if(option_title ==='主题设定'){
+            for(let k=0;k<options.length;k++){
+              let {children_flag,children_title} = options[k];
+              if(children_flag){
+                themeName =children_title;
+              }
+            }
+          }
+        }
+      }
+      this.setState({
+        parameters: newParameters,
+        submitData: newSubmitData,
+        themeName
+      }, () => {
+        console.info(`主题:${JSON.stringify(this.state.themeName)}`);
+        console.info(`更新:${JSON.stringify(this.state.parameters)}`);
+        console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
+      });
+    });
   };
   handleSaveStep=()=>{
 
@@ -728,7 +765,6 @@ class ResearchFollow extends PureComponent {
   handleExecute=()=>{
 
   };
-
   renderMainContent(){
     let vDOM=[];
     vDOM.push(<div className={sty.themeWrapper} key={Math.random()}>
