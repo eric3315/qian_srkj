@@ -32,7 +32,9 @@ class ResearchFollow extends PureComponent {
     steps: [],
     parameters: [],
     submitData: [],
-    themeName:''
+    themeName:'',
+    operateRecord: [],
+    operateRecordPre: [],
   };
 
   componentDidMount() {
@@ -105,9 +107,21 @@ class ResearchFollow extends PureComponent {
     });
   };
   handleOptionsFirst=(values, childrenTitle, optionTitle, stepName, modelName)=>{
-    let {parameters, submitData} = this.state;
+    let {parameters, submitData,operateRecord} = this.state;
     let newSubmitData = JSON.parse(JSON.stringify(submitData));
     let newParameters = JSON.parse(JSON.stringify(parameters));
+    let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
+    if(newOperateRecord.length<=0){
+      newOperateRecord.push({
+        id:1, values, childrenTitle, optionTitle, stepName, modelName
+      })
+    } else {
+      newOperateRecord.sort((a,b)=>{return b.id - a.id});
+      let id =newOperateRecord[0].id;
+      newOperateRecord.push({
+        id:id+1, values, childrenTitle, optionTitle, stepName, modelName
+      });
+    }
     for (let i = 0; i < newParameters.length; i++) {
       let {model_name, step_name, parameters} = newParameters[i];
       if (model_name === modelName && step_name === stepName) {
@@ -176,22 +190,37 @@ class ResearchFollow extends PureComponent {
         }
       }
     }
+    newOperateRecord.sort((a,b)=>{return a.id - b.id});
     this.setState({
       submitData: newSubmitData,
-      parameters: newParameters
+      parameters: newParameters,
+      operateRecord:newOperateRecord
     }, () => {
+      console.info(`operateRecord:${JSON.stringify(this.state.operateRecord)}`);
       console.info(`parameters:${JSON.stringify(this.state.parameters)}`);
       console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
     })
   };
   handleChangeOption = (isChecked, childrenTitle, optionTitle, stepName, modelName) => {
-    let {parameters, submitData} = this.state;
+    let {parameters, submitData,operateRecord} = this.state;
     let themeName="";
-    if(optionTitle ==='主题设定'){
+    if(isChecked && optionTitle ==='主题设定'){
       themeName=childrenTitle;
     }
     let newParameters = JSON.parse(JSON.stringify(parameters));
     let newSubmitData = JSON.parse(JSON.stringify(submitData));
+    let newOperateRecord = JSON.parse(JSON.stringify(operateRecord));
+    if(newOperateRecord.length<=0){
+      newOperateRecord.push({
+        id:1, isChecked, childrenTitle, optionTitle, stepName, modelName
+      });
+    } else {
+     newOperateRecord.sort((a,b)=>{return b.id - a.id});
+     let id =newOperateRecord[0].id;
+     newOperateRecord.push({
+        id:id+1, isChecked, childrenTitle, optionTitle, stepName, modelName
+     });
+    }
     newParameters.forEach(item => {
       let {model_name, step_name, parameters} = item;
       if (model_name === modelName && step_name === stepName) {
@@ -200,13 +229,14 @@ class ResearchFollow extends PureComponent {
           if (option_title === optionTitle && option_type ==='单选') {
             if (options.length > 0 && typeof options[0] === 'object') {
               for (let i = 0; i < options.length; i++) {
+                options[i].children_flag = false;
+                options[i].subset_flag = false;
+              }
+              for (let i = 0; i < options.length; i++) {
                 let {children_title} = options[i];
                 if (children_title === childrenTitle) {
                   options[i].children_flag = isChecked;
                   options[i].subset_flag = isChecked;
-                } else {
-                  options[i].children_flag = !isChecked;
-                  options[i].subset_flag = !isChecked;
                 }
               }
             }
@@ -279,11 +309,14 @@ class ResearchFollow extends PureComponent {
         }
       }
     }
+    newOperateRecord.sort((a,b)=>{return a.id - b.id});
     this.setState({
       parameters: newParameters,
       submitData: newSubmitData,
-      themeName
+      themeName,
+      operateRecord:newOperateRecord
     }, () => {
+      console.info(`operateRecord:${JSON.stringify(this.state.operateRecord)}`);
       console.info(`主题:${JSON.stringify(this.state.themeName)}`);
       console.info(`更新:${JSON.stringify(this.state.parameters)}`);
       console.info(`submitData:${JSON.stringify(this.state.submitData)}`);
@@ -445,14 +478,26 @@ class ResearchFollow extends PureComponent {
             <Col span={6.5} order={1}
                  style={{ paddingTop: '5px', paddingBottom: '5px', height: '350px'}}>
               <img style={{width: '100%', height: '100%'}} src={image_4} alt=""/>
+              <p style={{
+                textAlign: "center",
+                marginTop: "10px"
+              }}>优雅</p>
             </Col>
             <Col span={6.5} order={1}
                  style={{paddingTop: '5px', paddingBottom: '5px', height: '350px'}}>
               <img style={{width: '100%', height: '100%'}} src={image_5} alt=""/>
+              <p style={{
+                textAlign: "center",
+                marginTop: "10px"
+              }}>古典</p>
             </Col>
             <Col span={6.5} order={1}
                  style={{paddingTop: '5px', paddingBottom: '5px', height: '350px'}}>
               <img style={{width: '100%', height: '100%'}} src={image_6} alt=""/>
+              <p style={{
+                textAlign: "center",
+                marginTop: "10px"
+              }}>前卫</p>
             </Col>
           </Row>
         </div>

@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
-import {Checkbox,Row,Col,Divider} from 'antd';
-import style from '../page/intelligentDesign/design.less';
+import {Checkbox,Row,Col,Divider,Collapse} from 'antd';
+const { Panel } = Collapse;
+
 
 class OptionsComponentFirst extends PureComponent {
   renderDOM(){
