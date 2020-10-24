@@ -124,11 +124,32 @@
         ]
       }
     ],
-    "primary_classifiy": "上装",
+    "series_name": "重制",
+    "primary_classifiy": "外穿",
     "secondary_classifiy": "大衣",
     "silhouette": "A型",
     "style": [
-      "优雅"
+      "古典",
+      "优雅",
+      "民族",
+      "前卫",
+      "浪漫",
+      "自然",
+      "轻奢",
+      "雅致"
+    ],
+    "craft": [
+      "绣花",
+      "贴片",
+      "涂层",
+      "镂空"
+    ],
+    "mountings": [
+      "拉链",
+      "扣件",
+      "铆钉",
+      "亮片",
+      "徽章"
     ]
   }
 ]

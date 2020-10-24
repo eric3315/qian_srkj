@@ -1,0 +1,197 @@
+@import '~antd/lib/style/themes/default.less';
+
+.product_card{
+  border-radius: 4px;
+  position: relative;
+  //width: 100%;
+  display: inline-block;
+  height: 100%;
+  //overflow: hidden;
+  //margin: 0 8px 8px 0;
+  //border: 1px solid #f1e9e9;
+}
+
+/**变更前**/
+.product_card .card_info {
+  height: 100%;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  cursor:pointer;
+}
+.product_card .card_info:before {
+  content: ' ';
+  position: absolute;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  width: 100%;
+  height: 67%;
+  opacity: 0;/**改成0阴影消失**/
+  cursor:pointer;
+}
+.card_info {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+
+}
+.card_info > span {
+  display: block;
+}
+/**变更前**/
+/**变更后**/
+.product_card .card_infoBefore {
+  height: 100%;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  cursor:pointer;
+}
+.product_card .card_infoBefore:before {
+  content: ' ';
+  position: absolute;
+  z-index: 1;
+  //background-color: rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  width: 100%;
+  height: 100%;
+  opacity: 1;/**改成0阴影消失**/
+  cursor:pointer;
+  border: 1px solid #1afa29;
+}
+.card_infoBefore {
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  cursor:pointer;
+}
+.card_infoBefore > span {
+  display: block;
+}
+/**变更后**/
+.product_card .product_img{
+  display: block;
+  position: static;
+  overflow: hidden;
+  border-bottom: 1px solid #d6d2d2;
+}
+
+.product_card .product_img img{
+  display: block;
+  width: 100%;
+  height: 213px;
+  position: static;
+  overflow: hidden;
+}
+
+.product_card .product_name{
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+}
+
+.product_card .product_name span{
+  display: block;
+  color: #666;
+  word-break: break-all;
+  position: relative;
+  font-size: 12px;
+  font-family: \5FAE\8F6F\96C5\9ED1;
+  text-align: center;
+}
+
+/**变更前**/
+.product_card .card_right {
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  -webkit-transform: translate(-13%, 5%);
+  -ms-transform: translate(-13%, 5%);
+  transform: translate(-13%, 5%);
+  z-index: 0;
+  white-space: nowrap;
+  opacity: 0; /**改成0不显示**/
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+/**变更前**/
+/**变更后**/
+.product_card .card_rightBefore{
+  position: absolute;
+  right: 0;
+  top: 0;
+  -webkit-transform: translate(-13%, 5%);
+  -ms-transform: translate(-13%, 5%);
+  transform: translate(-13%, 5%);
+  z-index: 10;
+  white-space: nowrap;
+  opacity: 1;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+/**变更后**/
+/**变更前**/
+.product_card .card_actions {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  -webkit-transform: translate(-35%, -40%);
+  -ms-transform: translate(-35%, -40%);
+  transform: translate(-35%, -40%);
+  z-index: 10;
+  white-space: nowrap;
+  opacity: 0; /**改成0不显示**/
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+/**变更前**/
+/**变更后**/
+.product_card .card_actionsBefore {
+  position: absolute;
+  right:12%;
+  top: 49%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  white-space: nowrap;
+  opacity: 1; /**改成0不显示**/
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  cursor:pointer;
+}
+/**变更后**/
+
+
+.detail_item {
+  width: 100%; height: 100%;
+}
+.detail_title {
+  width: 20%;
+  height: 100%;
+  line-height: 2;
+  float: left;
+}
+.detail_title > span {
+  font-size: 15px;
+  padding: 13px;
+  font-weight: bold;
+  text-align: center;
+  height: 100%;
+}
+.detail_content {
+  width: 80%;
+  height: 100%;
+  float: left;
+  line-height: 2.1;
+}
+.detail_content > span {
+  text-align: center;
+  height: 100%;
+}
+.clearfix:after{display:block;height:0;content:"";clear:both}

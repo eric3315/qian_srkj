@@ -1,8 +1,5 @@
 export default {
   singular: true,
-  cssLoaderOptions:{
-    localIdentName:'[local]'
-  },
   plugins: [
     ['umi-plugin-react', {
       antd: true,

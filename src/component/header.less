@@ -3,7 +3,7 @@
   padding: 0 30px;
 
   .logo {
-    width: 140px;
+    width: 120px;
     height: 65px;
     //background: lightcoral;
     text-align: center;
@@ -14,29 +14,27 @@
     display: flex;
     flex: 1;
     justify-content: flex-end;
-
-    .ant-menu-horizontal {
-      line-height: 65px;
-      white-space: nowrap;
-      border: 0;
-      //border-bottom: 1px solid black;
-      box-shadow: none;
+    :global{
+      .ant-menu-horizontal {
+        line-height: 65px;
+        white-space: nowrap;
+        border: 0;
+        //border-bottom: 1px solid black;
+        box-shadow: none;
+      }
+      .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
+        color: white;
+        font-weight: bolder;
+        border-bottom: 0;
+        background: #3c3c3c;
+      }
+      .ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu {
+        position: relative;
+        top: 0;
+        display: inline-block;
+        border-bottom: 0;
+      }
     }
-
-    .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
-      color: white;
-      font-weight: bolder;
-      border-bottom: 0;
-      background: #3c3c3c;
-    }
-
-    .ant-menu-horizontal > .ant-menu-item, .ant-menu-horizontal > .ant-menu-submenu {
-      position: relative;
-      top: 0;
-      display: inline-block;
-      border-bottom: 0;
-    }
-
     .myAccount {
       height: 65px;
       line-height: 84px;
@@ -55,3 +53,4 @@
     }
   }
 }
+
