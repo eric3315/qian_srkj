@@ -1,20 +1,17 @@
 import React, {PureComponent} from 'react';
 import router from 'umi/router';
-import {
-  LeftCircleOutlined,
-  RightCircleOutlined,
-  UndoOutlined,
-  RedoOutlined,
-  ArrowRightOutlined,
-  SaveOutlined
-} from '@ant-design/icons';
+import {LeftCircleOutlined, RightCircleOutlined, UndoOutlined, RedoOutlined, ArrowRightOutlined, SaveOutlined} from '@ant-design/icons';
 import OptionsComponentFirst from '../../component/OptionsComponent_first';
 import OptionsComponentSecond from '../../component/OptionsComponent_second';
+import OptionsComponentFourth from '../../component/OptionsComponent_fourth';
+import OptionsComponentFifth from '../../component/OptionsComponent_fifth';
+import OptionsComponentSixth from '../../component/OptionsComponent_sixth';
 import SingleImgCard  from "../../component/singleImgCard";
 import {Menu, Badge,Card,Divider,Row,Col} from 'antd';
 import style from './design.less';
 import sty from './mainContent.less'
 import axios from "../../util/axios";
+
 
 class ResearchFollow extends PureComponent {
   state = {
@@ -40,22 +37,32 @@ class ResearchFollow extends PureComponent {
         modelName: query.modelName
       });
       if(typeof query.step !== 'undefined' && query.step !== '' && query.step === '1'){
-        this.setState({
-          checkStep: query.step ||''
-        });
-        router.push(`/follow?modelName=${query.modelName ||''}&step=${query.step ||''}`);
-        this.queryParameters({
-          stepKey:query.step,
-          modelName:query.modelName
-        });
-      } else if(typeof query.step !== 'undefined' && query.step !== '' && query.step === '2'){
-        router.push(`/follow?modelName=${query.modelName ||''}&step=${query.step ||''}&themeName=${query.themeName||''}`);
-        if(typeof query.themeName !== 'undefined' && query.themeName !== ''){
-          this.querySeries({
-            themeName: query.themeName
+        if(query.step === '1'){
+          router.push(`/follow?modelName=${query.modelName ||''}&step=${query.step ||''}`);
+          this.queryParameters({
+            stepKey:query.step,
+            modelName:query.modelName
           });
-        }
-        if(query.step === '2'){
+          this.setState({
+            checkStep: query.step ||''
+          });
+        } else if(query.step === '4' || query.step === '5' || query.step === '6'){
+          router.push(`/follow?modelName=${query.modelName ||''}&step=${query.step ||''}&themeName=${query.themeName||''}&seriesName=${query.seriesName||''}`);
+          this.queryParameters({
+            stepKey:query.step,
+            modelName:query.modelName
+          });
+          this.setState({
+            rightWidth: 0,
+            checkStep: query.step ||''
+          });
+        } else if(query.step === '2'){
+          router.push(`/follow?modelName=${query.modelName ||''}&step=${query.step ||''}&themeName=${query.themeName||''}`);
+          if(typeof query.themeName !== 'undefined' && query.themeName !== ''){
+            this.querySeries({
+              themeName: query.themeName
+            });
+          }
           this.setState({
             rightWidth: 0,
             checkStep: query.step ||''
@@ -1093,6 +1100,30 @@ class ResearchFollow extends PureComponent {
           />
         </div>
       );
+    } else if(query.step === '4'){
+      vDOM.push(
+        <div key={Math.random()}>
+          <OptionsComponentFourth
+            data={parameters}
+          />
+        </div>
+      );
+    } else if(query.step === '5'){
+      vDOM.push(
+        <div key={Math.random()}>
+          <OptionsComponentFifth
+            data={parameters}
+          />
+        </div>
+      );
+    } else if(query.step === '6'){
+      vDOM.push(
+        <div key={Math.random()}>
+          <OptionsComponentSixth
+            data={parameters}
+          />
+        </div>
+      );
     }
     return <div style={{marginTop: "20px"}}>{vDOM}</div>;
   };
@@ -1909,5 +1940,4 @@ class ResearchFollow extends PureComponent {
     );
   };
 }
-
 export default ResearchFollow;
