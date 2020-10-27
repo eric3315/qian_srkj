@@ -37,6 +37,7 @@ class ProgressComponent extends PureComponent {
           fontSize: "20px",
           color: "#ffffff",
           marginLeft:"10px",
+          verticalAlign: "middle"
         }}/></span>
         <div style={{
           display: "inline-block",
@@ -48,6 +49,7 @@ class ProgressComponent extends PureComponent {
           fontSize: "20px",
           color: "#ffffff",
           marginLeft:"5px",
+          verticalAlign: "middle"
         }}/></span>
       </div>
     )
