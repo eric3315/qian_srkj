@@ -7,12 +7,14 @@ import OptionsComponentFourth from '../../component/OptionsComponent_fourth';
 import OptionsComponentFifth from '../../component/OptionsComponent_fifth';
 import OptionsComponentSixth from '../../component/OptionsComponent_sixth';
 import SingleImgCard  from "../../component/singleImgCard";
-import {Menu, Badge,Card,Divider,Row,Col} from 'antd';
+import DesginSingleImgCard  from "../../component/desginSingleImgCard";
+import {Menu, Collapse, Badge,Card,Divider,Row,Col} from 'antd';
 import style from './design.less';
 import sty from './mainContent.less'
 import axios from "../../util/axios";
 
 
+const { Panel } = Collapse;
 class ResearchFollow extends PureComponent {
   state = {
     visible: false,
@@ -28,7 +30,9 @@ class ResearchFollow extends PureComponent {
     operateRecordPre: [],
     themesArr:[],
     stylesArr:[],
-    seriesArr:[]
+    seriesArr:[],
+    kxsjArr:[],
+    kxsjDesginArr:[],
   };
   componentDidMount() {
     let query = this.props.location.query;
@@ -140,6 +144,72 @@ class ResearchFollow extends PureComponent {
       seriesArr: dataList
     }, () => {
       console.info(`获取系列信息:${JSON.stringify(this.state.seriesArr)}`);
+    });
+  };
+  queryKxsj = async (param) =>{
+    let result = await axios({
+      method: "POST",
+      url: `/design/getKxsj`,
+      data:{
+        paramArr: param.paramArr
+      }
+    });
+    const {data} = result;
+    let dataList = [];
+    let themeName="",seriesNameArr=[];
+    themeName =data[0].theme_name;
+    data.forEach(item=>{
+      let {series_name} = item;
+      let seriesNameFlag =seriesNameArr.some(item=>{return item.seriesName ===series_name});
+      if(!seriesNameFlag){
+        seriesNameArr.push({seriesName:series_name,dressStyleArr:[]});
+      }
+    });
+    if(seriesNameArr.length>0){
+      for(let i=0;i<seriesNameArr.length;i++){
+        for(let j=0;j<data.length;j++){
+          let {series_name,dress_style} =data[j];
+          if(seriesNameArr[i].seriesName === series_name){
+            let flag =seriesNameArr[i].dressStyleArr.some(item=>{return item.dressStyle ===dress_style});
+            if(!flag){
+              seriesNameArr[i].dressStyleArr.push({dressStyle:dress_style,designData:[]});
+            }
+          }
+        }
+      }
+    }
+    if(seriesNameArr.length>0){
+      seriesNameArr.forEach(item=>{
+        let {seriesName,dressStyleArr} = item;
+        if(dressStyleArr.length>0){
+          dressStyleArr.forEach(cur=>{
+            let {dressStyle,designData} = cur;
+            for(let j=0;j<data.length;j++){
+              let {series_name,dress_style,silhouette,craft,mountings} =data[j];
+              if(seriesName === series_name && dressStyle === dress_style){
+                let flag =designData.some(item=>{return item.dress_style ===dress_style &&
+                  item.silhouette ===silhouette &&
+                  item.craft === craft &&
+                  item.mountings ===mountings});
+                if(!flag){
+                  data[j].card_info='card_info';
+                  data[j].card_actions='card_actions';
+                  data[j].picCheck=false;
+                  designData.push(data[j]);
+                }
+              }
+            }
+          });
+          dataList.push({
+            themeName,seriesName,dressStyleArr
+          })
+        }
+      })
+    }
+    this.setState({
+      kxsjArr: dataList
+    }, () => {
+      console.info(`获取系列信息:${JSON.stringify(this.state.kxsjArr)}`);
     });
   };
   showDrawer = () => {
@@ -1657,35 +1727,144 @@ class ResearchFollow extends PureComponent {
     let query = this.props.location.query;
     let {submitData} = this.state;
     if(submitData.length>0){
-      let themeName='';
-      submitData.forEach(item=>{
-        let {parameters} =item;
-        if(parameters.length>0){
-          parameters.forEach(cur=>{
-            let {optionTitle} = cur;
-            if(optionTitle ==='主题设定'){
-              if(typeof cur.childrenTitle!=='undefined' && cur.childrenTitle!==''){
-                themeName = cur.childrenTitle
+      if(query.step ==='1'){
+        let themeName='';
+        submitData.forEach(item=>{
+          let {parameters} =item;
+          if(parameters.length>0){
+            parameters.forEach(cur=>{
+              let {optionTitle} = cur;
+              if(optionTitle ==='主题设定'){
+                if(typeof cur.childrenTitle!=='undefined' && cur.childrenTitle!==''){
+                  themeName = cur.childrenTitle
+                }
               }
-            }
+            });
+          }
+        });
+        if(themeName!==''){
+          this.setState({
+            checkStep: "2",
+            rightWidth: 0,
+            parameters:[],
+            themesArr:[],
+            stylesArr:[],
+            submitData:[],
+            operateRecord: [],
+            operateRecordPre: []
+          });
+          router.push(`/follow?modelName=${query.modelName ||''}&step=2&themeName=${themeName}`);
+          this.querySeries({
+            themeName
           });
         }
-      });
-      if(themeName!==''){
-        let step = parseInt(query.step) + 1;
-        this.setState({
-          checkStep: step+"",
-          parameters:[],
-          themesArr:[],
-          stylesArr:[],
-          submitData:[],
-          operateRecord: [],
-          operateRecordPre: []
+      } else if(query.step ==='2'){
+        let themeName="",seriesNameArr=[];
+        themeName =submitData[0].themeName;
+        submitData.forEach(item=>{
+            let {seriesName} = item;
+            if(seriesNameArr<=0){
+              seriesNameArr.push(seriesName);
+            } else {
+              let seriesNameFlag =seriesNameArr.some(item=>{return item ===seriesName});
+              if(!seriesNameFlag){
+                seriesNameArr.push(seriesName);
+              }
+            }
         });
-        router.push(`/follow?modelName=${query.modelName ||''}&step=${step ||''}&themeName=${themeName}`);
-        this.querySeries({
-          themeName
-        });
+        let subArr=[];
+        if(seriesNameArr.length>0){
+          for(let i=0;i<seriesNameArr.length;i++){
+            let cur=seriesNameArr[i];
+            let dressStyleArr=[],silhouetteArr=[],craftArr=[],mountingsArr=[];
+            for(let j=0;j<submitData.length;j++){
+              let {seriesName,type,values} =submitData[j];
+              if(cur === seriesName){
+                if(typeof values==='object' && values.length>0){
+                  if(type ==='外穿' || type ==='内搭'){
+                    values.forEach(v=>{
+                      if(dressStyleArr.length>0){
+                        let flag =dressStyleArr.some(item=>{return item ===v});
+                        if(!flag){
+                          dressStyleArr.push(v);
+                        }
+                      } else {
+                        dressStyleArr.push(v)
+                      }
+                    });
+                  } else if(type ==='廓形'){
+                    values.forEach(v=>{
+                      if(silhouetteArr.length>0){
+                        let flag =silhouetteArr.some(item=>{return item ===v});
+                        if(!flag){
+                          silhouetteArr.push(v);
+                        }
+                      } else {
+                        silhouetteArr.push(v)
+                      }
+                    });
+                  } else if(type ==='工艺'){
+                    values.forEach(v=>{
+                      if(craftArr.length>0){
+                        let flag =craftArr.some(item=>{return item ===v});
+                        if(!flag){
+                          craftArr.push(v);
+                        }
+                      } else {
+                        craftArr.push(v)
+                      }
+                    });
+                  } else if(type ==='配件'){
+                    values.forEach(v=>{
+                      if(mountingsArr.length>0){
+                        let flag =mountingsArr.some(item=>{return item ===v});
+                        if(!flag){
+                          mountingsArr.push(v);
+                        }
+                      } else {
+                        mountingsArr.push(v)
+                      }
+                    });
+                  }
+                }
+              }
+            }
+            subArr.push({
+              themeName,
+              seriesName:cur,
+              dressStyleArr:dressStyleArr||[],
+              silhouetteArr:silhouetteArr||[],
+              craftArr:craftArr||[],
+              mountingsArr:mountingsArr||[]
+            })
+          }
+        }
+        console.info(JSON.stringify(subArr));
+        if(subArr.length>0){
+          this.setState({
+            checkStep: "4",
+            rightWidth: 0,
+            parameters:[],
+            themesArr:[],
+            stylesArr:[],
+            seriesArr:[],
+            submitData:[],
+            operateRecord: [],
+            operateRecordPre: [],
+          });
+          router.push(`/follow?modelName=${query.modelName ||''}&step=4&themeName=${themeName}`);
+          this.queryKxsj({
+            paramArr:subArr
+          });
+        }
+      } else if(query.step ==='3'){
+
+      } else if(query.step ==='4'){
+
+      } else if(query.step ==='5'){
+
+      } else if(query.step ==='6'){
+
       }
     }
   };
@@ -1818,7 +1997,6 @@ class ResearchFollow extends PureComponent {
      if(seriesArr.length>0){
        seriesArr.forEach(item=>{
          let {key,card_info,card_actions,picCheck,series_name,img_path} = item;
-         console.info(key)
          vDOM.push(
            <Col key={key} style={{marginLeft: '40px',marginTop: '10px'}}>
              <SingleImgCard
@@ -1844,6 +2022,67 @@ class ResearchFollow extends PureComponent {
     } else {
        return vDOM;
      }
+  };
+  handleDesignData=()=>{
+
+  };
+  renderKxsjCommonDom(){
+    let vDOM=[];
+    let {kxsjArr} = this.state;
+    if(kxsjArr.length>0){
+      kxsjArr.forEach((item,i)=>{
+        let {seriesName,dressStyleArr} = item;
+        let dressStyleVDOM=[];
+        if(dressStyleArr.length>0){
+          dressStyleArr.forEach((cur,index)=>{
+            let {dressStyle,designData} =cur;
+            let designDataVDOM=[];
+            if(designData.length>0){
+              designData.forEach(c=>{
+                let {img_path,silhouette,card_info,card_actions,picCheck} = c;
+                designDataVDOM.push(
+                  <Col key={Math.random()} style={{marginLeft: '40px',marginTop: '10px'}}>
+                    <DesginSingleImgCard
+                      card_info={card_info}
+                      card_actions={card_actions}
+                      picCheck={picCheck}
+                      picAddress={img_path}
+                      data={c}
+                      handleDesignData={this.handleDesignData}
+                    />
+                    <p style={{
+                      textAlign: "center",
+                      marginTop: "10px",
+                      fontSize: "15px",
+                      color:"#ffffff"
+                    }}>{silhouette}</p>
+                  </Col>
+                );
+              });
+            }
+            dressStyleVDOM.push(<Panel header={dressStyle} key={`d_${index+1}`}><Row type="flex">{designDataVDOM}</Row></Panel>);
+          });
+        }
+        if(i === 0){
+          vDOM.push(<div key={Math.random()} className={sty.themeWrapper}>
+            <h3 style={{textAlign: 'left', fontWeight: 'bold', color: 'white', padding: '20px', fontSize: "30px"}}>产品系列: {seriesName}</h3>
+            <Collapse
+              defaultActiveKey={['d_1']}
+              expandIconPosition="right"
+            >{dressStyleVDOM}</Collapse>
+          </div>)
+        } else {
+          vDOM.push(<div key={Math.random()} className={sty.themeWrapper} style={{marginTop: "30px"}}>
+            <h3 style={{textAlign: 'left', fontWeight: 'bold', color: 'white', padding: '20px', fontSize: "30px"}}>产品系列: {seriesName}</h3>
+            <Collapse
+              defaultActiveKey={['d_1']}
+              expandIconPosition="right"
+            >{dressStyleVDOM}</Collapse>
+          </div>)
+        }
+      });
+    }
+    return vDOM;
   };
   render() {
     const {leftWidth, rightWidth} = this.state;
@@ -1917,6 +2156,10 @@ class ResearchFollow extends PureComponent {
           {
             this.state.checkStep ==='2' && this.state.seriesArr.length>0 &&
               this.renderSeriesDom()
+          }
+          {
+            this.state.checkStep ==='4' && this.state.kxsjArr.length>0 &&
+              this.renderKxsjCommonDom()
           }
         </div>
         {
