@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import {Progress, Icon} from 'antd';
 
-class ProgressComponent extends PureComponent {
+class ProgressComponentFifth extends PureComponent {
   state = {
     percent: 0,
   };
@@ -13,23 +13,23 @@ class ProgressComponent extends PureComponent {
   }
 
   increase = () => {
-    let {modelName,stepName,optionTitle,handleOptionsFourth} = this.props;
+    let {modelName,stepName,optionTitle,handleOptionsFifth} = this.props;
     let percent = this.state.percent + 10;
     if (percent > 100) {
       percent = 100;
     }
     this.setState({ percent });
-    handleOptionsFourth(percent,optionTitle,stepName,modelName);
+    handleOptionsFifth(percent,optionTitle,stepName,modelName);
   };
 
   decline = () => {
-     let {modelName,stepName,optionTitle,handleOptionsFourth} = this.props;
+     let {modelName,stepName,optionTitle,handleOptionsFifth} = this.props;
     let percent = this.state.percent - 10;
     if (percent < 0) {
       percent = 0;
     }
     this.setState({ percent });
-    handleOptionsFourth(percent,optionTitle,stepName,modelName);
+    handleOptionsFifth(percent,optionTitle,stepName,modelName);
   };
 
   render() {
@@ -59,5 +59,5 @@ class ProgressComponent extends PureComponent {
     )
   }
 }
-export default ProgressComponent;
+export default ProgressComponentFifth;
 

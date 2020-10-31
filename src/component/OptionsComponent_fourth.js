@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import {Progress, Button,Card,Row,Col} from 'antd';
+import {Card} from 'antd';
 import ProgressComponent from './ProgressComponent';
 import style from "../page/intelligentDesign/design.less";
 
@@ -10,6 +10,7 @@ class OptionsComponentFourth extends PureComponent {
     if(data.length>0){
       data.forEach(item=>{
         let {model_name, step_name, parameters} = item;
+        console.info(JSON.stringify(item));
         let lenVDOM=[],jiebuvDOM=[],yaotouvDOM=[],dibaivDOM=[];
         parameters.forEach(cur=>{
             let {option_title,option_type,values} = cur;
@@ -19,6 +20,9 @@ class OptionsComponentFourth extends PureComponent {
                   <ProgressComponent
                     optionTitle={option_title}
                     values={values}
+                    modelName={model_name}
+                    stepName={step_name}
+                    handleOptionsFourth={this.props.handleOptionsFourth}
                   />
                 </div>
               );
@@ -28,6 +32,9 @@ class OptionsComponentFourth extends PureComponent {
                   <ProgressComponent
                     optionTitle={option_title}
                     values={values}
+                    modelName={model_name}
+                    stepName={step_name}
+                    handleOptionsFourth={this.props.handleOptionsFourth}
                   />
                 </div>
               );
@@ -37,6 +44,9 @@ class OptionsComponentFourth extends PureComponent {
                   <ProgressComponent
                     optionTitle={option_title}
                     values={values}
+                    modelName={model_name}
+                    stepName={step_name}
+                    handleOptionsFourth={this.props.handleOptionsFourth}
                   />
                 </div>
               );
@@ -46,6 +56,9 @@ class OptionsComponentFourth extends PureComponent {
                   <ProgressComponent
                     optionTitle={option_title}
                     values={values}
+                    modelName={model_name}
+                    stepName={step_name}
+                    handleOptionsFourth={this.props.handleOptionsFourth}
                   />
                 </div>
               );
