@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import router from 'umi/router';
-import {LeftCircleOutlined, RightCircleOutlined, UndoOutlined, RedoOutlined, ArrowRightOutlined, SaveOutlined} from '@ant-design/icons';
+import {LeftOutlined, RightOutlined, UndoOutlined, RedoOutlined, ArrowRightOutlined, SaveOutlined} from '@ant-design/icons';
 import OptionsComponentFirst from '../../component/OptionsComponent_first';
 import OptionsComponentSecond from '../../component/OptionsComponent_second';
 import OptionsComponentFourth from '../../component/OptionsComponent_fourth';
@@ -604,12 +604,12 @@ class ResearchFollow extends PureComponent {
 
   showDrawer = () => {
     this.setState({
-      leftWidth: 10,
+      leftWidth: "10px"
     });
   };
   showRightAway = () => {
     this.setState({
-      rightWidth: 10
+      rightWidth: "10px"
     });
   };
   showRightUnfold = () => {
@@ -4566,18 +4566,26 @@ class ResearchFollow extends PureComponent {
         <div className={style.leftWrapper} style={{width: leftWidth}}>
           {
             leftWidth === '260px' &&
-            <LeftCircleOutlined onClick={this.showDrawer} className={style.selecshow}/>
+            <div className={style.iconBack}>
+              <LeftOutlined onClick={this.showDrawer} className={style.selecshow}/>
+            </div>
           }
           {
-            leftWidth === 0 &&
-            <RightCircleOutlined onClick={this.showUnfold} className={style.showUnfold}/>
+            leftWidth === '10px' &&
+            //下面图标div整个粘贴
+            <div className={style.iconBackRight}>
+              <RightOutlined onClick={this.showUnfold} className={style.showUnfold}/>
+            </div>
           }
-          <div className={style.leftMain} style={{width: leftWidth}}>
+          <div onClick={this.showDrawer} className={style.leftMain} style={{width: leftWidth}}>
             {
               this.state.steps.length > 0 &&
               this.renderStep()
             }
           </div>
+          {leftWidth === '10px' &&
+            <div onClick={this.showUnfold} className={`${style.leftMainSmall} ${style.leftMain}`} style={{width: leftWidth}}/>
+          }
         </div>
         <div className={style.mainWrapper} style={{width: mainWidth, marginLeft: leftWidth}}>
           {
@@ -4652,19 +4660,29 @@ class ResearchFollow extends PureComponent {
         </div>
         {
           this.state.checkStep!=='' && this.state.checkStep!=='7' &&
-          <div className={style.rightWrapper} style={{width: rightWidth}}>
-            {
-              rightWidth === '260px' && <RightCircleOutlined className={style.selecRightshow} onClick={this.showRightAway}/>
-            }
-            {
-              rightWidth === 0 && <LeftCircleOutlined className={style.selecRightLeft} onClick={this.showRightUnfold}/>
-            }
-            <div className={style.rightMain} style={{width: rightWidth}}>
+          <div>
+            <div className={style.rightWrapper} style={{width: rightWidth}}>
               {
-                this.state.parameters.length > 0 &&
-                this.renderParameters()
+                rightWidth === '260px' &&
+                <div className={style.righticonBack}>
+                  <RightOutlined className={style.selecRightshow} onClick={this.showRightAway}/>
+                </div>
               }
+              {
+                rightWidth === '10px' &&
+                <div className={style.righticonBack}>
+                  <LeftOutlined className={style.selecRightLeft} onClick={this.showRightUnfold}/>
+                </div>
+              }
+              <div onClick={this.showRightAway}  className={style.rightMain} style={{width: rightWidth}}>
+                {
+                  this.state.parameters.length > 0 &&
+                  this.renderParameters()
+                }
+              </div>
             </div>
+            {rightWidth === '10px' &&
+            <div onClick={this.showRightUnfold}  className={`${style.rightMain} ${style.rightMainSmall}`} style={{width: rightWidth}}/>}
           </div>
         }
       </div>
