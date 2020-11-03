@@ -30,7 +30,10 @@ class Fitting extends PureComponent {
     patternArr: [],
     svgX:0,
     photoGroup:[],
-    patternImg:''
+    patternImg:'',
+    zoomVal:0,
+    rotateVal:0,
+    fillColor:"#ffffff"
   };
 
   componentDidMount() {
@@ -129,19 +132,28 @@ class Fitting extends PureComponent {
       })
     }
   };
-  handlePatternImgOperation=async (e, type,img)=>{
+  handlePatternImgOperation=async (e, type,val)=>{
     e.preventDefault();
     if(type ==='clear'){
       this.setState({ patternImg:''});
     } else if(type ==='upload'){
       console.info('下载');
-      let sourceIndex = img.lastIndexOf("\/"),
-        sourceImgName = img.substr(sourceIndex + 1, img.length);
-      console.info(sourceImgName);
-      window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${sourceImgName}`)
+      let index = val.lastIndexOf("\/"),
+        imgName = val.substr(index + 1, val.length);
+      window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${imgName}`)
+    } else if(type ==='zoom'){
+      this.setState({ zoomVal:val});
+    } else if(type ==='rotate'){
+      this.setState({ rotateVal:val});
     }
   };
-
+  handleChangeFillColor=(val)=>{
+    this.setState({
+      fillColor:val
+    },()=>{
+      console.info(`更新fillColor：${this.state.fillColor}`)
+    })
+  };
   renderStyleTab(){
     let vDOM=[];
     const {styleTypeArr} = this.state;
@@ -220,7 +232,7 @@ class Fitting extends PureComponent {
     return <Row type="flex">{vDOM}</Row>;
   }
   renderSvgInit(){
-    const {photoGroup,svgX} = this.state;
+    const {photoGroup,svgX,fillColor} = this.state;
     let vDOM=[];
     photoGroup.forEach(item=>{
       let {bgImg,fImg,wbgImg} = item;
@@ -232,14 +244,14 @@ class Fitting extends PureComponent {
           </defs>
           <image xlinkHref={bgImg} preserveAspectRatio="none" x={svgX} y="10" width="383" height="450"/>
           <image xlinkHref={wbgImg} preserveAspectRatio="none" x={svgX} y="10" width="383" height="450"/>
-          <rect x={svgX} y="10" width="383" height="450" fill="#ffffff" mask="url('#mask1')"/>
+          <rect x={svgX} y="10" width="383" height="450" fill={fillColor} mask="url('#mask1')"/>
           <image xlinkHref={fImg} preserveAspectRatio="none" x={svgX} y="10" width="383" height="450"/>
       </svg>);
     });
     return vDOM;
   }
   renderSvgCoalesce(){
-    const {photoGroup,svgX,patternImg} = this.state;
+    const {photoGroup,svgX,patternImg,fillColor} = this.state;
     let vDOM=[];
     photoGroup.forEach(item=>{
       let {bgImg,fImg,wbgImg} = item;
@@ -254,7 +266,7 @@ class Fitting extends PureComponent {
           </mask>
         </defs>
         <image xlinkHref={bgImg} preserveAspectRatio="none" x={svgX} y="10" width="383" height="450"/>
-        <rect x={svgX} y="10" width="383" height="450" fill="#ffffff" mask="url('#mask1')"/>
+        <rect x={svgX} y="10" width="383" height="450" fill={fillColor} mask="url('#mask1')"/>
         <g x={svgX} y="10" width="383" height="450">
           <rect x={svgX} y="10" width="383" height="450" fill="url('#pattern1')" mask="url('#mask1')"/>
         </g>
@@ -311,6 +323,10 @@ class Fitting extends PureComponent {
             <RightDress
               patternImg={this.state.patternImg}
               handlePatternImgOperation={this.handlePatternImgOperation}
+              handleChangeFillColor={this.handleChangeFillColor}
+              zoomVal={this.state.zoomVal}
+              rotateVal={this.state.rotateVal}
+              fillColor={this.state.fillColor}
             />
           </div>
         </div>

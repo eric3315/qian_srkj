@@ -1,44 +1,16 @@
 import React, {PureComponent} from 'react';
-import {Card, Divider, Row, Col,Button,Progress} from 'antd';
-import { ChromePicker  } from 'react-color';
-import {
-  SyncOutlined,
-  PlusCircleOutlined,
-  MinusCircleOutlined
-} from '@ant-design/icons';
+import {Card, Divider, Row, Col,Button} from 'antd';
+import ProgressFitting from '../component/Progressfitting';
+import ColourAtla from '../component/colourAtla';
+import {SyncOutlined} from '@ant-design/icons';
 import sty from './rightDress.less'
 
 
 class RightDress extends PureComponent {
-  state = {
-    percent: 50,
-    background: '#fff',
-  };
 
-
-  handleChangeComplete = (color) => {
-    console.log(color)
-    this.setState({ background: color.hex });
-  };
   handleClick = (e) => {
     console.log(e)
   }
-  increase = () => {
-    let percent = this.state.percent + 10;
-    if (percent > 100) {
-      percent = 100;
-    }
-    this.setState({ percent });
-  };
-
-  decline = () => {
-    let percent = this.state.percent - 10;
-    if (percent < 0) {
-      percent = 0;
-    }
-    this.setState({ percent });
-  };
-
   render() {
     return (<div className={sty.rightContent}>
         <Card title={<p style={{marginBottom: '1px', fontWeight: 'bold'}}>图案应用</p>} size="small" bordered={false}
@@ -108,13 +80,24 @@ class RightDress extends PureComponent {
         <Card title={<p style={{marginBottom: '4px', fontWeight: 'bold'}}>图案调整</p>}
               size="small"
               bordered={false}
+              bodyStyle={{paddingTop: 0}}
               style={{background: "none"}}>
           <Row type="flex" style={{flexDirection:'row'}}>
             <Col>
-              <span>缩放调整：</span>
-              <MinusCircleOutlined onClick={this.decline}/>
-              <Progress percent={this.state.percent} trailColor="red"/>
-              <PlusCircleOutlined onClick={this.increase}/>
+              <ProgressFitting
+                values={this.props.zoomVal}
+                optionTitle="缩放"
+                type="zoom"
+                handlePatternImgOperation={this.props.handlePatternImgOperation}
+              />
+            </Col>
+            <Col>
+              <ProgressFitting
+                values={this.props.rotateVal}
+                optionTitle="旋转"
+                type="rotate"
+                handlePatternImgOperation={this.props.handlePatternImgOperation}
+              />
             </Col>
           </Row>
         </Card>
@@ -127,15 +110,10 @@ class RightDress extends PureComponent {
 
           </div>
           <div style={{width:'12px',height:'100%',background:'blue'}}/>
-          <Row type="flex" justify="space-between">
-            <Col span={14}>
-              <ChromePicker  width={140}  onChangeComplete={ this.handleChangeComplete }/>
-            </Col>
-            <Col span={4}>
-              <div style={{width:'12px',height:'100%',background:'blue'}}/>
-            </Col>
-            <Button  style={{width:'100%',margin:'18px 18px 0 18px'}}>下载试衣效果</Button>
-          </Row>
+          <ColourAtla
+            background={this.props.fillColor}
+            handleChangeFillColor={this.props.handleChangeFillColor}
+          />
         </Card>
       </div>
     );
