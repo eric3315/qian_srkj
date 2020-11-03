@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Card, Divider, Row, Col,Button,Progress} from 'antd';
+import { ChromePicker  } from 'react-color';
 import {
   SyncOutlined,
   PlusCircleOutlined,
@@ -11,8 +12,14 @@ import Oip from "../assets/Oic.jpg";
 class RightDress extends PureComponent {
   state = {
     percent: 50,
+    background: '#fff',
   };
 
+
+  handleChangeComplete = (color) => {
+    console.log(color)
+    this.setState({ background: color.hex });
+  };
   handleClick = (e) => {
     console.log(e)
   }
@@ -95,9 +102,13 @@ class RightDress extends PureComponent {
               size="small"
               bordered={false}
               style={{background: "none",paddingBottom:'20px'}}>
+          <div style={{width:'120px'}}>
+
+          </div>
+          <div style={{width:'12px',height:'100%',background:'blue'}}/>
           <Row type="flex" justify="space-between">
             <Col span={14}>
-              <div style={{width:'100%',height:'120px',background:'red'}}/>
+              <ChromePicker  width={140}  onChangeComplete={ this.handleChangeComplete }/>
             </Col>
             <Col span={4}>
               <div style={{width:'12px',height:'100%',background:'blue'}}/>

@@ -19,6 +19,7 @@
     "path-to-regexp": "^1.7.0",
     "react": "^16.13.1",
     "react-amap": "^1.2.8",
+    "react-color": "^2.19.3",
     "react-dom": "^16.8.6",
     "react-id-swiper": "^3.0.0",
     "react-intl": "^2.4.0",
