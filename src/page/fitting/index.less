@@ -1,0 +1,101 @@
+.dressWrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+
+  .leftWrapper {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    flex: 0 0 auto;
+    height: calc(100% - 50px);
+
+    .leftMain {
+      position: fixed;
+      height: calc(100% - 50px);
+      top: 65px;
+      left: 0;
+      background-color: #f7f7f7;
+      color: white;
+      overflow-y: auto;
+
+      .formWrapper {
+        padding:0 10px;
+      }
+      .picture {
+        width: 100%;
+        border: 1px solid #eaeaea;
+      }
+
+      .ant-tabs-card .ant-tabs-tab,
+      [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-tab {
+        border-color: transparent;
+      }
+
+      .ant-tabs-bar {
+        margin: 4px 6px 12px 4px;
+        border-bottom: none;
+      }
+
+      .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+        border-radius: 0;
+        background: #e1e1e1;
+        font-size: 12px;
+        padding: 0 6px;
+      }
+
+      .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab:hover {
+        background: rgba(255 82 82);
+        color: #f8f8f8;
+      }
+
+      .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+        color: white;
+        background: #ff5252;
+        border-color: #e8e8e8;
+        border-bottom: 1px solid #fff;
+      }
+
+    }
+
+    .leftMain::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .rightWrapper {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    flex: 0 0 auto;
+    height: calc(100% - 50px);
+
+    .rightMain, .rightMainSmall {
+      position: fixed;
+      top: 65px;
+      right: 0;
+      flex: 0 0 auto;
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      background-color: #f7f7f7;
+      color: white;
+    }
+  }
+}
+:global{
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
+  .ant-select-selection {
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #d9d9d9;
+    background: none;
+  }
+  .ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    border-color: #40a9ff;
+    border-right-width: 1px !important;
+    outline: 0;
+    box-shadow: none;
+  }
+}

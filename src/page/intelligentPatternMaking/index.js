@@ -5,14 +5,9 @@ class IntelligentPatternMaking extends PureComponent {
 
   render() {
     return (
-      <Card  bordered={false} bodyStyle={{
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingRight: 0,
-        paddingLeft: 5,
-      }}>
-
-      </Card>
+      <div style={{marginTop: "23px"}}>
+        智能制版
+      </div>
     );
   }
 }

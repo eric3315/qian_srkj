@@ -1,18 +1,14 @@
 import React, { PureComponent } from 'react';
 import { Card } from 'antd';
 
+
 class TrendAnalysis extends PureComponent {
 
   render() {
     return (
-      <Card  bordered={false} bodyStyle={{
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingRight: 0,
-        paddingLeft: 5,
-      }}>
-
-      </Card>
+      <div style={{marginTop: "23px"}}>
+        趋势分析
+      </div>
     );
   }
 }

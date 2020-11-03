@@ -39,6 +39,10 @@ export default {
           component: './trendAnalysis'
         },
         {
+          path: './fitting',
+          component: './fitting'
+        },
+        {
           component: '403'
         }
       ]

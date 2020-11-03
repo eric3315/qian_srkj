@@ -110,42 +110,44 @@ class ResearchList extends PureComponent {
   render() {
     const {getFieldDecorator} = this.props.form;
     return (
-      <Card bordered={false}>
-        <div style={{marginTop: 16}}>
-          <Button type="primary" onClick={(e) => {
-            this.handleModelAdd(e)
-          }}>新增</Button>
-        </div>
-        <ResearchTable
-          data={this.state.researchData}
-          handleModelEdit={this.handleModelEdit}
-          handleModelDel={this.handleModelDel}
-          handleFollow={this.handleFollow}
-        />
-        <Modal
-          title="编辑"
-          visible={this.state.modelVisible}
-          onCancel={this.handleModelCancel}
-          okText="保存"
-          onOk={this.handleModelSubmit}
-        >
-          <Form layout="vertical" style={{marginTop: 8}}>
-            <FormItem
-              labelCol={{span: 5}}
-              wrapperCol={{span: 15}}
-              label="主题研发名称"
-            >
-              {getFieldDecorator('modelName', {
-                rules: [
-                  {required: true, message: '请输入主题研发名称!'},
-                ],
-              })(
-                <Input placeholder="请输入主题研发名称"/>
-              )}
-            </FormItem>
-          </Form>
-        </Modal>
-      </Card>
+      <div style={{marginTop: "23px"}}>
+        <Card bordered={false}>
+          <div style={{marginTop: 16}}>
+            <Button type="primary" onClick={(e) => {
+              this.handleModelAdd(e)
+            }}>新增</Button>
+          </div>
+          <ResearchTable
+            data={this.state.researchData}
+            handleModelEdit={this.handleModelEdit}
+            handleModelDel={this.handleModelDel}
+            handleFollow={this.handleFollow}
+          />
+          <Modal
+            title="编辑"
+            visible={this.state.modelVisible}
+            onCancel={this.handleModelCancel}
+            okText="保存"
+            onOk={this.handleModelSubmit}
+          >
+            <Form layout="vertical" style={{marginTop: 8}}>
+              <FormItem
+                labelCol={{span: 5}}
+                wrapperCol={{span: 15}}
+                label="主题研发名称"
+              >
+                {getFieldDecorator('modelName', {
+                  rules: [
+                    {required: true, message: '请输入主题研发名称!'},
+                  ],
+                })(
+                  <Input placeholder="请输入主题研发名称"/>
+                )}
+              </FormItem>
+            </Form>
+          </Modal>
+        </Card>
+      </div>
     );
   }
 }

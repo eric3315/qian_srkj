@@ -1,0 +1,113 @@
+import React, {PureComponent} from 'react';
+import {Card, Divider, Row, Col,Button,Progress} from 'antd';
+import {
+  SyncOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined
+} from '@ant-design/icons';
+import sty from './rightDress.less'
+import Oip from "../assets/Oic.jpg";
+
+class RightDress extends PureComponent {
+  state = {
+    percent: 50,
+  };
+
+  handleClick = (e) => {
+    console.log(e)
+  }
+  increase = () => {
+    let percent = this.state.percent + 10;
+    if (percent > 100) {
+      percent = 100;
+    }
+    this.setState({ percent });
+  };
+
+  decline = () => {
+    let percent = this.state.percent - 10;
+    if (percent < 0) {
+      percent = 0;
+    }
+    this.setState({ percent });
+  };
+
+  render() {
+    return (<div className={sty.rightContent}>
+        <Card title={<p style={{marginBottom: '1px', fontWeight: 'bold'}}>图案应用</p>} size="small" bordered={false}
+              style={{background: "none"}}>
+          <Row className={sty.iconWrapper}>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+              <SyncOutlined spin className={sty.iconCol} onClick={this.handleClick}/>
+              <p className={sty.iconDes}>全循环</p>
+            </Col>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+              <SyncOutlined className={sty.iconCol}/>
+              <p className={sty.iconDes}>垂直循环</p>
+            </Col>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+              <SyncOutlined className={sty.iconCol}/>
+              <p className={sty.iconDes}>水平循环</p>
+            </Col>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+              <SyncOutlined className={sty.iconCol}/>
+              <p className={sty.iconDes}>恶循环</p>
+            </Col>
+          </Row>
+        </Card>
+        <Divider style={{margin: '0', background: '#e1e1e1'}}/>
+        <Card title={<p style={{marginBottom: '1px', fontWeight: 'bold'}}>当前图案</p>}
+              size="small"
+              bordered={false}
+              style={{background: "none"}}>
+          <Row type="flex" justify="space-around">
+            <Col span={9}>
+              <img src={Oip} alt="图片不存在" style={{width:'100%',height:'80px'}}/>
+            </Col>
+            <Col span={9} style={{display:'flex',flexDirection:'row'}}>
+              <Row>
+                <Col className={sty.buttonType}>
+                  <Button style={{width:'100%',background:'#cac7c7'}}>不使用图案</Button>
+                </Col>
+                <Col style={{position: 'absolute',bottom:'0', width: '100%'}}>
+                  <Button type="danger" style={{width:'100%'}}>下载图案</Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Card>
+        <Divider style={{margin: '0', background: '#e1e1e1'}}/>
+        <Card title={<p style={{marginBottom: '4px', fontWeight: 'bold'}}>图案调整</p>}
+              size="small"
+              bordered={false}
+              style={{background: "none"}}>
+          <Row type="flex" style={{flexDirection:'row'}}>
+            <Col>
+              <span>缩放调整：</span>
+              <MinusCircleOutlined onClick={this.decline}/>
+              <Progress percent={this.state.percent} trailColor="red"/>
+              <PlusCircleOutlined onClick={this.increase}/>
+            </Col>
+          </Row>
+        </Card>
+        <Divider style={{margin: '0', background: '#e1e1e1'}}/>
+        <Card title={<p style={{marginBottom: '4px', fontWeight: 'bold'}}>底色调整</p>}
+              size="small"
+              bordered={false}
+              style={{background: "none",paddingBottom:'20px'}}>
+          <Row type="flex" justify="space-between">
+            <Col span={14}>
+              <div style={{width:'100%',height:'120px',background:'red'}}/>
+            </Col>
+            <Col span={4}>
+              <div style={{width:'12px',height:'100%',background:'blue'}}/>
+            </Col>
+            <Button  style={{width:'100%',margin:'18px 18px 0 18px'}}>下载试衣效果</Button>
+          </Row>
+        </Card>
+      </div>
+    );
+  }
+}
+
+export default RightDress;

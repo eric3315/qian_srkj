@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Menu} from 'antd';
+import router from 'umi/router';
 import logo from '../assets/logo.png';
 import style from './header.less';
 
@@ -15,13 +16,19 @@ class IntelligentDesign extends PureComponent {
       current="trend";
     } else if(window.location.pathname ==="/make"){
       current="make";
+    } else if(window.location.pathname ==="/fitting"){
+      current="fitting";
     }
-    this.setState({current})
+    this.setState({ current },()=>{
+      router.push(`/${this.state.current}`);
+    });
   }
 
   handleClick=(e)=>{
     console.log('click ', e);
-    this.setState({ current: e.key });
+    this.setState({ current: e.key },()=>{
+      router.push(`/${this.state.current}`);
+    });
   }
   render() {
     const {current}=this.state;
@@ -42,6 +49,9 @@ class IntelligentDesign extends PureComponent {
             </Menu.Item>
             <Menu.Item key="make" style={{margin: '0 4px'}}>
               智能制版
+            </Menu.Item>
+            <Menu.Item key="fitting" style={{margin: '0 4px'}}>
+              智能试衣
             </Menu.Item>
           </Menu>
           <div style={{margin: '0 4px'}} className={style.myAccount}>
