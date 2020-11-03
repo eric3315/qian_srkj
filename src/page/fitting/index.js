@@ -7,7 +7,6 @@ import StyleListCard from '../../component/styleListCard';
 import axios from "../../util/axios";
 import style from './index.less';
 import sty from "../../component/dressContent.less";
-import OPI from "../../assets/OPI.png";
 
 const {TabPane} = Tabs;
 const {Option} = Select;
@@ -114,7 +113,6 @@ class Fitting extends PureComponent {
       });
     })
   };
-
   handleCoalesceData=(item,type)=>{
     console.info(`${type}-------->item:${JSON.stringify(item)}`);
     if(type ==='style'){
@@ -131,7 +129,78 @@ class Fitting extends PureComponent {
       })
     }
   };
+  handlePatternImgOperation=async (e, type,img)=>{
+    e.preventDefault();
+    if(type ==='clear'){
+      this.setState({ patternImg:''});
+    } else if(type ==='upload'){
+      console.info('下载');
+      let sourceIndex = img.lastIndexOf("\/"),
+        sourceImgName = img.substr(sourceIndex + 1, img.length);
+      console.info(sourceImgName);
+      window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${sourceImgName}`)
+    }
+  };
 
+  renderStyleTab(){
+    let vDOM=[];
+    const {styleTypeArr} = this.state;
+    vDOM.push(<TabPane tab="女装模板" key="women">
+      <div className={style.formWrapper}>
+        <Form {...layout} name="control-hooks">
+          <Form.Item name="gender" label="款式分类">
+            <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
+              {styleTypeArr.map(item => {
+                return (
+                  <Option key={Math.random()} value={item}>
+                    {item}
+                  </Option>
+                )
+              })
+              }
+            </Select>
+          </Form.Item>
+        </Form>
+      </div>
+    </TabPane>);
+    vDOM.push(<TabPane tab="男装模板" key="men">
+      <div className={style.formWrapper}>
+        <Form {...layout} name="control-hooks">
+          <Form.Item name="gender" label="款式分类">
+            <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
+              {styleTypeArr.map(item => {
+                return (
+                  <Option key={Math.random()} value={item}>
+                    {item}
+                  </Option>
+                )
+              })
+              }
+            </Select>
+          </Form.Item>
+        </Form>
+      </div>
+    </TabPane>);
+    vDOM.push(<TabPane tab="童装模板" key="kids">
+      <div className={style.formWrapper}>
+        <Form {...layout} name="control-hooks">
+          <Form.Item name="gender" label="款式分类">
+            <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
+              {styleTypeArr.map(item => {
+                return (
+                  <Option key={Math.random()} value={item}>
+                    {item}
+                  </Option>
+                )
+              })
+              }
+            </Select>
+          </Form.Item>
+        </Form>
+      </div>
+    </TabPane>);
+    return  <Tabs onChange={this.handleTabChange} type="card" activeKey={this.state.tabIndex}>{vDOM}</Tabs>
+  }
   renderStyleArr() {
     let vDOM = [];
     let {styleArr} = this.state;
@@ -150,7 +219,6 @@ class Fitting extends PureComponent {
     });
     return <Row type="flex">{vDOM}</Row>;
   }
-
   renderSvgInit(){
     const {photoGroup,svgX} = this.state;
     let vDOM=[];
@@ -197,70 +265,14 @@ class Fitting extends PureComponent {
   }
 
   render() {
-    const {leftWidth, rightWidth, styleTypeArr,photoGroup,patternImg} = this.state;
+    const {leftWidth, rightWidth,photoGroup,patternImg} = this.state;
     const sizeWidth = parseInt(leftWidth) + parseInt(rightWidth);
     let mainWidth = `calc(100% - ${sizeWidth}px)`;
     return (
       <div className={style.dressWrapper}>
         <div className={style.leftWrapper} style={{width: leftWidth}}>
           <div className={style.leftMain} style={{width: leftWidth}}>
-            <Tabs onChange={this.handleTabChange} type="card" activeKey={this.state.tabIndex}>
-              <TabPane tab="女装模板" key="women">
-                <div className={style.formWrapper}>
-                  <Form {...layout} name="control-hooks">
-                    <Form.Item name="gender" label="款式分类">
-                      <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
-                        {styleTypeArr.map(item => {
-                          return (
-                            <Option key={Math.random()} value={item}>
-                              {item}
-                            </Option>
-                          )
-                        })
-                        }
-                      </Select>
-                    </Form.Item>
-                  </Form>
-                </div>
-              </TabPane>
-              <TabPane tab="男装模板" key="men">
-                <div className={style.formWrapper}>
-                  <Form {...layout} name="control-hooks">
-                    <Form.Item name="gender" label="款式分类">
-                      <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
-                        {styleTypeArr.map(item => {
-                          return (
-                            <Option key={Math.random()} value={item}>
-                              {item}
-                            </Option>
-                          )
-                        })
-                        }
-                      </Select>
-                    </Form.Item>
-                  </Form>
-                </div>
-              </TabPane>
-              <TabPane tab="童装模板" key="kids">
-                <div className={style.formWrapper}>
-                  <Form {...layout} name="control-hooks">
-                    <Form.Item name="gender" label="款式分类">
-                      <Select placeholder="请选择" allowClear onChange={this.handleStyleTypeChange}>
-                        {styleTypeArr.map(item => {
-                          return (
-                            <Option key={Math.random()} value={item}>
-                              {item}
-                            </Option>
-                          )
-                        })
-                        }
-                      </Select>
-                    </Form.Item>
-                  </Form>
-                </div>
-              </TabPane>
-            </Tabs>
-            {/*模板*/}
+            {this.renderStyleTab()}
             {
               this.state.styleArr.length > 0 &&
               this.renderStyleArr()
@@ -296,7 +308,10 @@ class Fitting extends PureComponent {
         </div>
         <div className={style.rightWrapper} style={{width: rightWidth}}>
           <div className={style.rightMain} style={{width: rightWidth}}>
-            <RightDress/>
+            <RightDress
+              patternImg={this.state.patternImg}
+              handlePatternImgOperation={this.handlePatternImgOperation}
+            />
           </div>
         </div>
       </div>

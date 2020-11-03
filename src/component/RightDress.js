@@ -7,7 +7,7 @@ import {
   MinusCircleOutlined
 } from '@ant-design/icons';
 import sty from './rightDress.less'
-import Oip from "../assets/Oic.jpg";
+
 
 class RightDress extends PureComponent {
   state = {
@@ -67,21 +67,42 @@ class RightDress extends PureComponent {
               size="small"
               bordered={false}
               style={{background: "none"}}>
-          <Row type="flex" justify="space-around">
-            <Col span={9}>
-              <img src={Oip} alt="图片不存在" style={{width:'100%',height:'80px'}}/>
-            </Col>
-            <Col span={9} style={{display:'flex',flexDirection:'row'}}>
-              <Row>
-                <Col className={sty.buttonType}>
-                  <Button style={{width:'100%',background:'#cac7c7'}}>不使用图案</Button>
-                </Col>
-                <Col style={{position: 'absolute',bottom:'0', width: '100%'}}>
-                  <Button type="danger" style={{width:'100%'}}>下载图案</Button>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+          {
+            this.props.patternImg!=='' &&
+            <Row type="flex" justify="space-around">
+              <Col span={9}>
+                <div style={{
+                  width: "100px",
+                  height: "80px",
+                  border: "1px solid #d6e0d6"
+                }}>
+                  <img src={this.props.patternImg} alt="" style={{width:'100%',height:'80px'}}/>
+                </div>
+              </Col>
+              <Col span={9} style={{display:'flex',flexDirection:'row'}}>
+                <Row>
+                  <Col className={sty.buttonType}>
+                    <Button style={{width:'100%',background:'#cac7c7'}} onClick={(e)=>{this.props.handlePatternImgOperation(e,'clear',this.props.patternImg)}}>不使用图案</Button>
+                  </Col>
+                  <Col style={{position: 'absolute',bottom:'0', width: '100%'}}>
+                    <Button type="danger" style={{width:'100%'}} onClick={(e)=>{this.props.handlePatternImgOperation(e,'upload',this.props.patternImg)}}>下载图案</Button>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          }
+          {
+            this.props.patternImg==='' &&
+            <Row type="flex" justify="space-around">
+              <Col span={9}>
+                <div style={{
+                  width: "100px",
+                  height: "80px",
+                  border: "1px solid #d6e0d6"
+                }}/>
+              </Col>
+            </Row>
+          }
         </Card>
         <Divider style={{margin: '0', background: '#e1e1e1'}}/>
         <Card title={<p style={{marginBottom: '4px', fontWeight: 'bold'}}>图案调整</p>}
