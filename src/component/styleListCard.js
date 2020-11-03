@@ -5,7 +5,9 @@ class StyleListCard extends PureComponent {
 
   handleMouseDown =async (e)=>{
     e.preventDefault();
-    console.info('双击进入')
+    console.info('双击进入');
+    const {item,type} = this.props;
+    this.props.handleCoalesceData(item,type);
   };
   render() {
     const {picAddress} = this.props;
