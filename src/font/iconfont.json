@@ -1,37 +1,30 @@
 {
-  "id": "1776269",
-  "name": "官网",
+  "id": "2179471",
+  "name": "srkj",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
   "description": "",
   "glyphs": [
     {
-      "icon_id": "8058614",
-      "name": "专利",
-      "font_class": "zhuanli",
-      "unicode": "e600",
-      "unicode_decimal": 58880
+      "icon_id": "11507475",
+      "name": "禁止",
+      "font_class": "jinzhi",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
     },
     {
-      "icon_id": "11715820",
-      "name": "公司",
-      "font_class": "gongsi",
-      "unicode": "e6cb",
-      "unicode_decimal": 59083
+      "icon_id": "16940107",
+      "name": "icon-循环goto",
+      "font_class": "icon-xunhuangoto",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
     },
     {
-      "icon_id": "11752357",
-      "name": "研发人员",
-      "font_class": "yanfarenyuan",
-      "unicode": "ef26",
-      "unicode_decimal": 61222
-    },
-    {
-      "icon_id": "13825384",
-      "name": "院校",
-      "font_class": "yuanxiao",
-      "unicode": "e74a",
-      "unicode_decimal": 59210
+      "icon_id": "17208934",
+      "name": "循环",
+      "font_class": "xunhuan",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
     }
   ]
 }

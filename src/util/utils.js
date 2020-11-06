@@ -1,3 +1,5 @@
+let {Matrix} = require('sylvester');
+
 export function format(date, format){
   var v = "";
   if (typeof date == "string" || typeof date != "object") {
@@ -110,4 +112,37 @@ export async function getImgToBase64(url){//将图片转换为Base64
       img.src = url;
   });
   return res;
+}
+
+/*
+* 矩阵计算采用 sylvester 组件
+* */
+
+function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+export async function getMatrix(rotation, scale, position, size) {
+  let radians = toRadians(rotation),
+    sin = Math.sin(radians),
+    cos = Math.cos(radians),
+    matrixPre = Matrix.create(
+      [
+        [1, 0, (size.width / 2)],
+        [0, 1, (size.height / 2)],
+        [0, 0, 1]
+      ]),
+    matrix = Matrix.create(
+      [
+        [(scale * cos), (scale * -sin), position.x],
+        [(scale * sin), (scale * cos), position.y],
+        [0, 0, 1]
+      ]),
+    matrixPost = Matrix.create(
+      [
+        [1, 0, -(size.width)],
+        [0, 1, -(size.height)],
+        [0, 0, 1]
+      ]);
+  return matrixPre.x(matrix.x(matrixPost)).elements;
 }

@@ -1,36 +1,46 @@
 import React, {PureComponent} from 'react';
 import {Card, Divider, Row, Col,Button} from 'antd';
 import ProgressFitting from '../component/Progressfitting';
+import SliderFitting  from '../component/SliderFitting';
 import ColourAtla from '../component/colourAtla';
-import {SyncOutlined} from '@ant-design/icons';
 import sty from './rightDress.less'
+import iconFont from '../font/iconfont.css';
 
 
 class RightDress extends PureComponent {
 
-  handleClick = (e) => {
-    console.log(e)
-  }
   render() {
     return (<div className={sty.rightContent}>
         <Card title={<p style={{marginBottom: '1px', fontWeight: 'bold'}}>图案应用</p>} size="small" bordered={false}
               style={{background: "none"}}>
           <Row className={sty.iconWrapper}>
             <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
-              <SyncOutlined spin className={sty.iconCol} onClick={this.handleClick}/>
-              <p className={sty.iconDes}>全循环</p>
+              <span className={`${iconFont.iconfont} ${iconFont.icon_xunhuan}`}
+                    style={this.props.circulationFlag ===1 ? {display: "inline-block", color: "#1890ff"}:{display: "inline-block"}}
+                    onClick={(e)=>{this.props.handleChangeCirculation(e,1)}}
+              />
+              <p className={sty.iconDes} style={this.props.circulationFlag ===1 ? {color: "#1890ff"}:null}>全循环</p>
             </Col>
             <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
-              <SyncOutlined className={sty.iconCol}/>
-              <p className={sty.iconDes}>垂直循环</p>
+              <span className={`${iconFont.iconfont} ${iconFont.icon_icon_xunhuangoto}`}
+                    style={this.props.circulationFlag ===2 ? {transform: "rotate(88deg)", display: "inline-block",color: "#1890ff"}:{transform: "rotate(88deg)", display: "inline-block"}}
+                    onClick={(e)=>{this.props.handleChangeCirculation(e,2)}}
+              />
+              <p className={sty.iconDes}  style={this.props.circulationFlag ===2 ? {color: "#1890ff"}:null}>垂直循环</p>
             </Col>
             <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
-              <SyncOutlined className={sty.iconCol}/>
-              <p className={sty.iconDes}>水平循环</p>
+              <span className={`${iconFont.iconfont} ${iconFont.icon_icon_xunhuangoto}`}
+                    style={this.props.circulationFlag ===3 ? {display: "inline-block",color: "#1890ff"}:{display: "inline-block"}}
+                    onClick={(e)=>{this.props.handleChangeCirculation(e,3)}}
+              />
+              <p className={sty.iconDes}  style={this.props.circulationFlag ===3 ? {color: "#1890ff"}:null}>水平循环</p>
             </Col>
             <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
-              <SyncOutlined className={sty.iconCol}/>
-              <p className={sty.iconDes}>恶循环</p>
+              <span className={`${iconFont.iconfont} ${iconFont.icon_jinzhi}`}
+                    style={this.props.circulationFlag ===4 ? {display: "inline-block",color: "#1890ff"}:{display: "inline-block"}}
+                    onClick={(e)=>{this.props.handleChangeCirculation(e,4)}}
+              />
+              <p className={sty.iconDes}  style={this.props.circulationFlag ===4 ? {color: "#1890ff"}:null}>无循环</p>
             </Col>
           </Row>
         </Card>
@@ -84,17 +94,17 @@ class RightDress extends PureComponent {
               style={{background: "none"}}>
           <Row type="flex" style={{flexDirection:'row'}}>
             <Col>
-              <ProgressFitting
-                values={this.props.zoomVal}
+              <SliderFitting
                 optionTitle="缩放"
+                values={this.props.zoomVal}
                 type="zoom"
                 handlePatternImgOperation={this.props.handlePatternImgOperation}
               />
             </Col>
             <Col>
-              <ProgressFitting
-                values={this.props.rotateVal}
+              <SliderFitting
                 optionTitle="旋转"
+                values={this.props.rotateVal}
                 type="rotate"
                 handlePatternImgOperation={this.props.handlePatternImgOperation}
               />
@@ -111,8 +121,8 @@ class RightDress extends PureComponent {
           </div>
           <div style={{width:'12px',height:'100%',background:'blue'}}/>
           <ColourAtla
-            background={this.props.fillColor}
             handleChangeFillColor={this.props.handleChangeFillColor}
+            handleSVGUpload={this.props.handleSVGUpload}
           />
         </Card>
       </div>

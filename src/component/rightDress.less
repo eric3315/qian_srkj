@@ -1,9 +1,23 @@
 .rightContent {
+  :global{
+    .ant-slider{
+      margin: 0;
+    }
+    .ant-slider-handle{
+      border: solid 2px #798992;
+    }
+    .ant-slider-step{
+      background: #798992;
+    }
+    .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+      border-color: #798992;
+    }
+  }
   .iconWrapper {
     display: flex;
     justify-content: center;
     .iconColR:hover {
-      color: #F44336;
+      color: #1890ff;
     }
     .iconCol {
       font-size: 16px;
