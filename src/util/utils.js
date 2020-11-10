@@ -108,3 +108,42 @@ export async function getImgToBase64(url){//将图片转换为Base64
   });
   return res;
 }
+
+
+
+/**
+
+ * 将svg导出成图片
+
+ * @param node svg节点 => document.querySelector('svg')
+
+ * @param name 生成的图片名称
+
+ * @param width 生成的图片宽度
+
+ * @param height 生成的图片高度
+
+ * @param type 生成的图片类型
+
+ */
+export async function covertSVG2Image(node, name, width, height, type = 'png'){
+  console.info(node);
+  let serializer = new XMLSerializer();
+  let source = '<?xml version="1.0" standalone="no"?>\r\n' + serializer.serializeToString(node);
+  let image = new Image();
+  image.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+  console.info(image.src)
+  let canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  let context = canvas.getContext('2d');
+  context.fillStyle = '#fff';
+  context.fillRect(0, 0, 10000, 10000);
+  image.onload = function () {
+    context.drawImage(image, 0, 0);
+    let a = document.createElement('a');
+    a.download = `${name}.${type}`;
+    a.href = canvas.toDataURL(`image/${type}`);
+    a.click();
+  }
+}

@@ -13,6 +13,7 @@ class SliderFitting extends PureComponent {
   }
 
   increase = (e) => {
+    e.preventDefault();
     let {type,handlePatternImgOperation} = this.props;
     const {sliderValue} = this.state;
     if(type ==='zoom'){
@@ -21,18 +22,19 @@ class SliderFitting extends PureComponent {
         newSliderValue = sliderValue + 1;
       }
       this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(e,type,newSliderValue);
+      handlePatternImgOperation(type,newSliderValue);
     } else if(type ==='rotate'){
       let newSliderValue=360;
       if(sliderValue < 360){
         newSliderValue = sliderValue + 1;
       }
       this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(e,type,newSliderValue);
+      handlePatternImgOperation(type,newSliderValue);
     }
   };
 
   decline = (e) => {
+    e.preventDefault();
     let {type,handlePatternImgOperation} = this.props;
     const {sliderValue} = this.state;
     if(type ==='zoom'){
@@ -41,17 +43,26 @@ class SliderFitting extends PureComponent {
         newSliderValue = sliderValue - 1;
       }
       this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(e,type,newSliderValue);
+      handlePatternImgOperation(type,newSliderValue);
     } else if(type ==='rotate'){
-      let newSliderValue=1;
+      let newSliderValue=0;
       if(sliderValue > 1){
         newSliderValue = sliderValue - 1;
       }
       this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(e,type,newSliderValue);
+      handlePatternImgOperation(type,newSliderValue);
     }
   };
-
+  handleChange =(value)=>{
+    let {type,handlePatternImgOperation} = this.props;
+    if(type ==='zoom'){
+      this.setState({sliderValue: value});
+      handlePatternImgOperation(type,value);
+    } else if(type ==='rotate'){
+      this.setState({sliderValue: value});
+      handlePatternImgOperation(type,value);
+    }
+  };
   render() {
     const {type,optionTitle,values,unit} = this.props;
     return (
@@ -62,7 +73,8 @@ class SliderFitting extends PureComponent {
           fontSize: "20px",
           color: "#778899",
           marginLeft:"10px",
-          verticalAlign: "middle"
+          verticalAlign: "middle",
+          cursor: "pointer"
         }}/></span>
         <div style={{
           display: "inline-block",
@@ -76,6 +88,7 @@ class SliderFitting extends PureComponent {
                 max={100}
                 min={1}
                 tooltipVisible={false}
+                onChange={this.handleChange}
                 value={this.state.sliderValue}
               />
           }
@@ -85,6 +98,7 @@ class SliderFitting extends PureComponent {
               max={360}
               min={0}
               tooltipVisible={false}
+              onChange={this.handleChange}
               value={this.state.sliderValue}
             />
           }
@@ -93,7 +107,8 @@ class SliderFitting extends PureComponent {
           fontSize: "20px",
           color: "#778899",
           marginLeft:"5px",
-          verticalAlign: "middle"
+          verticalAlign: "middle",
+          cursor: "pointer"
         }}/></span>
       </div>
     )

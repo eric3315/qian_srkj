@@ -13,28 +13,28 @@ class RightDress extends PureComponent {
         <Card title={<p style={{marginBottom: '1px', fontWeight: 'bold'}}>图案应用</p>} size="small" bordered={false}
               style={{background: "none"}}>
           <Row className={sty.iconWrapper}>
-            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px',cursor: "pointer"}}>
               <span className={`${iconFont.iconfont} ${iconFont.icon_xunhuan}`}
                     style={this.props.circulationFlag ===1 ? {display: "inline-block", color: "#1890ff"}:{display: "inline-block"}}
                     onClick={(e)=>{this.props.handleChangeCirculation(e,1)}}
               />
               <p className={sty.iconDes} style={this.props.circulationFlag ===1 ? {color: "#1890ff"}:null}>全循环</p>
             </Col>
-            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px',cursor: "pointer"}}>
               <span className={`${iconFont.iconfont} ${iconFont.icon_icon_xunhuangoto}`}
                     style={this.props.circulationFlag ===2 ? {transform: "rotate(88deg)", display: "inline-block",color: "#1890ff"}:{transform: "rotate(88deg)", display: "inline-block"}}
                     onClick={(e)=>{this.props.handleChangeCirculation(e,2)}}
               />
               <p className={sty.iconDes}  style={this.props.circulationFlag ===2 ? {color: "#1890ff"}:null}>垂直循环</p>
             </Col>
-            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px',cursor: "pointer"}}>
               <span className={`${iconFont.iconfont} ${iconFont.icon_icon_xunhuangoto}`}
                     style={this.props.circulationFlag ===3 ? {display: "inline-block",color: "#1890ff"}:{display: "inline-block"}}
                     onClick={(e)=>{this.props.handleChangeCirculation(e,3)}}
               />
               <p className={sty.iconDes}  style={this.props.circulationFlag ===3 ? {color: "#1890ff"}:null}>水平循环</p>
             </Col>
-            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px'}}>
+            <Col className={sty.iconColR} style={{textAlign: 'center', margin: '0 4px',cursor: "pointer"}}>
               <span className={`${iconFont.iconfont} ${iconFont.icon_jinzhi}`}
                     style={this.props.circulationFlag ===4 ? {display: "inline-block",color: "#1890ff"}:{display: "inline-block"}}
                     onClick={(e)=>{this.props.handleChangeCirculation(e,4)}}
