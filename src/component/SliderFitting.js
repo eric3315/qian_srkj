@@ -53,18 +53,11 @@ class SliderFitting extends PureComponent {
   };
 
   render() {
-    const {type,optionTitle,values} = this.props;
+    const {type,optionTitle,values,unit} = this.props;
     return (
       <div>
         <span style={{fontSize: '15px', color: '#778899', fontWeight: "bold"}}>{optionTitle}</span>
-        {
-          values >= 10 &&
-          <span style={{marginLeft: "5px"}}>{values}%</span>
-        }
-        {
-          values < 10 &&
-          <span style={{marginLeft: "14px"}}>{values}%</span>
-        }
+        <span style={{fontSize: "10px", marginLeft: "4px", width: "35px", height:"20px", display: "inline-block"}}>{values}{unit}</span>
         <span onClick={(e)=>{this.decline(e)}}><Icon type="minus-circle" style={{
           fontSize: "20px",
           color: "#778899",
@@ -73,7 +66,7 @@ class SliderFitting extends PureComponent {
         }}/></span>
         <div style={{
           display: "inline-block",
-          width:'105px',
+          width:'96px',
           marginLeft:"10px",
           marginTop: "15px"
         }} >
@@ -90,7 +83,7 @@ class SliderFitting extends PureComponent {
             type ==='rotate' &&
             <Slider
               max={360}
-              min={1}
+              min={0}
               tooltipVisible={false}
               value={this.state.sliderValue}
             />

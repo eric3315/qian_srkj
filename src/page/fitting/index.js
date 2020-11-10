@@ -4,7 +4,6 @@ import DressContent from "../../component/DressContent";
 import RightDress from '../../component/RightDress';
 import StyleListCard from '../../component/styleListCard';
 import axios from "../../util/axios";
-import {getMatrix} from "../../util/utils";
 import style from './index.less';
 import sty from "../../component/dressContent.less";
 
@@ -18,7 +17,24 @@ const layout = {
     span: 16,
   },
 };
-
+function offset(curEle) {
+  let l = curEle.offsetLeft;
+  let t = curEle.offsetTop;
+  let p = curEle.offsetParent;
+  while (p && p.tagName !== 'BODY') {
+    if (!/MSIE 8/i.test(window.navigator.userAgent)) {
+      l += p.clientLeft;
+      t += p.clientTop;
+    }
+    l += p.offsetLeft;
+    t += p.offsetTop;
+    p = p.offsetParent;
+  }
+  return {
+    left: l,
+    top: t,
+  };
+}
 class Fitting extends PureComponent {
   state = {
     leftWidth: "275px",
@@ -28,22 +44,21 @@ class Fitting extends PureComponent {
     styleArr: [],
     patternTypeArr: [],
     patternArr: [],
-    svgX:0,
-    svgY:10,
     photoGroup:[],
     patternImg:'',
     zoomVal: 50,
-    rotateVal:1,
+    rotateVal:0,
     fillColor:"#ffffff",
     imageW:383,
     imageH:450,
     patternImgW:240,
     patternImgH:339.2,
     circulationFlag:1,   //1.全循环  2.垂直循环  3.水平循环  4.无循环
-    dragX:0,
-    dragY:0,
     scaleVal:0,
-    matrixArr:[0.9998476951563913,0.01745240643728351,-0.01745240643728351,0.9998476951563913,-91.79404217406014,-115.80786724292781]
+    matrixArr:"",
+    rotate:'0, 0 0',
+    scale:1,
+    translate:'0,0'
   };
   componentDidMount() {
     this.queryPatternType();
@@ -141,25 +156,6 @@ class Fitting extends PureComponent {
         console.info(`更新photoGroup---${JSON.stringify(this.state.photoGroup)}`)
       })
     } else if(type ==='pattern'){
-      const {rotateVal,circulationFlag} = this.state;
-      if(circulationFlag === 4){
-        let position={
-          "x": 0,
-          "y": 0
-        };
-        let scale=1;
-        let size={
-          "width": 69,
-          "height": 69.6
-        };
-        let matrix = await getMatrix(rotateVal,scale,position,size);
-        this.setState({
-          matrixArr:[matrix[0][0],matrix[1][0],matrix[0][1],matrix[1][1],matrix[0][2],matrix[1][2]]
-        },()=>{
-          console.info(`matrixArr-------->${this.state.matrixArr}`)
-        });
-      }
-
       this.setState({
         patternImg:item
       },()=>{
@@ -177,55 +173,47 @@ class Fitting extends PureComponent {
         imgName = val.substr(index + 1, val.length);
         window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${imgName}`)
     } else if(type ==='zoom'){
-      let newPatternImgW=this.state.patternImgW;
-      let newPatternImgH=this.state.patternImgH;
-      let newScaleVal = this.state.scaleVal;
-      if(this.state.zoomVal < val){
-        newPatternImgW = newPatternImgW + 6;
-        newPatternImgH = newPatternImgH + 6;
-        newScaleVal = newScaleVal - 3;
-      } else if(this.state.zoomVal > val){
-        newPatternImgW = newPatternImgW - 6;
-        newPatternImgH = newPatternImgH - 6;
-        newScaleVal = newScaleVal + 3;
-      }
+      let str = `translate(${this.state.translate})  scale(${val/50})  rotate(${this.state.rotate})`;
       this.setState({
+        matrixArr:str,
         zoomVal:val,
-        patternImgW:newPatternImgW,
-        patternImgH:newPatternImgH,
-        scaleVal: newScaleVal
-      },()=>{
-        console.info(`zoom-------->${this.state.zoomVal}`)
-      });
+        scale:val/50
+      })
     } else if(type ==='rotate'){
-      const {circulationFlag} = this.state;
-      let position={
-        "x": 0,
-        "y": 0
-      };
       let size={
         "width": 191.5,
         "height": 225
       };
-      let scale=1;
-      if(circulationFlag === 4){
-        position={
-          "x": 0,
-          "y": 0
-        };
-        scale=1;
-        size={
-          "width": 69,
-          "height": 69.6
-        };
-      }
-      let matrix = await getMatrix(val,scale,position,size);
-      this.setState({
-        rotateVal:val,
-        matrixArr:[matrix[0][0],matrix[1][0],matrix[0][1],matrix[1][1],matrix[0][2],matrix[1][2]]
-      },()=>{
-        console.info(`rotate-------->${this.state.rotateVal}`)
-      });
+     if(this.state.circulationFlag === 4){
+        let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width/3} ${size.height/3})`;
+        this.setState({
+          rotateVal:val,
+          rotate:`${val},${size.width/3} ${size.height/3}`,
+          matrixArr:str
+        },()=>{
+          console.info(`rotate-------->${this.state.rotateVal}`)
+        });
+      } else {
+        if(this.state.circulationFlag === 2){
+          size={
+            "width": 71.5,
+            "height": 225
+          };
+        } else if(this.state.circulationFlag === 3){
+          size={
+            "width": 191.5,
+            "height": 70
+          };
+        }
+       let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width} ${size.height})`;
+       this.setState({
+         rotateVal:val,
+         rotate:`${val},${size.width} ${size.height}`,
+         matrixArr:str
+       },()=>{
+         console.info(`rotate-------->${this.state.rotateVal}`)
+       });
+     }
     }
   };
   handleChangeFillColor=(val)=>{
@@ -237,79 +225,102 @@ class Fitting extends PureComponent {
   };
   handleChangeCirculation=async (e,val)=>{
     e.preventDefault();
-    if(val === 4){
-      const {rotateVal} = this.state;
+    this.setState({
+      translate:'0,0'
+    },()=>{
+      const {rotateVal,translate} = this.state;
+      let newTranslateArr = translate.split(',');
       let position={
         "x": 0,
         "y": 0
+      },size={
+        "width": 191.5,
+        "height": 225
       };
-      let scale=1;
-      let size={
-        "width": 69,
-        "height": 69.6
-      };
-      let matrix = await getMatrix(rotateVal,scale,position,size);
+      if(val === 2){
+        position={
+          "x": 120,
+          "y": 0
+        };
+        size={
+          "width": 71.5,
+          "height": 225
+        };
+      } else if(val === 3){
+        position={
+          "x": 0,
+          "y": 160
+        };
+        size={
+          "width": 191.5,
+          "height": 70
+        };
+      } else if(val === 4){
+        position={
+          "x": (383 / 2) - (383 / 6),
+          "y": (450 / 2) - (450 / 6)
+        };
+      }
+      newTranslateArr[0] = parseFloat(newTranslateArr[0])+ parseFloat(position.x);
+      newTranslateArr[1] = parseFloat(newTranslateArr[1])+ parseFloat(position.y);
       this.setState({
-        matrixArr:[matrix[0][0],matrix[1][0],matrix[0][1],matrix[1][1],matrix[0][2],matrix[1][2]]
+        circulationFlag:val,
+        translate:`${newTranslateArr[0]},${newTranslateArr[1]}`
       },()=>{
-        console.info(`matrixArr-------->${this.state.matrixArr}`)
+        console.info(`translate--->:${this.state.translate}`);
+        console.info(`更新circulationFlag：${this.state.circulationFlag}`);
+        let str ="",rotate="";
+        if(this.state.circulationFlag  === 4){
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width/3} ${size.height/3})`;
+          rotate = `${rotateVal},${size.width/3} ${size.height/3}`;
+        } else {
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
+        }
+        this.setState({
+          rotate,
+          matrixArr:str
+        },()=>{
+          console.info(`rotate-------->${this.state.rotate}`)
+        });
       });
-    }
-    this.setState({
-      circulationFlag:val
-    },()=>{
-      console.info(`更新circulationFlag：${this.state.circulationFlag}`)
     })
   };
   handleRectDown=(evn)=>{
     evn.preventDefault();
     const _self = this;
-    let maskDOM = _self.maskDOM;
-    console.dir(maskDOM)
-    let drag = evn.currentTarget;
     // 获取原始鼠标距离body的x和y
-    const sourceMouseX = evn.pageX;
-    const sourceMouseY = evn.pageY;
-
+    let positionArr = _self.state.translate.split(',');// 图片初始位置
+    const sourceMouseX = evn.pageX - positionArr[0]/1;
+    const sourceMouseY = evn.pageY - positionArr[1]/1;
     const moveHandler = function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
-      if (drag) {
-        // 获取鼠标最新坐标点到body的x和y
-        const currentMouseX = evt.pageX;
-        const currentMouseY = evt.pageY;
-       console.info(evt.currentTarget)
-        // 获取鼠标的偏移量
-        const offsetX = currentMouseX - sourceMouseX;
-        const offsetY = currentMouseY - sourceMouseY;
+      // 获取鼠标最新坐标点到body的x和y
+      const currentMouseX = evt.pageX;
+      const currentMouseY = evt.pageY;
 
-        console.info(`offsetX---:${offsetX}`);
-        console.info(`offsetY---:${offsetY}`);
+      // 获取鼠标的偏移量
+      const offsetX = currentMouseX - sourceMouseX;
+      const offsetY = currentMouseY - sourceMouseY;
 
-        const {matrixArr} = _self.state;
-        let newMatrixArr=JSON.parse(JSON.stringify(matrixArr));
-        newMatrixArr[4] = offsetX;
-        newMatrixArr[5] = offsetY;
-        _self.setState({
-          matrixArr:newMatrixArr
-        })
-      }
+      let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
+      _self.setState({
+        matrixArr:str,
+        translate:`${offsetX},${offsetY}`
+      })
     };
-    const upHandler = function (evt) {
-      if (drag) {
-        document.removeEventListener('mousemove', moveHandler);
-        document.removeEventListener('mouseup', upHandler);
-      }
-      drag = null;
+    const upHandler = function () {
+      document.removeEventListener('mousemove', moveHandler);
+      document.removeEventListener('mouseup', upHandler);
     };
     document.addEventListener('mousemove', moveHandler);
     document.addEventListener('mouseup', upHandler);
   };
   handleSVGUpload=async (e)=>{
     e.preventDefault();
-    await this.querySVGUpload({
-      svg:``
-    });
+    // await this.querySVGUpload({
+    //   svg:``
+    // });
     // let svgDOM= this.svgDOM;
     // console.info(svgDOM.innerHTML);
     // let image = new Image();
@@ -434,13 +445,8 @@ class Fitting extends PureComponent {
     return vDOM;
   }
   renderSvgCoalesce(){
-    const {photoGroup,patternImg,fillColor,imageW,imageH,patternImgW,patternImgH,rotateVal,circulationFlag,dragX,dragY,matrixArr} = this.state;
+    const {photoGroup,patternImg,fillColor,imageW,imageH,patternImgW,patternImgH,circulationFlag,matrixArr} = this.state;
     let vDOM=[];
-    let sxCos=1,sySin=0,sxSin=0,syCos=1;
-    if(rotateVal >0){
-        sxCos = syCos =(Math.cos(rotateVal / (180 / Math.PI))).toFixed(4);
-        sySin = sxSin =(Math.sin(rotateVal / (180 / Math.PI))).toFixed(4);
-    }
     if(circulationFlag ===1){
       photoGroup.forEach(item=>{
         let {bgImg,fImg,wbgImg} = item;
@@ -452,20 +458,20 @@ class Fitting extends PureComponent {
           }}>
             <svg width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
               <defs>
-                <pattern x="0" y="0" width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
-                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}>
-                  <image href={patternImg} preserveAspectRatio="none" x="0" y="0" width={patternImgW} height={patternImgH}/>
+                <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
+                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
+                  <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
                 </pattern>
-                <mask id="mask1" ref={(ref)=>this.maskDOM=ref}>
-                  <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
+                <mask id="mask1">
+                  <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
                 </mask>
               </defs>
-              <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-              <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-              <g x="0" y="0"  width={imageW} height={imageH}>
-                <rect x="0" y="0"  width={imageW} height={imageH} fill="url('#pattern1')" mask="url('#mask1')"/>
+              <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+              <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
+              <g width={imageW} height={imageH}>
+                <rect width={imageW} height={imageH} fill="url('#pattern1')" mask="url('#mask1')"/>
               </g>
-              <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
+              <image href={fImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
             </svg>
           </div>
         );
@@ -482,20 +488,20 @@ class Fitting extends PureComponent {
           }}>
             <svg width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
               <defs>
-                <pattern x="0" y="0" width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
-                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}>
-                  <image href={patternImg} preserveAspectRatio="none" x="0" y="0" width={patternImgW} height={patternImgH}/>
+                <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
+                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
+                  <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
                 </pattern>
                 <mask id="mask1">
-                  <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
+                  <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
                 </mask>
               </defs>
-              <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-              <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-              <g x="0" y="0"  width={imageW} height={imageH}>
+              <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+              <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
+              <g width={imageW} height={imageH}>
                 <rect x="120" y="0"  width={imageW-240} height={imageH} fill="url('#pattern1')" mask="url('#mask1')"/>
               </g>
-              <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
+              <image href={fImg} preserveAspectRatio="none"  width={imageW} height={imageH}/>
             </svg>
           </div>);
       });
@@ -511,20 +517,20 @@ class Fitting extends PureComponent {
           }}>
             <svg width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
                 <defs>
-                  <pattern x="0" y="0" width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
-                           viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}>
-                    <image href={patternImg} preserveAspectRatio="none" x="0" y="0" width={patternImgW} height={patternImgH}/>
+                  <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
+                           viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
+                    <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
                   </pattern>
                   <mask id="mask1">
-                    <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
+                    <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
                   </mask>
                 </defs>
-                <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-                <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-                <g x="0" y="0"  width={imageW} height={imageH}>
+                <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+                <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
+                <g width={imageW} height={imageH}>
                   <rect x="0" y="160"  width={imageW} height={imageH-310} fill="url('#pattern1')" mask="url('#mask1')"/>
                 </g>
-                <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
+                <image href={fImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
             </svg>
           </div>);
       });
@@ -541,69 +547,22 @@ class Fitting extends PureComponent {
             <svg width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
               <defs>
                 <mask id="mask1">
-                  <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
+                  <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
                 </mask>
               </defs>
-              <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-              <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-              <g x="0" y="0"  width={imageW} height={imageH} mask="url('#mask1')">
-                <image href={patternImg} preserveAspectRatio="none" width={patternImgW-102} height={patternImgH-200}
-                       transform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}/>
+              <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+              <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
+              <g width={imageW} height={imageH} mask="url('#mask1')">
+                <image href={patternImg} preserveAspectRatio="none" width={imageW/3} height={imageH/3}
+                       transform={matrixArr}/>
               </g>
-              <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
+              <image href={fImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
             </svg>
           </div>);
-        // if(rotateVal === 0){
-        //   vDOM.push(
-        //     <div key={Math.random()} style={{
-        //       margin: "20px auto",
-        //       width: "383px",
-        //       height: "450px"
-        //     }}>
-        //       <svg width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
-        //         <defs>
-        //           <mask id="mask1">
-        //             <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-        //           </mask>
-        //         </defs>
-        //         <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-        //         <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-        //         <g x="0" y="0"  width={imageW} height={imageH} mask="url('#mask1')">
-        //           <image href={patternImg} preserveAspectRatio="none"  x="125" y="170" width={patternImgW-102} height={patternImgH-200}
-        //                  transform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}/>
-        //         </g>
-        //         <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
-        //       </svg>
-        //     </div>);
-        // }
-        // else {
-        //   vDOM.push(
-        //     <div key={Math.random()} style={{
-        //       margin: "20px auto",
-        //       width: "500px",
-        //       height: "500px"
-        //     }}>
-        //       <svg width="500px" height="500px" onMouseDown={(e)=>{this.handleRectDown(e)}}>
-        //         <defs>
-        //           <mask id="mask1">
-        //             <image href={wbgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-        //           </mask>
-        //         </defs>
-        //         <image href={bgImg} preserveAspectRatio="none" x="0" y="0" width={imageW} height={imageH}/>
-        //         <rect x="0" y="0"  width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-        //         <g x="0" y="0"  width={imageW} height={imageH} mask="url('#mask1')">
-        //           <image href={patternImg} preserveAspectRatio="none" width={patternImgW-102} height={patternImgH-200}
-        //                  transform={`matrix(${matrixArr[0]},${matrixArr[1]},${matrixArr[2]},${matrixArr[3]},${matrixArr[4]},${matrixArr[5]})`}/>
-        //         </g>
-        //         <image href={fImg} preserveAspectRatio="none" x="0" y="0"  width={imageW} height={imageH}/>
-        //       </svg>
-        //     </div>);
-        // }
       });
     }
     return vDOM;
   }
-
   render() {
     const {leftWidth, rightWidth,photoGroup,patternImg} = this.state;
     const sizeWidth = parseInt(leftWidth) + parseInt(rightWidth);

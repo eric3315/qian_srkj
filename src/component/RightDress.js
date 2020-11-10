@@ -1,6 +1,5 @@
 import React, {PureComponent} from 'react';
 import {Card, Divider, Row, Col,Button} from 'antd';
-import ProgressFitting from '../component/Progressfitting';
 import SliderFitting  from '../component/SliderFitting';
 import ColourAtla from '../component/colourAtla';
 import sty from './rightDress.less'
@@ -98,6 +97,7 @@ class RightDress extends PureComponent {
                 optionTitle="缩放"
                 values={this.props.zoomVal}
                 type="zoom"
+                unit="%"
                 handlePatternImgOperation={this.props.handlePatternImgOperation}
               />
             </Col>
@@ -106,6 +106,7 @@ class RightDress extends PureComponent {
                 optionTitle="旋转"
                 values={this.props.rotateVal}
                 type="rotate"
+                unit="°"
                 handlePatternImgOperation={this.props.handlePatternImgOperation}
               />
             </Col>
