@@ -63,10 +63,16 @@ class RightDress extends PureComponent {
               <Col span={9} style={{display:'flex',flexDirection:'row'}}>
                 <Row>
                   <Col className={sty.buttonType}>
-                    <Button style={{width:'100%',background:'#cac7c7'}} onClick={(e)=>{this.props.handlePatternImgOperation(e,'clear',this.props.patternImg)}}>不使用图案</Button>
+                    <Button style={{width:'100%',background:'#cac7c7'}} onClick={async (e)=>{
+                      e.preventDefault();
+                      await this.props.handlePatternImgOperation('clear',this.props.patternImg)
+                    }}>不使用图案</Button>
                   </Col>
                   <Col style={{position: 'absolute',bottom:'0', width: '100%'}}>
-                    <Button type="danger" style={{width:'100%'}} onClick={(e)=>{this.props.handlePatternImgOperation(e,'upload',this.props.patternImg)}}>下载图案</Button>
+                    <Button type="danger" style={{width:'100%'}} onClick={async (e)=>{
+                      e.preventDefault();
+                      await this.props.handlePatternImgOperation('upload',this.props.patternImg)
+                    }}>下载图案</Button>
                   </Col>
                 </Row>
               </Col>

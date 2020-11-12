@@ -41,7 +41,12 @@ class Fitting extends PureComponent {
     matrixArr:"",
     rotate:'0, 0 0',
     scale:1,
-    translate:'0,0'
+    translate:'0,0',
+    rOffsetX:105,
+    rOffsetY:131,
+    mouseMoveTranslate:'0,0',
+    mouseMoveImgW:383/3,
+    mouseMoveImgH:450/3
   };
   componentDidMount() {
     this.queryPatternType();
@@ -139,73 +144,49 @@ class Fitting extends PureComponent {
   handlePatternImgOperation=async (type,val)=>{
     if(type ==='clear'){
       this.setState({ patternImg:''});
-    } else if(type ==='upload'){
+    }
+    else if(type ==='upload'){
       let index = val.lastIndexOf("\/"),
         imgName = val.substr(index + 1, val.length);
-        window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${imgName}`)
-    } else if(type ==='zoom'){
+      window.open(`http://106.14.210.21:8811/design/getPatternImgUpload?img=${imgName}`)
+    }
+    else if(type ==='zoom'){
       const {rotateVal,translate} = this.state;
       let newTranslateArr = translate.split(',');
       let scale = val/50;
-      let position={
-        "x": 0,
-        "y": 0
-      },size={
-        "width": 191.5,
-        "height": 225
-      };
+      let oldScale = this.state.zoomVal/50;
+      let oldSize={"width": 0, "height":0},newSize={"width": 0, "height":0};
       if(this.state.circulationFlag === 1){
-        position={
-          "x": 383 - (383 * scale),
-          "y": 450 - (450 * scale)
-        };
-        size={
-          "width": (383 * scale) / 2,
-          "height": (450 * scale) / 2
-        };
-      } else if(this.state.circulationFlag === 2){
-        position={
-          "x": 120 - (143 * scale),
-          "y": 450 - (450 * scale)
-        };
-        size={
-          "width": (143 * scale) / 2,
-          "height": (450 * scale) / 2
-        };
-      } else if(this.state.circulationFlag  === 3){
-        position={
-          "x": 383 - (383 * scale),
-          "y": 160 - (140 * scale)
-        };
-        size={
-          "width": (383 * scale) / 2,
-          "height": (140 * scale) / 2
-        };
-      } else if(this.state.circulationFlag  === 4){
-        position ={
-          "x": (383 / 2) - ((383 / 3) * scale / 2),
-          "y": (450 / 2) - ((450 / 3) * scale / 2)
-        };
-        size={
-          "width": (383 / 2) - ((383 / 3) * scale),
-          "height": (450 / 2) - ((450 / 3) * scale)
-        };
+        oldSize={"width": 383 * oldScale, "height":450 * oldScale};
+        newSize={"width": 383 * scale, "height":450 * scale};
       }
-      console.info(position)
-      console.info(size)
-      newTranslateArr[0] = position.x;
-      newTranslateArr[1] = position.y;
+      else if(this.state.circulationFlag === 2){
+        oldSize={"width": 183 * oldScale,"height":450 * oldScale};
+        newSize={"width": 183 * scale,"height":450 * scale };
+      }
+      else if(this.state.circulationFlag  === 3){
+        oldSize={ "width": 383 * oldScale, "height":190 * oldScale};
+        newSize={"width": 383 * scale, "height":190 * scale};
+      }
+      else if(this.state.circulationFlag  === 4){
+        oldSize={"width": (383 / 3) * oldScale, "height":(450 / 3) * oldScale};
+        newSize={"width": (383 / 3) * scale, "height":(450 / 3) * scale};
+      }
+      newTranslateArr[0] = parseFloat(newTranslateArr[0]) + ((oldSize.width - newSize.width) / 2);
+      newTranslateArr[1] = parseFloat(newTranslateArr[1]) + ((oldSize.height - newSize.height) / 2);
       this.setState({
         zoomVal:val,
         scale:val/50,
         translate:`${newTranslateArr[0]},${newTranslateArr[1]}`
       },()=>{
+        console.info(`translate-------->${this.state.translate}`);
         let str ="",rotate="";
         if(this.state.circulationFlag  === 4){
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width/3} ${size.height/3})`;
-          rotate = `${rotateVal},${size.width/3} ${size.height/3}`;
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${newSize.width/3} ${newSize.height/3})`;
+          rotate = `${rotateVal},${newSize.width/3} ${newSize.height/3}`;
         } else {
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${newSize.width} ${newSize.height})`;
+          rotate = `${rotateVal},${newSize.width} ${newSize.height}`;
         }
         this.setState({
           rotate,
@@ -216,56 +197,13 @@ class Fitting extends PureComponent {
       })
     }
     else if(type ==='rotate'){
-      // const {zoomVal} = this.state;
-      // let scale = zoomVal/50;
-      // let size={
-      //   "width": 191.5,
-      //   "height": 225
-      // };
-      // if(val === 1){
-      //   size={
-      //     "width": (383 * scale) / 2,
-      //     "height": (450 * scale) / 2
-      //   };
-      // } else if(val === 2){
-      //   size={
-      //     "width": (143 * scale) / 2,
-      //     "height": (450 * scale) / 2
-      //   };
-      // } else if(val === 3){
-      //   size={
-      //     "width": (383 * scale) / 2,
-      //     "height": (140 * scale) / 2
-      //   };
-      // } else if(val === 4){
-      //   size={
-      //     "width": (383 / 2) * scale,
-      //     "height": (450 / 2) * scale
-      //   };
-      // }
-      // let str ="",rotate="";
-      // if(this.state.circulationFlag  === 4){
-      //   str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width/3} ${size.height/3})`;
-      //   rotate = `${val},${size.width/3} ${size.height/3}`;
-      // } else {
-      //   str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width/3} ${size.height/3})`;
-      //   rotate =`${val},${size.width} ${size.height}`
-      // }
-      // this.setState({
-      //   rotateVal:val,
-      //   rotate,
-      //   matrixArr:str
-      // },()=>{
-      //   console.info(`rotate-------->${this.state.rotateVal}`)
-      // });
-
-
-
       let size={
         "width": 191.5,
         "height": 225
       };
-     if(this.state.circulationFlag === 4){
+      if(this.state.circulationFlag === 4){
+        // size={"width": (383 / 3) * this.state.scale, "height":(450 / 3) * this.state.scale};
+        console.info(size);
         let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width/3} ${size.height/3})`;
         this.setState({
           rotateVal:val,
@@ -277,24 +215,25 @@ class Fitting extends PureComponent {
       } else {
         if(this.state.circulationFlag === 2){
           size={
-            "width": 71.5,
+            "width": 91.5,
             "height": 225
           };
         } else if(this.state.circulationFlag === 3){
           size={
             "width": 191.5,
-            "height": 70
+            "height": 95
           };
         }
-       let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width} ${size.height})`;
-       this.setState({
-         rotateVal:val,
-         rotate:`${val},${size.width} ${size.height}`,
-         matrixArr:str
-       },()=>{
-         console.info(`rotate-------->${this.state.rotateVal}`)
-       });
-     }
+        let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width} ${size.height})`;
+        this.setState({
+          rotateVal:val,
+          rotate:`${val},${size.width} ${size.height}`,
+          matrixArr:str
+        },()=>{
+          console.info(`rotate-------->${this.state.rotateVal}`)
+        });
+      }
+
     }
   };
   handleChangeFillColor=(val)=>{
@@ -330,30 +269,34 @@ class Fitting extends PureComponent {
         };
       } else if(val === 2){
         position={
-          "x": 120 - (143 * scale),
+          "x": 105 - (183 * scale),
           "y": 450 - (450 * scale)
         };
         size={
-          "width": (143 * scale) / 2,
+          "width": (183 * scale) / 2,
           "height": (450 * scale) / 2
         };
       } else if(val === 3){
         position={
           "x": 383 - (383 * scale),
-          "y": 160 - (140 * scale)
+          "y": 131 - (190 * scale)
         };
         size={
           "width": (383 * scale) / 2,
-          "height": (140 * scale) / 2
+          "height": (190 * scale) / 2
         };
       } else if(val === 4){
         position ={
           "x": (383 / 2) - ((383 / 3) * scale / 2),
           "y": (450 / 2) - ((450 / 3) * scale / 2)
         };
+        // size={
+        //   "width": (383 / 2) - ((383 / 3) * scale),
+        //   "height": (450 / 2) - ((450 / 3) * scale)
+        // };
         size={
-          "width": (383 / 2) - ((383 / 3) * scale),
-          "height": (450 / 2) - ((450 / 3) * scale)
+          "width": 383 / 2,
+          "height": 450 / 2
         };
       }
       newTranslateArr[0] = position.x;
@@ -366,8 +309,13 @@ class Fitting extends PureComponent {
         console.info(`更新circulationFlag：${this.state.circulationFlag}`);
         let str ="",rotate="";
         if(this.state.circulationFlag  === 4){
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width/3} ${size.height/3})`;
-          rotate = `${rotateVal},${size.width/3} ${size.height/3}`;
+          // str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width/3} ${size.height/3})`;
+          // rotate = `${rotateVal},${size.width/3} ${size.height/3}`;
+
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
+          rotate = `${rotateVal},${size.width} ${size.height}`;
+          // str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},95.75 112.5)`;
+          // rotate = `${rotateVal},95.75 112.5`;
         } else {
           str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
           rotate = `${rotateVal},${size.width} ${size.height}`;
@@ -384,26 +332,44 @@ class Fitting extends PureComponent {
   handleRectDown=(evn)=>{
     evn.preventDefault();
     const _self = this;
+    console.info(evn.target.getBoundingClientRect())
     // 获取原始鼠标距离body的x和y
     let positionArr = _self.state.translate.split(',');// 图片初始位置
     const sourceMouseX = evn.pageX - positionArr[0]/1;
     const sourceMouseY = evn.pageY - positionArr[1]/1;
+    console.info(`sourceMouseX:${sourceMouseX}`);
+    console.info(`sourceMouseY:${sourceMouseY}`);
+
     const moveHandler = function (evt) {
       evt.stopPropagation();
       evt.preventDefault();
       // 获取鼠标最新坐标点到body的x和y
       const currentMouseX = evt.pageX;
       const currentMouseY = evt.pageY;
+      console.info(`currentMouseX:${currentMouseX}`);
+      console.info(`currentMouseY:${currentMouseY}`);
 
       // 获取鼠标的偏移量
       const offsetX = currentMouseX - sourceMouseX;
       const offsetY = currentMouseY - sourceMouseY;
+
+      const {circulationFlag} = _self.state;
+      if(circulationFlag === 2){
+        _self.setState({
+          rOffsetX: 105 + offsetX
+        })
+      } else if(circulationFlag === 3){
+        _self.setState({
+          rOffsetY: 131+offsetY
+        })
+      }
 
       let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
       _self.setState({
         matrixArr:str,
         translate:`${offsetX},${offsetY}`
       })
+
     };
     const upHandler = function () {
       document.removeEventListener('mousemove', moveHandler);
@@ -516,12 +482,12 @@ class Fitting extends PureComponent {
             <image href={fImg} preserveAspectRatio="none"  x="0" y="0" width={imageW} height={imageH}/>
           </svg>
         </div>
-        );
+      );
     });
     return vDOM;
   }
   renderSvgCoalesce(){
-    const {photoGroup,patternImg,fillColor,imageW,imageH,patternImgW,patternImgH,circulationFlag,matrixArr} = this.state;
+    const {photoGroup,patternImg,fillColor,imageW,imageH,patternImgW,patternImgH,circulationFlag,matrixArr,rOffsetX,rOffsetY} = this.state;
     let vDOM=[];
     if(circulationFlag ===1){
       photoGroup.forEach(item=>{
@@ -575,7 +541,7 @@ class Fitting extends PureComponent {
               <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
               <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
               <g width={imageW} height={imageH}>
-                <rect x="120" y="0"  width={imageW-240} height={imageH} fill="url('#pattern1')" mask="url('#mask1')"/>
+                <rect x={rOffsetX}  width={imageW-200} height={imageH} fill="url('#pattern1')" mask="url('#mask1')"/>
               </g>
               <image href={fImg} preserveAspectRatio="none"  width={imageW} height={imageH}/>
             </svg>
@@ -592,21 +558,21 @@ class Fitting extends PureComponent {
             height: "450px"
           }}>
             <svg  ref={(ref)=>this.svgDOM=ref} width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}  style={{cursor: "pointer"}}>
-                <defs>
-                  <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
-                           viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
-                    <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
-                  </pattern>
-                  <mask id="mask1">
-                    <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
-                  </mask>
-                </defs>
-                <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
-                <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
-                <g width={imageW} height={imageH}>
-                  <rect x="0" y="160"  width={imageW} height={imageH-310} fill="url('#pattern1')" mask="url('#mask1')"/>
-                </g>
-                <image href={fImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+              <defs>
+                <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
+                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
+                  <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
+                </pattern>
+                <mask id="mask1">
+                  <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+                </mask>
+              </defs>
+              <image href={bgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
+              <rect width={imageW} height={imageH} fill={fillColor} mask="url('#mask1')"/>
+              <g width={imageW} height={imageH}>
+                <rect y={rOffsetY}  width={imageW} height={imageH-260} fill="url('#pattern1')" mask="url('#mask1')"/>
+              </g>
+              <image href={fImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
             </svg>
           </div>);
       });
@@ -657,12 +623,10 @@ class Fitting extends PureComponent {
         <div style={{width: mainWidth, marginLeft: leftWidth}}>
           <div style={{padding: '24px', background: '#2f2f2f'}}>
             <div className={sty.dressContent}>
-              <div className={sty.dressTop}  ref={(c) => {
-                this.dressTopDom = c;
-              }}>
+              <div className={sty.dressTop}>
                 {
                   photoGroup.length>0 && patternImg==='' &&
-                    this.renderSvgInit()
+                  this.renderSvgInit()
                 }
                 {
                   photoGroup.length>0 && patternImg!=='' &&
