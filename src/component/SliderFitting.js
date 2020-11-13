@@ -14,44 +14,48 @@ class SliderFitting extends PureComponent {
 
   increase = (e) => {
     e.preventDefault();
-    let {type,handlePatternImgOperation} = this.props;
-    const {sliderValue} = this.state;
-    if(type ==='zoom'){
-      let newSliderValue=100;
-      if(sliderValue < 100){
-        newSliderValue = sliderValue + 1;
+    let {values,type,handlePatternImgOperation} = this.props;
+    this.setState({sliderValue:values},()=>{
+      const {sliderValue} = this.state;
+      if(type ==='zoom'){
+        let newSliderValue=100;
+        if(sliderValue < 100){
+          newSliderValue = sliderValue + 1;
+        }
+        this.setState({sliderValue: newSliderValue});
+        handlePatternImgOperation(type,newSliderValue);
+      } else if(type ==='rotate'){
+        let newSliderValue=360;
+        if(sliderValue < 360){
+          newSliderValue = sliderValue + 1;
+        }
+        this.setState({sliderValue: newSliderValue});
+        handlePatternImgOperation(type,newSliderValue);
       }
-      this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(type,newSliderValue);
-    } else if(type ==='rotate'){
-      let newSliderValue=360;
-      if(sliderValue < 360){
-        newSliderValue = sliderValue + 1;
-      }
-      this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(type,newSliderValue);
-    }
+    })
   };
 
   decline = (e) => {
     e.preventDefault();
-    let {type,handlePatternImgOperation} = this.props;
-    const {sliderValue} = this.state;
-    if(type ==='zoom'){
-      let newSliderValue=0;
-      if(sliderValue > 0){
-        newSliderValue = sliderValue - 1;
+    let {values,type,handlePatternImgOperation} = this.props;
+    this.setState({sliderValue:values},()=>{
+      const {sliderValue} = this.state;
+      if(type ==='zoom'){
+        let newSliderValue=0;
+        if(sliderValue > 0){
+          newSliderValue = sliderValue - 1;
+        }
+        this.setState({sliderValue: newSliderValue});
+        handlePatternImgOperation(type,newSliderValue);
+      } else if(type ==='rotate'){
+        let newSliderValue=0;
+        if(sliderValue > 1){
+          newSliderValue = sliderValue - 1;
+        }
+        this.setState({sliderValue: newSliderValue});
+        handlePatternImgOperation(type,newSliderValue);
       }
-      this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(type,newSliderValue);
-    } else if(type ==='rotate'){
-      let newSliderValue=0;
-      if(sliderValue > 1){
-        newSliderValue = sliderValue - 1;
-      }
-      this.setState({sliderValue: newSliderValue});
-      handlePatternImgOperation(type,newSliderValue);
-    }
+    })
   };
   handleChange =(value)=>{
     let {type,handlePatternImgOperation} = this.props;

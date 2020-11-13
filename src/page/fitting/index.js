@@ -43,10 +43,7 @@ class Fitting extends PureComponent {
     scale:1,
     translate:'0,0',
     rOffsetX:105,
-    rOffsetY:131,
-    mouseMoveTranslate:'0,0',
-    mouseMoveImgW:383/3,
-    mouseMoveImgH:450/3
+    rOffsetY:131
   };
   componentDidMount() {
     this.queryPatternType();
@@ -161,12 +158,12 @@ class Fitting extends PureComponent {
         newSize={"width": 383 * scale, "height":450 * scale};
       }
       else if(this.state.circulationFlag === 2){
-        oldSize={"width": 183 * oldScale,"height":450 * oldScale};
-        newSize={"width": 183 * scale,"height":450 * scale };
+        oldSize={"width": (183 + 105) * oldScale,"height":450 * oldScale};
+        newSize={"width": (183 + 105) * scale,"height":450 * scale };
       }
       else if(this.state.circulationFlag  === 3){
-        oldSize={ "width": 383 * oldScale, "height":190 * oldScale};
-        newSize={"width": 383 * scale, "height":190 * scale};
+        oldSize={ "width": 383 * oldScale, "height":(190 + 131) * oldScale};
+        newSize={"width": 383 * scale, "height":(190 + 131) * scale};
       }
       else if(this.state.circulationFlag  === 4){
         oldSize={"width": (383 / 3) * oldScale, "height":(450 / 3) * oldScale};
@@ -182,11 +179,17 @@ class Fitting extends PureComponent {
         console.info(`translate-------->${this.state.translate}`);
         let str ="",rotate="";
         if(this.state.circulationFlag  === 4){
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${newSize.width/3} ${newSize.height/3})`;
-          rotate = `${rotateVal},${newSize.width/3} ${newSize.height/3}`;
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${383/6} ${450/6})`;
+          rotate = `${rotateVal},${383/6} ${450/6}`;
+        } else if(this.state.circulationFlag  === 3){
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${383/2} ${(190/2)+131})`;
+          rotate = `${rotateVal},${383/2} ${190/2+131}`;
+        } else if(this.state.circulationFlag  === 2){
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${(183/2)+105} ${450/2})`;
+          rotate = `${rotateVal},${(183/2)+105} ${450/2}`;
         } else {
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${newSize.width} ${newSize.height})`;
-          rotate = `${rotateVal},${newSize.width} ${newSize.height}`;
+          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${383/2} ${450/2})`;
+          rotate = `${rotateVal},${383/2} ${450/2}`;
         }
         this.setState({
           rotate,
@@ -202,8 +205,6 @@ class Fitting extends PureComponent {
         "height": 225
       };
       if(this.state.circulationFlag === 4){
-        // size={"width": (383 / 3) * this.state.scale, "height":(450 / 3) * this.state.scale};
-        console.info(size);
         let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width/3} ${size.height/3})`;
         this.setState({
           rotateVal:val,
@@ -215,13 +216,13 @@ class Fitting extends PureComponent {
       } else {
         if(this.state.circulationFlag === 2){
           size={
-            "width": 91.5,
+            "width": 91.5 + 105,
             "height": 225
           };
         } else if(this.state.circulationFlag === 3){
           size={
             "width": 191.5,
-            "height": 95
+            "height": 95 + 131
           };
         }
         let str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${val},${size.width} ${size.height})`;
@@ -246,7 +247,11 @@ class Fitting extends PureComponent {
   handleChangeCirculation=async (e,val)=>{
     e.preventDefault();
     this.setState({
-      translate:'0,0'
+      translate:'0,0',
+      zoomVal: 50,
+      scaleVal:0,
+      rotateVal:0,
+      rotate:'0, 0 0'
     },()=>{
       const {zoomVal,rotateVal,translate} = this.state;
       let newTranslateArr = translate.split(',');
@@ -259,41 +264,25 @@ class Fitting extends PureComponent {
         "height": 225
       };
       if(val === 1){
-        position={
-          "x": 383 - (383 * scale),
-          "y": 450 - (450 * scale)
-        };
         size={
           "width": (383 * scale) / 2,
           "height": (450 * scale) / 2
         };
       } else if(val === 2){
-        position={
-          "x": 105 - (183 * scale),
-          "y": 450 - (450 * scale)
-        };
         size={
-          "width": (183 * scale) / 2,
+          "width": ((183+105) * scale) / 2,
           "height": (450 * scale) / 2
         };
       } else if(val === 3){
-        position={
-          "x": 383 - (383 * scale),
-          "y": 131 - (190 * scale)
-        };
         size={
           "width": (383 * scale) / 2,
-          "height": (190 * scale) / 2
+          "height": ((190+131) * scale) / 2
         };
       } else if(val === 4){
         position ={
           "x": (383 / 2) - ((383 / 3) * scale / 2),
           "y": (450 / 2) - ((450 / 3) * scale / 2)
         };
-        // size={
-        //   "width": (383 / 2) - ((383 / 3) * scale),
-        //   "height": (450 / 2) - ((450 / 3) * scale)
-        // };
         size={
           "width": 383 / 2,
           "height": 450 / 2
@@ -309,19 +298,15 @@ class Fitting extends PureComponent {
         console.info(`更新circulationFlag：${this.state.circulationFlag}`);
         let str ="",rotate="";
         if(this.state.circulationFlag  === 4){
-          // str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width/3} ${size.height/3})`;
-          // rotate = `${rotateVal},${size.width/3} ${size.height/3}`;
-
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
+          str = `translate(${this.state.translate})  scale(${scale})  rotate(${rotateVal},${size.width} ${size.height})`;
           rotate = `${rotateVal},${size.width} ${size.height}`;
-          // str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},95.75 112.5)`;
-          // rotate = `${rotateVal},95.75 112.5`;
         } else {
-          str = `translate(${this.state.translate})  scale(${this.state.scale})  rotate(${rotateVal},${size.width} ${size.height})`;
+          str = `translate(${this.state.translate})  scale(${scale})  rotate(${rotateVal},${size.width} ${size.height})`;
           rotate = `${rotateVal},${size.width} ${size.height}`;
         }
         this.setState({
           rotate,
+          scale,
           matrixArr:str
         },()=>{
           console.info(`rotate-------->${this.state.rotate}`)
@@ -357,19 +342,30 @@ class Fitting extends PureComponent {
       if(circulationFlag === 2){
         _self.setState({
           rOffsetX: 105 + offsetX
+        },()=>{
+          let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
+          _self.setState({
+            matrixArr:str,
+            translate:`${offsetX},${offsetY}`
+          })
         })
       } else if(circulationFlag === 3){
         _self.setState({
           rOffsetY: 131+offsetY
+        },()=>{
+          let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
+          _self.setState({
+            matrixArr:str,
+            translate:`${offsetX},${offsetY}`
+          })
+        })
+      } else {
+        let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
+        _self.setState({
+          matrixArr:str,
+          translate:`${offsetX},${offsetY}`
         })
       }
-
-      let str = `translate(${offsetX},${offsetY})  scale(${_self.state.scale})  rotate(${_self.state.rotate})`;
-      _self.setState({
-        matrixArr:str,
-        translate:`${offsetX},${offsetY}`
-      })
-
     };
     const upHandler = function () {
       document.removeEventListener('mousemove', moveHandler);
@@ -560,8 +556,8 @@ class Fitting extends PureComponent {
             <svg  ref={(ref)=>this.svgDOM=ref} width="383px" height="450px" onMouseDown={(e)=>{this.handleRectDown(e)}}  style={{cursor: "pointer"}}>
               <defs>
                 <pattern width={patternImgW} height={patternImgH} patternUnits="userSpaceOnUse" id="pattern1"
-                         viewBox={`0 0 ${patternImgW} ${patternImgH}`} patternTransform={matrixArr}>
-                  <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH}/>
+                         viewBox={`0 0 ${patternImgW} ${patternImgH}`}  patternTransform={matrixArr}>
+                  <image href={patternImg} preserveAspectRatio="none" width={patternImgW} height={patternImgH} />
                 </pattern>
                 <mask id="mask1">
                   <image href={wbgImg} preserveAspectRatio="none" width={imageW} height={imageH}/>
