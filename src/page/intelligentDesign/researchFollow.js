@@ -643,8 +643,8 @@ class ResearchFollow extends PureComponent {
       tempXjsjName:'',
       rightWidth: "260px",
     },async ()=>{
+      router.push(`/follow?modelName=${modelName ||''}&step=${e.keyPath[0] ||''}`);
       if(e.keyPath[0] === '7'){
-        router.push(`/follow?modelName=${modelName ||''}&step=${e.keyPath[0] ||''}`);
         this.setState({
           checkStep: e.keyPath[0]
         })
@@ -2161,7 +2161,9 @@ class ResearchFollow extends PureComponent {
             theme="dark"
             selectedKeys={[this.state.checkStep]}
             style={{marginTop: "20px"}}
-            onClick={(e) => {this.handleClickMenu(e, modelName)}}>{vDOM}
+            onClick={(e) => {
+              this.handleClickMenu(e, modelName)
+            }}>{vDOM}
         </Menu>;
   };
   renderParameters() {
@@ -4577,7 +4579,7 @@ class ResearchFollow extends PureComponent {
               <RightOutlined onClick={this.showUnfold} className={style.showUnfold}/>
             </div>
           }
-          <div onClick={this.showDrawer} className={style.leftMain} style={{width: leftWidth}}>
+          <div className={style.leftMain} style={{width: leftWidth}}>
             {
               this.state.steps.length > 0 &&
               this.renderStep()
@@ -4674,7 +4676,7 @@ class ResearchFollow extends PureComponent {
                   <LeftOutlined className={style.selecRightLeft} onClick={this.showRightUnfold}/>
                 </div>
               }
-              <div onClick={this.showRightAway}  className={style.rightMain} style={{width: rightWidth}}>
+              <div className={style.rightMain} style={{width: rightWidth}}>
                 {
                   this.state.parameters.length > 0 &&
                   this.renderParameters()

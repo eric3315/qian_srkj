@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import HeaderPage from '../component/Header';
+import logoIco from '../assets/logo.ico';
 import index from './index.less';
 
 
@@ -10,11 +11,11 @@ class BasicLayout extends PureComponent {
 
   }
   initTitle = () => {
-    document.title = 'Galaxy';
+    document.title = '悦尚科技';
     let link = document.createElement('link');
     link.setAttribute('type', 'image/x-icon');
     link.setAttribute('rel', 'icon');
-    // link.setAttribute('href',logoIco);
+    link.setAttribute('href',logoIco);
     document.head.appendChild(link);
   };
 
