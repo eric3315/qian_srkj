@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Card } from 'antd';
-
 
 class TrendAnalysis extends PureComponent {
+  state={
+
+  };
 
   render() {
     return (
