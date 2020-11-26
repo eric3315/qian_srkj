@@ -12,11 +12,11 @@ class OptionsComponentFourth extends PureComponent {
       data.forEach(item=>{
         let {model_name, step_name, parameters} = item;
         console.info(JSON.stringify(item));
-        let yisheng_changduVDOM=[],yisheng_songliangVDOM=[],xiaosheng_changduVDOM=[],xiaosheng_songliangVDOM=[],jianxing_kuanduVDOM=[],yaobu_yaogaoVDOM=[],yaobu_songliangVDOM=[];
+        let yishen_changduVDOM=[],yishen_songliangVDOM=[],xiushen_changduVDOM=[],xiushen_songliangVDOM=[],jianxing_kuanduVDOM=[],yaobu_yaogaoVDOM=[],yaobu_songliangVDOM=[];
         parameters.forEach(cur=>{
             let {option_title,option_type,values} = cur;
             if(option_title ==='衣身_长度'){
-                yisheng_changduVDOM.push(
+                yishen_changduVDOM.push(
                     <div key={Math.random()}>
                         <SliderComponent
                             marks={{10: '',20: '',30: ''}}
@@ -34,7 +34,7 @@ class OptionsComponentFourth extends PureComponent {
                     </div>
                 );
             } else if(option_title ==='衣身_松量'){
-                yisheng_songliangVDOM.push(
+                yishen_songliangVDOM.push(
                     <div key={Math.random()}>
                         <SliderComponent
                             marks={{10: '',20: '',30: ''}}
@@ -52,7 +52,7 @@ class OptionsComponentFourth extends PureComponent {
                     </div>
                 );
             } else if(option_title ==='袖身_长度'){
-                xiaosheng_changduVDOM.push(
+                xiushen_changduVDOM.push(
                     <div key={Math.random()}>
                         <SliderComponent
                             marks={{10: '',20: '',30: '',40: ''}}
@@ -70,7 +70,7 @@ class OptionsComponentFourth extends PureComponent {
                     </div>
                 );
             } else if(option_title ==='袖身_松量'){
-                xiaosheng_songliangVDOM.push(
+                xiushen_songliangVDOM.push(
                     <div key={Math.random()}>
                         <SliderComponent
                             marks={{10: '',20: '',30: ''}}
@@ -208,8 +208,8 @@ class OptionsComponentFourth extends PureComponent {
                 headStyle={{color: 'white'}}
                 bordered={false}
                 style={{background: "none"}}>
-              <div>{yisheng_changduVDOM}</div>
-              <div>{yisheng_songliangVDOM}</div>
+              <div>{yishen_changduVDOM}</div>
+              <div>{yishen_songliangVDOM}</div>
           </Card>
         </div>);
          vDOM.push(<div key={Math.random()}>
@@ -222,8 +222,8 @@ class OptionsComponentFourth extends PureComponent {
                     headStyle={{color: 'white'}}
                     bordered={false}
                     style={{background: "none"}}>
-                  <div>{xiaosheng_changduVDOM}</div>
-                  <div>{xiaosheng_songliangVDOM}</div>
+                  <div>{xiushen_changduVDOM}</div>
+                  <div>{xiushen_songliangVDOM}</div>
               </Card>
           </div>);
           vDOM.push(<div key={Math.random()}>

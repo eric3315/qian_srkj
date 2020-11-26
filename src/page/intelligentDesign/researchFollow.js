@@ -1457,10 +1457,10 @@ class ResearchFollow extends PureComponent {
             }
         }
         let subObj = {
-            yisheng_changdu: 0,
-            jyisheng_songliang: 0,
-            xiaosheng_changdu: 0,
-            xiaosheng_songliang: 0,
+            yishen_changdu: 0,
+            yishen_songliang: 0,
+            xiushen_changdu: 0,
+            xiushen_songliang: 0,
             jianxing_kuandu: 0,
             yaobu_yaogao: 0,
             yaobu_songliang: 0,
@@ -1468,13 +1468,13 @@ class ResearchFollow extends PureComponent {
             stepName, modelName
         };
         if (optionTitle === '衣身_长度') {
-            subObj.yisheng_changdu = values;
+            subObj.yishen_changdu = values;
         } else if (optionTitle === '衣身_松量') {
-            subObj.jyisheng_songliang = values;
+            subObj.yishen_songliang = values;
         } else if (optionTitle === '袖身_长度') {
-            subObj.xiaosheng_changdu = values;
+            subObj.xiushen_changdu = values;
         } else if (optionTitle === '袖身_松量') {
-            subObj.xiaosheng_songliang = values;
+            subObj.xiushen_songliang = values;
         } else if (optionTitle === '肩型_宽度') {
             subObj.jianxing_kuandu = values;
         } else if (optionTitle === '腰部_腰高') {
@@ -1491,15 +1491,12 @@ class ResearchFollow extends PureComponent {
         }
         if (flag) {
             for (let i = 0; i < newKxsjDesginArr.length; i++) {
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck} = newKxsjDesginArr[i];
+                let {theme_name, series_name, dress_style, silhouette, name, picCheck} = newKxsjDesginArr[i];
                 if (picCheck) {
                     subObj.theme_name = theme_name || '';
                     subObj.series_name = series_name || '';
                     subObj.dress_style = dress_style || '';
                     subObj.silhouette = silhouette || '';
-                    subObj.craft = craft || '';
-                    subObj.mountings = mountings || '';
-                    subObj.style = style || '';
                     subObj.name = name || '';
                 }
             }
@@ -1509,15 +1506,12 @@ class ResearchFollow extends PureComponent {
                 dressStyleArr.forEach(cur => {
                     let {designData} = cur;
                     designData.forEach(c => {
-                        let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck} = c;
+                        let {theme_name, series_name, dress_style, silhouette, picCheck} = c;
                         if (picCheck) {
                             subObj.theme_name = theme_name || '';
                             subObj.series_name = series_name || '';
                             subObj.dress_style = dress_style || '';
                             subObj.silhouette = silhouette || '';
-                            subObj.craft = craft || '';
-                            subObj.mountings = mountings || '';
-                            subObj.style = style || '';
                         }
                     });
                 });
@@ -1532,9 +1526,6 @@ class ResearchFollow extends PureComponent {
                     && item.series_name === subObj.series_name
                     && item.dress_style === subObj.dress_style
                     && item.silhouette === subObj.silhouette
-                    && item.craft === subObj.craft
-                    && item.mountings === subObj.mountings
-                    && item.style === subObj.style
                     && item.theme_name === subObj.theme_name
                     && item.name === subObj.name
             });
@@ -1545,20 +1536,17 @@ class ResearchFollow extends PureComponent {
                         && newSubmitData[i].series_name === subObj.series_name
                         && newSubmitData[i].dress_style === subObj.dress_style
                         && newSubmitData[i].silhouette === subObj.silhouette
-                        && newSubmitData[i].craft === subObj.craft
-                        && newSubmitData[i].mountings === subObj.mountings
-                        && newSubmitData[i].style === subObj.style
                         && newSubmitData[i].theme_name === subObj.theme_name
                         && newSubmitData[i].name === subObj.name
                     ) {
                         if (optionTitle === '衣身_长度') {
-                            newSubmitData[i].yisheng_changdu = values;
+                            newSubmitData[i].yishen_changdu = values;
                         } else if (optionTitle === '衣身_松量') {
-                            newSubmitData[i].jyisheng_songliang = values;
+                            newSubmitData[i].yishen_songliang = values;
                         } else if (optionTitle === '袖身_长度') {
-                            newSubmitData[i].xiaosheng_changdu = values;
+                            newSubmitData[i].xiushen_changdu = values;
                         } else if (optionTitle === '袖身_松量') {
-                            newSubmitData[i].xiaosheng_songliang = values;
+                            newSubmitData[i].xiushen_songliang = values;
                         } else if (optionTitle === '肩型_宽度') {
                             newSubmitData[i].jianxing_kuandu = values;
                         } else if (optionTitle === '腰部_腰高') {
@@ -1652,20 +1640,17 @@ class ResearchFollow extends PureComponent {
         }
         if (flag) {
             for (let i = 0; i < newJgxsjDesginArr.length; i++) {
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = newJgxsjDesginArr[i];
+                let {theme_name, series_name, dress_style, silhouette, name, picCheck, yishen_changdu,yishen_songliang,xiushen_changdu,xiushen_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = newJgxsjDesginArr[i];
                 if (picCheck) {
                     subObj.theme_name = theme_name || '';
                     subObj.series_name = series_name || '';
                     subObj.dress_style = dress_style || '';
                     subObj.silhouette = silhouette || '';
-                    subObj.craft = craft || '';
-                    subObj.mountings = mountings || '';
-                    subObj.style = style || '';
                     subObj.name = name || '';
-                    subObj.yisheng_changdu = yisheng_changdu || '';
-                    subObj.jyisheng_songliang = jyisheng_songliang || '';
-                    subObj.xiaosheng_changdu = xiaosheng_changdu || '';
-                    subObj.xiaosheng_songliang = xiaosheng_songliang || '';
+                    subObj.yishen_changdu = yishen_changdu || '';
+                    subObj.yishen_songliang = yishen_songliang || '';
+                    subObj.xiushen_changdu = xiushen_changdu || '';
+                    subObj.xiushen_songliang = xiushen_songliang || '';
                     subObj.jianxing_kuandu = jianxing_kuandu || '';
                     subObj.yaobu_yaogao = yaobu_yaogao || '';
                     subObj.yaobu_songliang = yaobu_songliang || '';
@@ -1677,19 +1662,16 @@ class ResearchFollow extends PureComponent {
                 dressStyleArr.forEach(cur => {
                     let {designData} = cur;
                     designData.forEach(c => {
-                        let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = c;
+                        let {theme_name, series_name, dress_style, silhouette, picCheck, yishen_changdu,yishen_songliang,xiushen_changdu,xiushen_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = c;
                         if (picCheck) {
                             subObj.theme_name = theme_name || '';
                             subObj.series_name = series_name || '';
                             subObj.dress_style = dress_style || '';
                             subObj.silhouette = silhouette || '';
-                            subObj.craft = craft || '';
-                            subObj.mountings = mountings || '';
-                            subObj.style = style || '';
-                            subObj.yisheng_changdu = yisheng_changdu || '';
-                            subObj.jyisheng_songliang = jyisheng_songliang || '';
-                            subObj.xiaosheng_changdu = xiaosheng_changdu || '';
-                            subObj.xiaosheng_songliang = xiaosheng_songliang || '';
+                            subObj.yishen_changdu = yishen_changdu || '';
+                            subObj.yishen_songliang = yishen_songliang || '';
+                            subObj.xiushen_changdu = xiushen_changdu || '';
+                            subObj.xiushen_songliang = xiushen_songliang || '';
                             subObj.jianxing_kuandu = jianxing_kuandu || '';
                             subObj.yaobu_yaogao = yaobu_yaogao || '';
                             subObj.yaobu_songliang = yaobu_songliang || '';
@@ -1707,9 +1689,6 @@ class ResearchFollow extends PureComponent {
                     && item.series_name === subObj.series_name
                     && item.dress_style === subObj.dress_style
                     && item.silhouette === subObj.silhouette
-                    && item.craft === subObj.craft
-                    && item.mountings === subObj.mountings
-                    && item.style === subObj.style
                     && item.theme_name === subObj.theme_name
                     && item.name === subObj.name
             });
@@ -1720,9 +1699,6 @@ class ResearchFollow extends PureComponent {
                         && newSubmitData[i].series_name === subObj.series_name
                         && newSubmitData[i].dress_style === subObj.dress_style
                         && newSubmitData[i].silhouette === subObj.silhouette
-                        && newSubmitData[i].craft === subObj.craft
-                        && newSubmitData[i].mountings === subObj.mountings
-                        && newSubmitData[i].style === subObj.style
                         && newSubmitData[i].theme_name === subObj.theme_name
                         && newSubmitData[i].name === subObj.name
                     ) {
@@ -1816,20 +1792,17 @@ class ResearchFollow extends PureComponent {
         }
         if (flag) {
             for (let i = 0; i < newXjsjDesginArr.length; i++) {
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = newXjsjDesginArr[i];
+                let {theme_name, series_name, dress_style, silhouette,  name, picCheck, yishen_changdu,yishen_songliang,xiushen_changdu,xiushen_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = newXjsjDesginArr[i];
                 if (picCheck) {
                     subObj.theme_name = theme_name || '';
                     subObj.series_name = series_name || '';
                     subObj.dress_style = dress_style || '';
                     subObj.silhouette = silhouette || '';
-                    subObj.craft = craft || '';
-                    subObj.mountings = mountings || '';
-                    subObj.style = style || '';
                     subObj.name = name || '';
-                    subObj.yisheng_changdu = yisheng_changdu || '';
-                    subObj.jyisheng_songliang = jyisheng_songliang || '';
-                    subObj.xiaosheng_changdu = xiaosheng_changdu || '';
-                    subObj.xiaosheng_songliang = xiaosheng_songliang || '';
+                    subObj.yishen_changdu = yishen_changdu || '';
+                    subObj.yishen_songliang = yishen_songliang || '';
+                    subObj.xiushen_changdu = xiushen_changdu || '';
+                    subObj.xiushen_songliang = xiushen_songliang || '';
                     subObj.jianxing_kuandu = jianxing_kuandu || '';
                     subObj.yaobu_yaogao = yaobu_yaogao || '';
                     subObj.yaobu_songliang = yaobu_songliang || '';
@@ -1846,19 +1819,16 @@ class ResearchFollow extends PureComponent {
                 dressStyleArr.forEach(cur => {
                     let {designData} = cur;
                     designData.forEach(c => {
-                        let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = c;
+                        let {theme_name, series_name, dress_style, silhouette,  picCheck, yishen_changdu,yishen_songliang,xiushen_changdu,xiushen_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = c;
                         if (picCheck) {
                             subObj.theme_name = theme_name || '';
                             subObj.series_name = series_name || '';
                             subObj.dress_style = dress_style || '';
                             subObj.silhouette = silhouette || '';
-                            subObj.craft = craft || '';
-                            subObj.mountings = mountings || '';
-                            subObj.style = style || '';
-                            subObj.yisheng_changdu = yisheng_changdu || '';
-                            subObj.jyisheng_songliang = jyisheng_songliang || '';
-                            subObj.xiaosheng_changdu = xiaosheng_changdu || '';
-                            subObj.xiaosheng_songliang = xiaosheng_songliang || '';
+                            subObj.yishen_changdu = yishen_changdu || '';
+                            subObj.yishen_songliang = yishen_songliang || '';
+                            subObj.xiushen_changdu = xiushen_changdu || '';
+                            subObj.xiushen_songliang = xiushen_songliang || '';
                             subObj.jianxing_kuandu = jianxing_kuandu || '';
                             subObj.yaobu_yaogao = yaobu_yaogao || '';
                             subObj.yaobu_songliang = yaobu_songliang || '';
@@ -1881,9 +1851,6 @@ class ResearchFollow extends PureComponent {
                     && item.series_name === subObj.series_name
                     && item.dress_style === subObj.dress_style
                     && item.silhouette === subObj.silhouette
-                    && item.craft === subObj.craft
-                    && item.mountings === subObj.mountings
-                    && item.style === subObj.style
                     && item.theme_name === subObj.theme_name
                     && item.name === subObj.name
             });
@@ -1894,9 +1861,6 @@ class ResearchFollow extends PureComponent {
                         && newSubmitData[i].series_name === subObj.series_name
                         && newSubmitData[i].dress_style === subObj.dress_style
                         && newSubmitData[i].silhouette === subObj.silhouette
-                        && newSubmitData[i].craft === subObj.craft
-                        && newSubmitData[i].mountings === subObj.mountings
-                        && newSubmitData[i].style === subObj.style
                         && newSubmitData[i].theme_name === subObj.theme_name
                         && newSubmitData[i].name === subObj.name
                     ) {
@@ -2063,7 +2027,7 @@ class ResearchFollow extends PureComponent {
         if (operateRecordArr.length > 0) {
             operateRecordArr.forEach(async item => {
                 if (typeof item.name !== 'undefined' && typeof item.newPicCheck !== 'undefined') {
-                    let {newPicCheck, theme_name, series_name, dress_style, silhouette, craft, mountings, name, newCardInfo, newCardActions} = item;
+                    let {newPicCheck, theme_name, series_name, dress_style, silhouette, name, newCardInfo, newCardActions} = item;
                     for (let i = 0; i < newParameters.length; i++) {
                         let {parameters} = newParameters[i];
                         parameters.forEach(item => {
@@ -2095,8 +2059,6 @@ class ResearchFollow extends PureComponent {
                                     && newKxsjDesginArr[i].series_name === series_name
                                     && newKxsjDesginArr[i].dress_style === dress_style
                                     && newKxsjDesginArr[i].silhouette === silhouette
-                                    && newKxsjDesginArr[i].craft === craft
-                                    && newKxsjDesginArr[i].mountings === mountings
                                     && newKxsjDesginArr[i].name === name) {
                                     newKxsjDesginArr[i].card_info = newCardInfo;
                                     newKxsjDesginArr[i].picCheck = newPicCheck;
@@ -2192,15 +2154,12 @@ class ResearchFollow extends PureComponent {
                     }
                     if (flag) {
                         for (let i = 0; i < newKxsjDesginArr.length; i++) {
-                            let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck} = newKxsjDesginArr[i];
+                            let {theme_name, series_name, dress_style, silhouette, name, picCheck} = newKxsjDesginArr[i];
                             if (picCheck) {
                                 subObj.theme_name = theme_name || '';
                                 subObj.series_name = series_name || '';
                                 subObj.dress_style = dress_style || '';
                                 subObj.silhouette = silhouette || '';
-                                subObj.craft = craft || '';
-                                subObj.mountings = mountings || '';
-                                subObj.style = style || '';
                                 subObj.name = name || '';
                             }
                         }
@@ -2210,15 +2169,12 @@ class ResearchFollow extends PureComponent {
                             dressStyleArr.forEach(cur => {
                                 let {designData} = cur;
                                 designData.forEach(c => {
-                                    let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck} = c;
+                                    let {theme_name, series_name, dress_style, silhouette,picCheck} = c;
                                     if (picCheck) {
                                         subObj.theme_name = theme_name || '';
                                         subObj.series_name = series_name || '';
                                         subObj.dress_style = dress_style || '';
                                         subObj.silhouette = silhouette || '';
-                                        subObj.craft = craft || '';
-                                        subObj.mountings = mountings || '';
-                                        subObj.style = style || '';
                                     }
                                 });
                             });
@@ -2233,9 +2189,6 @@ class ResearchFollow extends PureComponent {
                                 && item.series_name === subObj.series_name
                                 && item.dress_style === subObj.dress_style
                                 && item.silhouette === subObj.silhouette
-                                && item.craft === subObj.craft
-                                && item.mountings === subObj.mountings
-                                && item.style === subObj.style
                                 && item.theme_name === subObj.theme_name
                                 && item.name === subObj.name
                         });
@@ -2246,9 +2199,6 @@ class ResearchFollow extends PureComponent {
                                     && newSubmitData[i].series_name === subObj.series_name
                                     && newSubmitData[i].dress_style === subObj.dress_style
                                     && newSubmitData[i].silhouette === subObj.silhouette
-                                    && newSubmitData[i].craft === subObj.craft
-                                    && newSubmitData[i].mountings === subObj.mountings
-                                    && newSubmitData[i].style === subObj.style
                                     && newSubmitData[i].theme_name === subObj.theme_name
                                     && newSubmitData[i].name === subObj.name
                                 ) {
@@ -3700,7 +3650,7 @@ class ResearchFollow extends PureComponent {
         if (query.step === '3') {
             if (parseInt(flag) === 1) {
                 let {kxsjArr, kxsjDesginArr, parameters, operateRecord, submitData} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings} = item;
+                let {theme_name, series_name, dress_style, silhouette} = item;
                 let tempKxsjName = "";
                 if (submitData.length <= 0) {
                     tempKxsjName = `${silhouette}_K1`;
@@ -3747,8 +3697,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -3764,8 +3712,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -3791,7 +3737,7 @@ class ResearchFollow extends PureComponent {
                                     let {dressStyle, designData} = dressStyleArr[j];
                                     if (dressStyle === dress_style) {
                                         for (let k = 0; k < designData.length; k++) {
-                                            if (designData[k].silhouette === silhouette && designData[k].craft === craft && designData[k].mountings === mountings) {
+                                            if (designData[k].silhouette === silhouette) {
                                                 designData[k].card_info = newCardInfo;
                                                 designData[k].picCheck = newPicCheck;
                                                 designData[k].card_actions = newCardActions;
@@ -3846,19 +3792,19 @@ class ResearchFollow extends PureComponent {
             }
             else if (parseInt(flag) === 2) {
                 let {kxsjArr, kxsjDesginArr, parameters, operateRecord} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = item;
+                let {theme_name, series_name, dress_style, silhouette,  name, yishen_changdu,yishen_songliang,xiushen_changdu,xiushen_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang} = item;
                 let newParameters = JSON.parse(JSON.stringify(parameters));
                 for (let i = 0; i < newParameters.length; i++) {
                     let {parameters} = newParameters[i];
                     parameters.forEach(item => {
                         if (item.option_title === '衣身_长度') {
-                            item.values = yisheng_changdu;
+                            item.values = yishen_changdu;
                         } else if (item.option_title === '衣身_松量') {
-                            item.values =  jyisheng_songliang;
+                            item.values =  yishen_songliang;
                         } else if (item.option_title === '袖身_长度') {
-                            item.values =  xiaosheng_changdu;
+                            item.values =  xiushen_changdu;
                         } else if (item.option_title === '袖身_松量') {
-                            item.values = xiaosheng_songliang;
+                            item.values = xiushen_songliang;
                         } else if (item.option_title === '肩型_宽度') {
                             item.values = jianxing_kuandu;
                         } else if (item.option_title === '腰部_腰高') {
@@ -3894,8 +3840,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -3912,8 +3856,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -3932,8 +3874,6 @@ class ResearchFollow extends PureComponent {
                                 && newKxsjDesginArr[i].series_name === series_name
                                 && newKxsjDesginArr[i].dress_style === dress_style
                                 && newKxsjDesginArr[i].silhouette === silhouette
-                                && newKxsjDesginArr[i].craft === craft
-                                && newKxsjDesginArr[i].mountings === mountings
                                 && newKxsjDesginArr[i].name === name) {
                                 newKxsjDesginArr[i].card_info = newCardInfo;
                                 newKxsjDesginArr[i].picCheck = newPicCheck;
@@ -3977,7 +3917,7 @@ class ResearchFollow extends PureComponent {
         } else if (query.step === '4') {
             if (parseInt(flag) === 1) {
                 let {jgxsjArr, jgxsjDesginArr, parameters, operateRecord, submitData} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name} = item;
+                let {theme_name, series_name, dress_style, silhouette, name} = item;
                 let tempJgxsjName = "";
                 if (submitData.length <= 0) {
                     tempJgxsjName = `${name}_J1`;
@@ -4032,8 +3972,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -4049,8 +3987,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -4076,7 +4012,7 @@ class ResearchFollow extends PureComponent {
                                     let {dressStyle, designData} = dressStyleArr[j];
                                     if (dressStyle === dress_style) {
                                         for (let k = 0; k < designData.length; k++) {
-                                            if (designData[k].silhouette === silhouette && designData[k].craft === craft && designData[k].mountings === mountings && designData[k].name === name) {
+                                            if (designData[k].silhouette === silhouette && designData[k].name === name) {
                                                 designData[k].card_info = newCardInfo;
                                                 designData[k].picCheck = newPicCheck;
                                                 designData[k].card_actions = newCardActions;
@@ -4131,7 +4067,7 @@ class ResearchFollow extends PureComponent {
             }
             else if (parseInt(flag) === 2) {
                 let {jgxsjArr, jgxsjDesginArr, parameters, operateRecord} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name, lingxing,jianxing,xiuxing,menjin,koudai} = item;
+                let {theme_name, series_name, dress_style, silhouette, name, lingxing,jianxing,xiuxing,menjin,koudai} = item;
                 console.info(koudai)
                 let newParameters = JSON.parse(JSON.stringify(parameters));
                 for (let i = 0; i < newParameters.length; i++) {
@@ -4177,8 +4113,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -4195,8 +4129,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -4215,8 +4147,6 @@ class ResearchFollow extends PureComponent {
                                 && newJgxsjDesginArr[i].series_name === series_name
                                 && newJgxsjDesginArr[i].dress_style === dress_style
                                 && newJgxsjDesginArr[i].silhouette === silhouette
-                                && newJgxsjDesginArr[i].craft === craft
-                                && newJgxsjDesginArr[i].mountings === mountings
                                 && newJgxsjDesginArr[i].name === name) {
                                 newJgxsjDesginArr[i].card_info = newCardInfo;
                                 newJgxsjDesginArr[i].picCheck = newPicCheck;
@@ -4260,7 +4190,7 @@ class ResearchFollow extends PureComponent {
         } else if (query.step === '5') {
             if (parseInt(flag) === 1) {
                 let {xjsjArr, xjsjDesginArr, parameters, operateRecord, submitData} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name} = item;
+                let {theme_name, series_name, dress_style, silhouette, name} = item;
                 let tempXjsjName = "";
                 if (submitData.length <= 0) {
                     tempXjsjName = `${name}_X1`;
@@ -4311,8 +4241,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -4328,8 +4256,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         newPicCheck,
                         newCardInfo,
                         newCardActions
@@ -4355,7 +4281,7 @@ class ResearchFollow extends PureComponent {
                                     let {dressStyle, designData} = dressStyleArr[j];
                                     if (dressStyle === dress_style) {
                                         for (let k = 0; k < designData.length; k++) {
-                                            if (designData[k].silhouette === silhouette && designData[k].craft === craft && designData[k].mountings === mountings && designData[k].name === name) {
+                                            if (designData[k].silhouette === silhouette && designData[k].name === name) {
                                                 designData[k].card_info = newCardInfo;
                                                 designData[k].picCheck = newPicCheck;
                                                 designData[k].card_actions = newCardActions;
@@ -4411,7 +4337,7 @@ class ResearchFollow extends PureComponent {
             else if (parseInt(flag) === 2) {
                 let {xjsjArr, xjsjDesginArr, parameters, operateRecord} = this.state;
                 // console.info(`进来了:${JSON.stringify(item)}`);
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name, zhezhou, niukou, lalian} = item;
+                let {theme_name, series_name, dress_style, silhouette, name, zhezhou, niukou, lalian} = item;
                 let newParameters = JSON.parse(JSON.stringify(parameters));
                 // console.info(`进来了11:${JSON.stringify(newParameters)}`);
                 for (let i = 0; i < newParameters.length; i++) {
@@ -4452,8 +4378,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -4470,8 +4394,6 @@ class ResearchFollow extends PureComponent {
                         series_name,
                         dress_style,
                         silhouette,
-                        craft,
-                        mountings,
                         name,
                         newPicCheck,
                         newCardInfo,
@@ -4490,8 +4412,6 @@ class ResearchFollow extends PureComponent {
                                 && newXjsjDesginArr[i].series_name === series_name
                                 && newXjsjDesginArr[i].dress_style === dress_style
                                 && newXjsjDesginArr[i].silhouette === silhouette
-                                && newXjsjDesginArr[i].craft === craft
-                                && newXjsjDesginArr[i].mountings === mountings
                                 && newXjsjDesginArr[i].name === name) {
                                 newXjsjDesginArr[i].card_info = newCardInfo;
                                 newXjsjDesginArr[i].picCheck = newPicCheck;
