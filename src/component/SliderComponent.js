@@ -4,33 +4,38 @@ import "./sliderComponent.less";
 
 class SliderComponent extends PureComponent {
     state = {
-        sliderValue: 0,
+        sliderValue: 10,
     };
     componentDidMount() {
         const {sliderValue} = this.props;
         this.setState({
             sliderValue
+        },()=>{
+            console.info(`更新：${this.state.sliderValue}`)
         })
     }
 
     increase = () => {
-        let {modelName,stepName,optionTitle,handleOptionsFourth,max,cardinal} = this.props;
+        console.info('进来了')
+        console.info(this.state.sliderValue)
+        console.info(this.props.sliderValue)
+        let {modelName,stepName,optionHideTitle,handleOptionsFourth,max,cardinal} = this.props;
         let sliderValue = this.state.sliderValue + cardinal;
         if (sliderValue > max) {
             sliderValue = max;
         }
         this.setState({ sliderValue });
-        handleOptionsFourth(sliderValue,optionTitle,stepName,modelName);
+        handleOptionsFourth(sliderValue,optionHideTitle,stepName,modelName);
     };
 
     decline = () => {
-        let {modelName,stepName,optionTitle,handleOptionsFourth,min,cardinal} = this.props;
+        let {modelName,stepName,optionHideTitle,handleOptionsFourth,min,cardinal} = this.props;
         let sliderValue = this.state.sliderValue - cardinal;
         if (sliderValue < min) {
             sliderValue = min;
         }
         this.setState({ sliderValue });
-        handleOptionsFourth(sliderValue,optionTitle,stepName,modelName);
+        handleOptionsFourth(sliderValue,optionHideTitle,stepName,modelName);
     };
 
     render() {

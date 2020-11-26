@@ -26,6 +26,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="长度"
+                            optionHideTitle="衣身_长度"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -43,6 +44,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="松量"
+                            optionHideTitle="衣身_松量"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -53,13 +55,14 @@ class OptionsComponentFourth extends PureComponent {
                 xiaosheng_changduVDOM.push(
                     <div key={Math.random()}>
                         <SliderComponent
-                            marks={{10: '',20: '',30: ''}}
+                            marks={{10: '',20: '',30: '',40: ''}}
                             cardinal={10}
                             min={10}
-                            max={30}
+                            max={40}
                             sliderValue={values}
                             unit="%"
                             optionTitle="长度"
+                            optionHideTitle="袖身_长度"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -77,6 +80,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="松量"
+                            optionHideTitle="袖身_松量"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -94,6 +98,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="宽度"
+                            optionHideTitle="肩型_宽度"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -111,6 +116,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="腰高"
+                            optionHideTitle="腰部_腰高"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}
@@ -128,6 +134,7 @@ class OptionsComponentFourth extends PureComponent {
                             sliderValue={values}
                             unit="%"
                             optionTitle="松量"
+                            optionHideTitle="腰部_松量"
                             modelName={model_name}
                             stepName={step_name}
                             handleOptionsFourth={this.props.handleOptionsFourth}

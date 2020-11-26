@@ -12,96 +12,197 @@ class OptionsComponentFifth extends PureComponent {
       data.forEach(item=>{
         let {model_name, step_name, parameters} = item;
         parameters.forEach(cur=>{
-          let kaijinvDOM=[],lingzivDOM=[],koudaivDOM=[];
+          let lingxingvDOM=[],jianxingvDOM=[],xiuxingvDOM=[],menjinvDOM=[],koudaivDOM=[];
           let {option_title,values} = cur;
-          if(typeof cur.options!=='undefined' && option_title==='开襟'){
+          if(typeof cur.options!=='undefined' && option_title==='领型'){
             let optionsArr =cur.options;
             optionsArr.forEach(c=>{
-              kaijinvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+              lingxingvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
             });
             vDOM.push(<div key={Math.random()}>
               <Card className={style.rightCard} title={
                 <div>
-                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>开襟</p>
+                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>领型</p>
                 </div>
               }
-                size="small"
-                headStyle={{color: 'white'}}
-                bordered={false}
-                style={{background: "none"}}>
+                    size="small"
+                    headStyle={{color: 'white'}}
+                    bordered={false}
+                    style={{background: "none"}}>
                 <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
-                  {kaijinvDOM}
+                  {lingxingvDOM}
                 </RadioGroup>
               </Card>
             </div>);
-          } else if(typeof cur.options!=='undefined' && option_title==='领子'){
+          } else if(typeof cur.options!=='undefined' && option_title==='肩型'){
             let optionsArr =cur.options;
             optionsArr.forEach(c=>{
-              lingzivDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+              jianxingvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
             });
             vDOM.push(<div key={Math.random()}>
               <Card className={style.rightCard} title={
                 <div>
-                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>领子</p>
+                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>肩型</p>
                 </div>
               }
-                size="small"
-                headStyle={{color: 'white'}}
-                bordered={false}
-                style={{background: "none"}}>
-                <RadioGroup value={values}  onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
-                  {lingzivDOM}
+                    size="small"
+                    headStyle={{color: 'white'}}
+                    bordered={false}
+                    style={{background: "none"}}>
+                <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+                  {jianxingvDOM}
                 </RadioGroup>
               </Card>
             </div>);
-          } else {
-            if(option_title ==='口袋'){
-              let optionsArr =cur.options;
-              optionsArr.forEach(c=>{
-                if(values ===c.children_title){
-                  koudaivDOM.push(
-                    <div key={Math.random()} style={{marginBottom: "10px"}}>
-                      <div>
-                        <Radio key={Math.random()} value={c.children_title}>{c.children_title}</Radio>
-                      </div>
-                      <div>
-                        <ProgressComponentFifth
-                          modelName={model_name}
-                          stepName={step_name}
-                          optionTitle={c.children_title}
-                          values={c.values}
-                          handleOptionsFifth={this.props.handleOptionsFifth}
-                        />
-                      </div>
-                    </div>
-                  );
-                } else {
-                  koudaivDOM.push(
-                    <div key={Math.random()}>
-                      <div>
-                        <Radio key={Math.random()} value={c.children_title}>{c.children_title}</Radio>
-                      </div>
-                    </div>
-                  );
-                }
-              });
-              vDOM.push(<div key={Math.random()}>
-                <Card className={style.rightCard} title={
-                  <div>
-                    <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>口袋</p>
-                  </div>
-                }
-                  size="small"
-                  headStyle={{color: 'white'}}
-                  bordered={false}
-                  style={{background: "none"}}>
-                  <RadioGroup value={values}  onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
-                    {koudaivDOM}
-                  </RadioGroup>
-                </Card>
-              </div>);
-            }
+          } else if(typeof cur.options!=='undefined' && option_title==='袖型'){
+            let optionsArr =cur.options;
+            optionsArr.forEach(c=>{
+              xiuxingvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+            });
+            vDOM.push(<div key={Math.random()}>
+              <Card className={style.rightCard} title={
+                <div>
+                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>袖型</p>
+                </div>
+              }
+                    size="small"
+                    headStyle={{color: 'white'}}
+                    bordered={false}
+                    style={{background: "none"}}>
+                <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+                  {xiuxingvDOM}
+                </RadioGroup>
+              </Card>
+            </div>);
+          } else if(typeof cur.options!=='undefined' && option_title==='门襟'){
+            let optionsArr =cur.options;
+            optionsArr.forEach(c=>{
+              menjinvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+            });
+            vDOM.push(<div key={Math.random()}>
+              <Card className={style.rightCard} title={
+                <div>
+                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>门襟</p>
+                </div>
+              }
+                    size="small"
+                    headStyle={{color: 'white'}}
+                    bordered={false}
+                    style={{background: "none"}}>
+                <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+                  {menjinvDOM}
+                </RadioGroup>
+              </Card>
+            </div>);
+          } else if(typeof cur.options!=='undefined' && option_title==='口袋'){
+            let optionsArr =cur.options;
+            optionsArr.forEach(c=>{
+              koudaivDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+            });
+            vDOM.push(<div key={Math.random()}>
+              <Card className={style.rightCard} title={
+                <div>
+                  <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>口袋</p>
+                </div>
+              }
+                    size="small"
+                    headStyle={{color: 'white'}}
+                    bordered={false}
+                    style={{background: "none"}}>
+                <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+                  {koudaivDOM}
+                </RadioGroup>
+              </Card>
+            </div>);
           }
+          // if(typeof cur.options!=='undefined' && option_title==='开襟'){
+          //   let optionsArr =cur.options;
+          //   optionsArr.forEach(c=>{
+          //     kaijinvDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+          //   });
+          //   vDOM.push(<div key={Math.random()}>
+          //     <Card className={style.rightCard} title={
+          //       <div>
+          //         <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>开襟</p>
+          //       </div>
+          //     }
+          //       size="small"
+          //       headStyle={{color: 'white'}}
+          //       bordered={false}
+          //       style={{background: "none"}}>
+          //       <RadioGroup value={values} onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+          //         {kaijinvDOM}
+          //       </RadioGroup>
+          //     </Card>
+          //   </div>);
+          // } else if(typeof cur.options!=='undefined' && option_title==='领子'){
+          //   let optionsArr =cur.options;
+          //   optionsArr.forEach(c=>{
+          //     lingzivDOM.push(<Radio key={Math.random()} value={c}>{c}</Radio>,)
+          //   });
+          //   vDOM.push(<div key={Math.random()}>
+          //     <Card className={style.rightCard} title={
+          //       <div>
+          //         <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>领子</p>
+          //       </div>
+          //     }
+          //       size="small"
+          //       headStyle={{color: 'white'}}
+          //       bordered={false}
+          //       style={{background: "none"}}>
+          //       <RadioGroup value={values}  onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+          //         {lingzivDOM}
+          //       </RadioGroup>
+          //     </Card>
+          //   </div>);
+          // } else {
+          //   if(option_title ==='口袋'){
+          //     let optionsArr =cur.options;
+          //     optionsArr.forEach(c=>{
+          //       if(values ===c.children_title){
+          //         koudaivDOM.push(
+          //           <div key={Math.random()} style={{marginBottom: "10px"}}>
+          //             <div>
+          //               <Radio key={Math.random()} value={c.children_title}>{c.children_title}</Radio>
+          //             </div>
+          //             <div>
+          //               <ProgressComponentFifth
+          //                 modelName={model_name}
+          //                 stepName={step_name}
+          //                 optionTitle={c.children_title}
+          //                 values={c.values}
+          //                 handleOptionsFifth={this.props.handleOptionsFifth}
+          //               />
+          //             </div>
+          //           </div>
+          //         );
+          //       } else {
+          //         koudaivDOM.push(
+          //           <div key={Math.random()}>
+          //             <div>
+          //               <Radio key={Math.random()} value={c.children_title}>{c.children_title}</Radio>
+          //             </div>
+          //           </div>
+          //         );
+          //       }
+          //     });
+          //     vDOM.push(<div key={Math.random()}>
+          //       <Card className={style.rightCard} title={
+          //         <div>
+          //           <p style={{color: 'white', fontSize: '22px', fontWeight: 'bold', marginBottom: '4px'}}>口袋</p>
+          //         </div>
+          //       }
+          //         size="small"
+          //         headStyle={{color: 'white'}}
+          //         bordered={false}
+          //         style={{background: "none"}}>
+          //         <RadioGroup value={values}  onChange={(e)=>{this.props.handleOptionsFifth(e.target.value,option_title,step_name,model_name)}}>
+          //           {koudaivDOM}
+          //         </RadioGroup>
+          //       </Card>
+          //     </div>);
+          //   }
+          // }
         });
       });
     }

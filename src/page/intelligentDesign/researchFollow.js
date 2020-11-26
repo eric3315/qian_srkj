@@ -1624,22 +1624,26 @@ class ResearchFollow extends PureComponent {
             }
         }
         let subObj = {
-            kaijin: "",
-            lingzi: "",
+            lingxing: "",
+            jianxing: "",
+            xiuxing: "",
+            menjin: "",
             koudai: "",
-            koudai_len: 0,
             name: tempJgxsjName,
             stepName, modelName
         };
-        if (optionTitle === '开襟') {
-            subObj.kaijin = values;
-        } else if (optionTitle === '领子') {
-            subObj.lingzi = values;
+        if (optionTitle === '领型') {
+            subObj.lingxing = values;
+        } else if (optionTitle === '肩型') {
+            subObj.jianxing = values;
+        } else if (optionTitle === '袖型') {
+            subObj.xiuxing = values;
+        } else if (optionTitle === '门襟') {
+            subObj.menjin = values;
         } else if (optionTitle === '口袋') {
             subObj.koudai = values;
-        } else if (optionTitle === '明贴袋' || optionTitle === '暗口袋') {
-            subObj.koudai_len = values;
         }
+
         let flag = false;
         if (newJgxsjDesginArr.length > 0) {
             flag = newJgxsjDesginArr.some(item => {
@@ -1722,14 +1726,16 @@ class ResearchFollow extends PureComponent {
                         && newSubmitData[i].theme_name === subObj.theme_name
                         && newSubmitData[i].name === subObj.name
                     ) {
-                        if (optionTitle === '开襟') {
-                            newSubmitData[i].kaijin = values;
-                        } else if (optionTitle === '领子') {
-                            newSubmitData[i].lingzi = values;
+                        if (optionTitle === '领型') {
+                            newSubmitData[i].lingxing = values;
+                        } else if (optionTitle === '肩型') {
+                            newSubmitData[i].jianxing = values;
+                        } else if (optionTitle === '袖型') {
+                            newSubmitData[i].xiuxing = values;
+                        } else if (optionTitle === '门襟') {
+                            newSubmitData[i].menjin = values;
                         } else if (optionTitle === '口袋') {
                             newSubmitData[i].koudai = values;
-                        } else if (optionTitle === '明贴袋' || optionTitle === '暗口袋') {
-                            newSubmitData[i].koudai_len = values;
                         }
                     }
                 }
@@ -1810,7 +1816,7 @@ class ResearchFollow extends PureComponent {
         }
         if (flag) {
             for (let i = 0; i < newXjsjDesginArr.length; i++) {
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, kaijin, lingzi, koudai, koudai_len} = newXjsjDesginArr[i];
+                let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, name, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = newXjsjDesginArr[i];
                 if (picCheck) {
                     subObj.theme_name = theme_name || '';
                     subObj.series_name = series_name || '';
@@ -1827,10 +1833,11 @@ class ResearchFollow extends PureComponent {
                     subObj.jianxing_kuandu = jianxing_kuandu || '';
                     subObj.yaobu_yaogao = yaobu_yaogao || '';
                     subObj.yaobu_songliang = yaobu_songliang || '';
-                    subObj.kaijin = kaijin || '';
-                    subObj.lingzi = lingzi || '';
+                    subObj.lingxing = lingxing || '';
+                    subObj.jianxing = jianxing || '';
+                    subObj.xiuxing = xiuxing || '';
+                    subObj.menjin = menjin || '';
                     subObj.koudai = koudai || '';
-                    subObj.koudai_len = koudai_len || '';
                 }
             }
         } else {
@@ -1839,7 +1846,7 @@ class ResearchFollow extends PureComponent {
                 dressStyleArr.forEach(cur => {
                     let {designData} = cur;
                     designData.forEach(c => {
-                        let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, kaijin, lingzi, koudai, koudai_len} = c;
+                        let {theme_name, series_name, dress_style, silhouette, craft, mountings, style, picCheck, yisheng_changdu,jyisheng_songliang,xiaosheng_changdu,xiaosheng_songliang,jianxing_kuandu,yaobu_yaogao,yaobu_songliang, lingxing,jianxing,xiuxing,menjin,koudai} = c;
                         if (picCheck) {
                             subObj.theme_name = theme_name || '';
                             subObj.series_name = series_name || '';
@@ -1855,10 +1862,11 @@ class ResearchFollow extends PureComponent {
                             subObj.jianxing_kuandu = jianxing_kuandu || '';
                             subObj.yaobu_yaogao = yaobu_yaogao || '';
                             subObj.yaobu_songliang = yaobu_songliang || '';
-                            subObj.kaijin = kaijin || '';
-                            subObj.lingzi = lingzi || '';
+                            subObj.lingxing = lingxing || '';
+                            subObj.jianxing = jianxing || '';
+                            subObj.xiuxing = xiuxing || '';
+                            subObj.menjin = menjin || '';
                             subObj.koudai = koudai || '';
-                            subObj.koudai_len = koudai_len || '';
                         }
                     });
                 });
@@ -3716,7 +3724,7 @@ class ResearchFollow extends PureComponent {
                 for (let i = 0; i < newParameters.length; i++) {
                     let {parameters} = newParameters[i];
                     parameters.forEach(item => {
-                        item.values = 0;
+                        item.values = 10;
                     })
                 }
                 let newKxsjArr = JSON.parse(JSON.stringify(kxsjArr));
@@ -4123,28 +4131,22 @@ class ResearchFollow extends PureComponent {
             }
             else if (parseInt(flag) === 2) {
                 let {jgxsjArr, jgxsjDesginArr, parameters, operateRecord} = this.state;
-                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name, kaijin, lingzi, koudai, koudai_len} = item;
+                let {theme_name, series_name, dress_style, silhouette, craft, mountings, name, lingxing,jianxing,xiuxing,menjin,koudai} = item;
                 console.info(koudai)
                 let newParameters = JSON.parse(JSON.stringify(parameters));
                 for (let i = 0; i < newParameters.length; i++) {
                     let {parameters} = newParameters[i];
                     parameters.forEach(item => {
-                        let {options} = item;
-                        if (item.option_title === "开襟") {
-                            item.values = kaijin;
-                        } else if (item.option_title === "领子") {
-                            item.values = lingzi;
+                        if (item.option_title === "领型") {
+                            item.values = lingxing;
+                        } else if (item.option_title === "肩型") {
+                            item.values = jianxing;
+                        } else if (item.option_title === "袖型") {
+                            item.values = xiuxing;
+                        } else if (item.option_title === "门襟") {
+                            item.values = menjin;
                         } else if (item.option_title === "口袋") {
                             item.values = koudai;
-                        }
-                        if (options.length > 0 && typeof options[0] === 'object') {
-                            options.forEach(cur => {
-                                if (cur.children_title === koudai) {
-                                    cur.values = koudai_len;
-                                } else {
-                                    cur.values = 0;
-                                }
-                            });
                         }
                     })
                 }

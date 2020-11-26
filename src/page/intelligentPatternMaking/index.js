@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Card } from 'antd';
 
 class IntelligentPatternMaking extends PureComponent {
+
 
   render() {
     return (

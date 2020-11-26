@@ -73,7 +73,7 @@ class OptionsComponentSecond extends PureComponent {
           });
           wear_outside.forEach(item=>{
             wear_outside_vDOM.push(
-              <Col key={Math.random()} span={8}>
+              <Col key={Math.random()} span={10}>
                 <Checkbox style={{color: '#e2e2e2'}} value={item}>{item}</Checkbox>
               </Col>)
           });
