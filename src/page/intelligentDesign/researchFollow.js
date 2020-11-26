@@ -1457,13 +1457,13 @@ class ResearchFollow extends PureComponent {
             }
         }
         let subObj = {
-            yishen_changdu: 0,
-            yishen_songliang: 0,
-            xiushen_changdu: 0,
-            xiushen_songliang: 0,
-            jianxing_kuandu: 0,
-            yaobu_yaogao: 0,
-            yaobu_songliang: 0,
+            yishen_changdu: 10,
+            yishen_songliang: 10,
+            xiushen_changdu: 10,
+            xiushen_songliang: 10,
+            jianxing_kuandu: 10,
+            yaobu_yaogao: 10,
+            yaobu_songliang: 10,
             name: tempKxsjName,
             stepName, modelName
         };
