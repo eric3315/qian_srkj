@@ -1,13 +1,6 @@
 import React, {PureComponent} from 'react';
 import router from 'umi/router';
-import {
-    LeftOutlined,
-    RightOutlined,
-    UndoOutlined,
-    RedoOutlined,
-    ArrowRightOutlined,
-    SaveOutlined
-} from '@ant-design/icons';
+import {LeftOutlined, RightOutlined, UndoOutlined, RedoOutlined, ArrowRightOutlined, SaveOutlined} from '@ant-design/icons';
 import OptionsComponentFirst from '../../component/OptionsComponent_first';
 import OptionsComponentSecond from '../../component/OptionsComponent_second';
 import OptionsComponentFourth from '../../component/OptionsComponent_fourth';
@@ -3650,6 +3643,7 @@ class ResearchFollow extends PureComponent {
         if (query.step === '3') {
             if (parseInt(flag) === 1) {
                 let {kxsjArr, kxsjDesginArr, parameters, operateRecord, submitData} = this.state;
+                let newSubmitData = JSON.parse(JSON.stringify(submitData));
                 let {theme_name, series_name, dress_style, silhouette} = item;
                 let tempKxsjName = "";
                 if (submitData.length <= 0) {
@@ -3748,13 +3742,31 @@ class ResearchFollow extends PureComponent {
                             }
                         }
                     }
+                    newSubmitData.push({
+                        yishen_changdu: 10,
+                        yishen_songliang: 10,
+                        xiushen_changdu: 10,
+                        xiushen_songliang: 10,
+                        jianxing_kuandu: 10,
+                        yaobu_yaogao: 10,
+                        yaobu_songliang: 10,
+                        name: tempKxsjName,
+                        stepName:newParameters[0].step_name,
+                        modelName:newParameters[0].model_name,
+                        theme_name,
+                        series_name,
+                        dress_style,
+                        silhouette
+                    });
                     //同时获取右侧条件
                     this.setState({
+                        submitData: newSubmitData,
                         kxsjArr: newKxsjArr,
                         parameters: newParameters,
                         rightWidth: "260px",
                         tempKxsjName
                     }, () => {
+                        console.info(JSON.stringify(this.state.submitData))
                         console.info(JSON.stringify(this.state.kxsjArr))
                         console.info(JSON.stringify(this.state.tempKxsjName))
                     })
@@ -3772,7 +3784,28 @@ class ResearchFollow extends PureComponent {
                             }
                         }
                     }
+                    newSubmitData = newSubmitData.sort((a,b)=>{
+                        let aName = a.name.split('_K')[1];
+                        let bName = b.name.split('_K')[1];
+                        return bName - aName;
+                    });
+                    // console.info(`删除前------->:${JSON.stringify(newSubmitData)}`);
+                    for(let k=0;k<newSubmitData.length;k++){
+                        if(k===0) {
+                            newSubmitData[k] = newSubmitData[newSubmitData.length-1];
+                            newSubmitData.length--;
+                            k--;
+                            break;
+                        }
+                    }
+                    // console.info(`删除后------->:${JSON.stringify(newSubmitData)}`);
+                    newSubmitData = newSubmitData.sort((a,b)=>{
+                        let aName = a.name.split('_K')[1];
+                        let bName = b.name.split('_K')[1];
+                        return aName - bName;
+                    });
                     this.setState({
+                        submitData: newSubmitData,
                         kxsjArr: newKxsjArr,
                         rightWidth: 0,
                         tempKxsjName: ''
@@ -4559,7 +4592,15 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>基础廓形
                                 </div>
-                                <Row type="flex">{designDataVDOM}</Row>
+                                <Row type="flex"><Col style={{
+                                    marginLeft: "40px",
+                                    marginTop: "115px",
+                                    color: "#ffffff",
+                                    fontSize: "15px"
+                                }}><div style={{
+                                    width:"22px",
+                                    height:"22px"
+                                }}/></Col>{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
@@ -4716,7 +4757,15 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>款式廓形
                                 </div>
-                                <Row type="flex">{designDataVDOM}</Row>
+                                <Row type="flex"><Col style={{
+                                    marginLeft: "40px",
+                                    marginTop: "115px",
+                                    color: "#ffffff",
+                                    fontSize: "15px"
+                                }}><div style={{
+                                    width:"22px",
+                                    height:"22px"
+                                }}/></Col>{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
@@ -4873,7 +4922,15 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>结构性设计
                                 </div>
-                                <Row type="flex">{designDataVDOM}</Row>
+                                <Row type="flex"><Col style={{
+                                    marginLeft: "40px",
+                                    marginTop: "115px",
+                                    color: "#ffffff",
+                                    fontSize: "15px"
+                                }}><div style={{
+                                    width:"22px",
+                                    height:"22px"
+                                }}/></Col>{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
@@ -4960,7 +5017,7 @@ class ResearchFollow extends PureComponent {
 
                         {
                             this.state.checkStep !== '6' &&
-                            <div style={{padding: "24px"}}>
+                            <div style={{paddingTop: "30px"}}>
                                 {
                                     this.state.operateRecordPre.length > 0 ?
                                         (<ul className={sty.editWrapper}>
