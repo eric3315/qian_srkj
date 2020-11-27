@@ -54,7 +54,7 @@ class Fitting extends PureComponent {
   queryStyleByGender = async (param) => {
     let result = await axios({
       method: "GET",
-      url: `/design/getStyleByGender?gender=${param.gender || ''}`,
+      url: `/design/getStyleByGender?gender=${param.gender || ''}&_=${new Date().getTime()}`,
     });
     const {data} = result;
     this.setState({
@@ -64,7 +64,7 @@ class Fitting extends PureComponent {
   queryStyleList = async (param) => {
     let result = await axios({
       method: "GET",
-      url: `/design/getStyleList?gender=${param.gender || ''}&style=${param.style || ''}`,
+      url: `/design/getStyleList?gender=${param.gender || ''}&style=${param.style || ''}&_=${new Date().getTime()}`,
     });
     const {data} = result;
     this.setState({
@@ -74,7 +74,7 @@ class Fitting extends PureComponent {
   queryPatternType = async () => {
     let result = await axios({
       method: "GET",
-      url: `/design/getPatternType`,
+      url: `/design/getPatternType&_=${new Date().getTime()}`,
     });
     const {data} = result;
     this.setState({
@@ -84,7 +84,7 @@ class Fitting extends PureComponent {
   queryPatternList = async (param) => {
     let result = await axios({
       method: "GET",
-      url: `/design/getPatternList?patternType=${param.patternType || ''}`,
+      url: `/design/getPatternList?patternType=${param.patternType || ''}&_=${new Date().getTime()}`,
     });
     const {data} = result;
     this.setState({

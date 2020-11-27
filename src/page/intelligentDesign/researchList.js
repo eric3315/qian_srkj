@@ -19,7 +19,7 @@ class ResearchList extends PureComponent {
   queryList = async () => {
     let result = await axios({
       method: "GET",
-      url: `/design/getResearch`,
+      url: `/design/getResearch?_=${new Date().getTime()}`,
     });
     const {data} = result;
     let dataList = [];

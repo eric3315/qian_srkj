@@ -85,7 +85,7 @@ class ResearchFollow extends PureComponent {
     queryStep = async (param) => {
         let result = await axios({
             method: "GET",
-            url: `/design/getStep?modelName=${param.modelName || ''}`,
+            url: `/design/getStep?modelName=${param.modelName || ''}&_=${new Date().getTime()}`,
         });
         const {data} = result;
         this.setState({
@@ -95,7 +95,7 @@ class ResearchFollow extends PureComponent {
     queryParameters = async (param) => {
         let result = await axios({
             method: "GET",
-            url: `/design/getParameters?stepKey=${param.stepKey || ''}&modelName=${param.modelName || ''}`,
+            url: `/design/getParameters?stepKey=${param.stepKey || ''}&modelName=${param.modelName || ''}&_=${new Date().getTime()}`,
         });
         const {data} = result;
         this.setState({
@@ -109,7 +109,7 @@ class ResearchFollow extends PureComponent {
     queryThemes = async (param) => {
         let result = await axios({
             method: "GET",
-            url: `/design/getThemes?themeName=${param.themeName || ''}`,
+            url: `/design/getThemes?themeName=${param.themeName || ''}&_=${new Date().getTime()}`,
         });
         const {data} = result;
         this.setState({
@@ -121,7 +121,7 @@ class ResearchFollow extends PureComponent {
     queryStyles = async (param) => {
         let result = await axios({
             method: "GET",
-            url: `/design/getStyles?styles=${param.styles || ''}`,
+            url: `/design/getStyles?styles=${param.styles || ''}&_=${new Date().getTime()}`,
         });
         const {data} = result;
         this.setState({
@@ -133,7 +133,7 @@ class ResearchFollow extends PureComponent {
     querySeries = async (param) => {
         let result = await axios({
             method: "GET",
-            url: `/design/getSeries?themeName=${param.themeName || ''}`,
+            url: `/design/getSeries?themeName=${param.themeName || ''}&_=${new Date().getTime()}`,
         });
         const {data} = result;
         let dataList = [];
