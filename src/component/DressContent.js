@@ -5,7 +5,7 @@ import sty from './dressContent.less';
 
 const layout = {
   labelCol: {
-    span: 3,
+    span: 2,
   },
   wrapperCol: {
     span: 10,
@@ -36,8 +36,10 @@ class DressContent extends PureComponent {
     const {patternTypeArr,handlePatternTypeChange}=this.props;
     return (<div className={sty.dressBottom}>
         <div className={sty.bottomMain}>
-          <Form {...layout}  layout="horizontal">
-            <Form.Item name="gender" label="图案分类">
+          <Form {...layout}  layout="horizontal" style={{
+            marginLeft:"13px"
+          }}>
+            <Form.Item label="图案分类">
               <Select placeholder="请选择" allowClear  onChange={handlePatternTypeChange}>
                 {patternTypeArr.map(item=>{
                   return (

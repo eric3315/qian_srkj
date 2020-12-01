@@ -4570,12 +4570,16 @@ class ResearchFollow extends PureComponent {
                                     });
                                     designDataVDOM1.push(
                                         <div key={Math.random()}>
-                                            <Row type="flex"><Col style={{
+                                            <div style={{
                                                 marginLeft: "40px",
                                                 marginTop: "115px",
                                                 color: "#ffffff",
-                                                fontSize: "15px"
-                                            }}>{silhouette}</Col>{vDOM}</Row>
+                                                fontSize: "15px",
+                                                float: "left"
+                                            }}>
+                                                {silhouette}
+                                            </div>
+                                            <Row type="flex">{vDOM}</Row>
                                         </div>
                                     )
                                 });
@@ -4592,15 +4596,16 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>基础廓形
                                 </div>
-                                <Row type="flex"><Col style={{
+                                <div style={{
                                     marginLeft: "40px",
                                     marginTop: "115px",
                                     color: "#ffffff",
-                                    fontSize: "15px"
-                                }}><div style={{
+                                    fontSize: "15px",
+                                    float: "left",
                                     width:"22px",
                                     height:"22px"
-                                }}/></Col>{designDataVDOM}</Row>
+                                }}/>
+                                <Row type="flex">{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
@@ -4735,12 +4740,16 @@ class ResearchFollow extends PureComponent {
                                     });
                                     designDataVDOM1.push(
                                         <div key={Math.random()}>
-                                            <Row type="flex"><Col style={{
+                                            <div style={{
                                                 marginLeft: "40px",
                                                 marginTop: "115px",
                                                 color: "#ffffff",
-                                                fontSize: "15px"
-                                            }}>{silhouette}</Col>{vDOM}</Row>
+                                                fontSize: "15px",
+                                                float: "left"
+                                            }}>
+                                                {silhouette}
+                                            </div>
+                                            <Row type="flex">{vDOM}</Row>
                                         </div>
                                     )
                                 });
@@ -4757,15 +4766,16 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>款式廓形
                                 </div>
-                                <Row type="flex"><Col style={{
+                                <div style={{
                                     marginLeft: "40px",
                                     marginTop: "115px",
                                     color: "#ffffff",
-                                    fontSize: "15px"
-                                }}><div style={{
+                                    fontSize: "15px",
+                                    float: "left",
                                     width:"22px",
                                     height:"22px"
-                                }}/></Col>{designDataVDOM}</Row>
+                                }}/>
+                                <Row type="flex">{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
@@ -4900,12 +4910,16 @@ class ResearchFollow extends PureComponent {
                                     });
                                     designDataVDOM1.push(
                                         <div key={Math.random()}>
-                                            <Row type="flex"><Col style={{
+                                            <div style={{
                                                 marginLeft: "40px",
                                                 marginTop: "115px",
                                                 color: "#ffffff",
-                                                fontSize: "15px"
-                                            }}>{silhouette}</Col>{vDOM}</Row>
+                                                fontSize: "15px",
+                                                float: "left"
+                                            }}>
+                                                {silhouette}
+                                            </div>
+                                            <Row type="flex">{vDOM}</Row>
                                         </div>
                                     )
                                 });
@@ -4922,15 +4936,16 @@ class ResearchFollow extends PureComponent {
                                     marginBottom: "20px"
                                 }}>结构性设计
                                 </div>
-                                <Row type="flex"><Col style={{
+                                <div style={{
                                     marginLeft: "40px",
                                     marginTop: "115px",
                                     color: "#ffffff",
-                                    fontSize: "15px"
-                                }}><div style={{
+                                    fontSize: "15px",
+                                    float: "left",
                                     width:"22px",
                                     height:"22px"
-                                }}/></Col>{designDataVDOM}</Row>
+                                }}/>
+                                <Row type="flex">{designDataVDOM}</Row>
                                 {
                                     designDataVDOM1.length > 0 &&
                                     <div>
