@@ -74,7 +74,7 @@ class Fitting extends PureComponent {
   queryPatternType = async () => {
     let result = await axios({
       method: "GET",
-      url: `/design/getPatternType&_=${new Date().getTime()}`,
+      url: `/design/getPatternType?_=${new Date().getTime()}`,
     });
     const {data} = result;
     this.setState({
