@@ -42,6 +42,7 @@ class ResearchFollow extends PureComponent {
         xjsjDesginArr: [],
         tempXjsjName: '',
         loadding:false,
+        ztxlzsArr:[]
     };
 
     componentDidMount() {
@@ -371,6 +372,18 @@ class ResearchFollow extends PureComponent {
             });
         }
     };
+    queryZtxlzs = async () => {
+        let result = await axios({
+            method: "POST",
+            url: `/design/geZtxlzs`
+        });
+        const {data} = result;
+        this.setState({
+            ztxlzsArr: data
+        }, () => {
+            console.info(`获取系列信息:${JSON.stringify(this.state.ztxlzsArr)}`);
+        });
+    };
     saveKxsj = () => {
         this.setState({
             loadding: true
@@ -674,12 +687,14 @@ class ResearchFollow extends PureComponent {
             xjsjDesginArr: [],
             tempXjsjName: '',
             rightWidth: "260px",
+            ztxlzsArr:[]
         }, async () => {
             router.push(`/follow?modelName=${modelName || ''}&step=${e.keyPath[0] || ''}`);
             if (e.keyPath[0] === '6') {
                 this.setState({
                     checkStep: e.keyPath[0]
-                })
+                });
+                await this.queryZtxlzs();
             } else {
                 await this.queryStepJSON({
                     step: e.keyPath[0],
@@ -3431,7 +3446,8 @@ class ResearchFollow extends PureComponent {
                 router.push(`/follow?modelName=${query.modelName || ''}&step=6&themeName=${themeName}`);
             }
             else if (query.step === '6') {
-                this.setState({rightWidth: 0})
+                this.setState({rightWidth: 0});
+                this.queryZtxlzs();
             }
         }
     };
@@ -3466,7 +3482,8 @@ class ResearchFollow extends PureComponent {
                     {vDOM_1}
                 </Row>
             </div>);
-        } else if (themesArr.length > 0 && stylesArr.length <= 0) {
+        }
+        else if (themesArr.length > 0 && stylesArr.length <= 0) {
             themesArr.forEach((item, index) => {
                 let {children_name, children_img, children_desc} = item;
                 if (index === 0) {
@@ -3521,7 +3538,8 @@ class ResearchFollow extends PureComponent {
                     );
                 }
             });
-        } else if (themesArr.length > 0 && stylesArr.length > 0) {
+        }
+        else if (themesArr.length > 0 && stylesArr.length > 0) {
             themesArr.forEach((item, index) => {
                 let {children_name, children_img, children_desc} = item;
                 if (index === 0) {
@@ -4997,6 +5015,45 @@ class ResearchFollow extends PureComponent {
         }
         return vDOM;
     };
+    renderXlzsCommonDom(){
+        let vDOM = [];
+        let {ztxlzsArr} = this.state;
+        if (ztxlzsArr.length > 0) {
+            ztxlzsArr.forEach((item, index) => {
+                let {img:imgSrc} = item;
+                if (index === 0) {
+                    vDOM.push(
+                        <div key={Math.random()}>
+                            <div style={{width: '100%', padding: '20px'}}>
+                                <img src={imgSrc} alt="图片有误" style={{width: '100%'}}/>
+                            </div>
+                        </div>
+                    );
+                } else if (index === 1) {
+                    vDOM.push(
+                        <div key={Math.random()}>
+                            <div className={sty.colorWrapper}>
+                                <div style={{width: '100%', padding: '20px'}}>
+                                    <img src={imgSrc} alt="图片有误" style={{width: '100%'}}/>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                } else {
+                    vDOM.push(
+                        <div key={Math.random()}>
+                            <div style={{width: '100%', padding: '20px'}}>
+                                <img src={imgSrc} alt="图片有误" style={{width: '100%'}}/>
+                            </div>
+                        </div>
+                    );
+                }
+            });
+        }
+        return <div className={sty.themeWrapper} style={{
+            marginTop: "50px"
+        }}>{vDOM}</div>;
+    };
     render() {
         const {leftWidth, rightWidth} = this.state;
         const sizeWidth = parseInt(leftWidth) + parseInt(rightWidth);
@@ -5028,10 +5085,9 @@ class ResearchFollow extends PureComponent {
                              style={{width: leftWidth}}/>
                         }
                     </div>
-                    <div className={style.mainWrapper} style={{width: mainWidth, marginLeft: leftWidth}}>
-
-                        {
-                            this.state.checkStep !== '6' &&
+                    {
+                        this.state.checkStep !== '6' &&
+                        <div className={style.mainWrapper} style={{width: mainWidth, marginLeft: leftWidth}}>
                             <div style={{paddingTop: "30px"}}>
                                 {
                                     this.state.operateRecordPre.length > 0 ?
@@ -5074,39 +5130,47 @@ class ResearchFollow extends PureComponent {
                                         </ul>)
                                 }
                             </div>
-                        }
-                        {
-                            this.state.checkStep === '1' && this.state.themeName && this.state.themesArr.length > 0 ?
-                                this.renderMainContent() : this.state.stylesArr.length > 0 ? this.renderMainContent() : ''
-                        }
-                        {
-                            this.state.checkStep === '2' && this.state.seriesArr.length > 0 &&
-                            this.renderSeriesDom()
-                        }
-                        {
-                            this.state.checkStep === '3' && this.state.kxsjArr.length > 0 &&
-                            <Spin spinning={this.state.loadding}>
-                                {this.renderKxsjCommonDom()}
-                            </Spin>
-                        }
-                        {
-                            this.state.checkStep === '4' && this.state.jgxsjArr.length > 0 &&
-                            <Spin spinning={this.state.loadding}>
-                                {this.renderJgxsjCommonDom()}
-                            </Spin>
-                        }
-                        {
-                            this.state.checkStep === '5' && this.state.xjsjArr.length > 0 &&
-                            <Spin spinning={this.state.loadding}>
-                                {this.renderXjsjCommonDom()}
-                            </Spin>
-                        }
-                        {
-                            this.state.checkStep === '6' &&
-                            <div/>
-                        }
+                            {
+                                this.state.checkStep === '1' && this.state.themeName && this.state.themesArr.length > 0 ?
+                                    this.renderMainContent() : this.state.stylesArr.length > 0 ? this.renderMainContent() : ''
+                            }
+                            {
+                                this.state.checkStep === '2' && this.state.seriesArr.length > 0 &&
+                                this.renderSeriesDom()
+                            }
+                            {
+                                this.state.checkStep === '3' && this.state.kxsjArr.length > 0 &&
+                                <Spin spinning={this.state.loadding}>
+                                    {this.renderKxsjCommonDom()}
+                                </Spin>
+                            }
+                            {
+                                this.state.checkStep === '4' && this.state.jgxsjArr.length > 0 &&
+                                <Spin spinning={this.state.loadding}>
+                                    {this.renderJgxsjCommonDom()}
+                                </Spin>
+                            }
+                            {
+                                this.state.checkStep === '5' && this.state.xjsjArr.length > 0 &&
+                                <Spin spinning={this.state.loadding}>
+                                    {this.renderXjsjCommonDom()}
+                                </Spin>
+                            }
+                            {
+                                this.state.checkStep === '6' &&
+                                this.renderXlzsCommonDom()
+                            }
 
-                    </div>
+                        </div>
+                    }
+                    {
+                        this.state.checkStep === '6' &&
+                        <div className={style.mainWrapper} style={{width: "calc(100% - 270px)", marginLeft: "260px"}}>
+                            {
+                                this.renderXlzsCommonDom()
+                            }
+                        </div>
+                    }
                     {
                         this.state.checkStep !== '' && this.state.checkStep !== '6' &&
                         <div>
