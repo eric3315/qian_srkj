@@ -1,4 +1,7 @@
 export default {
+  ssr: {
+    disableExternal: true,
+  },
   singular: true,
   plugins: [
     ['umi-plugin-react', {
@@ -41,6 +44,10 @@ export default {
         {
           path: './fitting',
           component: './fitting'
+        },
+        {
+          path: './test',
+          component: './test'
         },
         {
           component: '403'

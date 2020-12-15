@@ -18,6 +18,8 @@ class IntelligentDesign extends PureComponent {
       current="make";
     } else if(window.location.pathname ==="/fitting"){
       current="fitting";
+    } else {
+      current="test";
     }
     this.setState({ current },()=>{
       router.push(`/${this.state.current}`);
